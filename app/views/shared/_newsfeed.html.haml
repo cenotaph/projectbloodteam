@@ -3,7 +3,7 @@
 
 .newsfeed_entry.row{:class => cycle('odd', 'even', :name => "outer_cycle")}[entry]
   - if entry.entry.class == Comment
-    = render :partial => 'comment', :locals => {:entry => entry}
+    = render :partial => 'shared/newsfeed_comment', :locals => {:entry => entry}
   - else 
     .small-2.columns.metadata
       .newsfeed_delete= remove_from_newsfeed(entry)

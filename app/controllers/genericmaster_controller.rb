@@ -45,6 +45,7 @@ class GenericmasterController < InheritedResources::Base
       discussion << s.discussion
     end
     @discussion = discussion.flatten.sort{|x,y| y.created_at <=> x.created_at }
+    set_meta_tags :title => 'Aggregate'
     render :template => "_discussion", :locals => {:discussion => @discussion }
   end
    
@@ -54,10 +55,13 @@ class GenericmasterController < InheritedResources::Base
     if @item.class == MasterBook
       @all_titles = MasterBook.where(:author => @item.author)
     elsif @item.class == MasterMovie
-      @all_titles = MasterMovie.where(:director => @item.director)
+      @all_titles = MasterMovie.where(:director => @item.director).order(:year)
+      set_meta_tags :title => 'All entries for ' + @item.director
     elsif @item.class == MasterMusic
-      @all_titles = MasterMusic.where("artist like ?", "%#{@item.artist}%").includes([{:musics => [:agent, :userimages, :master_music]} , :comments])
+      @all_titles = MasterMusic.where("artist like ?", "%#{@item.artist}%").includes([{:musics => [:agent, :userimages, :master_music]} , :comments]).order(:year)
+      set_meta_tags :title => 'All entries for ' + @item.artist
     end
+    
     render :template => 'shared/aggregate_creator'
   end
 

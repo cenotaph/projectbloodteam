@@ -20,10 +20,10 @@
     - unless @json.blank?
       #master_map
         .profile_details Recent locations:
-        = gmaps4rails(@json)
+        = render :partial => 'home/front_map', locals: {json: @json, center: nil, target: "master_map" }
   .right.ten.columns.omega
     - if @agent.security > 0
-      - if !logged_in?
+      - if !agent_signed_in?
         %p This user protects their information only for other PBT agents.
       - else
         - pass = true
@@ -33,5 +33,5 @@
       %h3 Latest activity
       .newsfeed
         #results= render :partial => 'shared/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => true}
-      = will_paginate @newsfeed
+      = paginate @newsfeed
       = pageless(@newsfeed.total_pages, '/agents/' + @agent.id.to_s)

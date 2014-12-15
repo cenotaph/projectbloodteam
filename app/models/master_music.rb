@@ -121,9 +121,9 @@ class MasterMusic < ActiveRecord::Base
   end
   
   def similars
-    sim =  MasterMusic.find_all_by_artist(self.artist).delete_if{|x| x == self}
+    sim =  MasterMusic.where(:artist => self.artist).to_a.delete_if{|x| x == self}
     unless self.label.blank?
-      sim += MasterMusic.find_all_by_label(self.label).delete_if{|x| x == self}
+      sim += MasterMusic.where(:label => self.label).to_a.delete_if{|x| x == self}
     end
     return sim.uniq
   end

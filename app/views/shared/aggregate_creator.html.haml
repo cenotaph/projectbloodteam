@@ -1,48 +1,72 @@
-%h3= "Aggregated entries for #{@item.creator}"
-- @all_titles.to_a.delete_if{|x| x.discussion.empty? }.sort_by{|x| x.discussion.flatten.sort_by{|a| a.created_at}.reverse.first.created_at }.reverse.each do |title|
-  %hr
-  .item_title
-    = link_to raw(title.name), title
-    - if title.respond_to?('linkto')
-      = link_to image_tag('/img/icons/external-link.png'), title.linkto, :target => "_blank"
-  = raw one_or_slideshow(title, '/system/no_image.png', :full, false)     
-  - title.discussion.each do |chat|
-    
-    - if show_entry?(chat)
-      .item.discussion{:class => cycle("even", "odd")}
-        .left
-          .index_image
-            = image_tag chat.agent_icon(:small) unless chat.class == Comment
-            .way_small= link_to 'standalone', chat unless chat.class == Comment
-            - if agent_signed_in? && chat.class != Comment
-              = link_to_if(chat.agent == current_agent, 'edit', "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit") {}  
-        .right{:class => (chat.class == Comment ? 'comment' : '')}
-          - if chat.class == Comment
-            .comment_image
-              = image_tag chat.agent_icon(:small)
-              - if agent_signed_in? 
-                .way_small= link_to_if(chat.agent == current_agent, 'edit', "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit") {}
-            .agent_name= "Comment by Agent #{link_to chat.agent_surname, chat.agent}, #{time_ago_in_words(chat.date)} ago"
-          - else
-            .agent_name= "Agent #{link_to chat.agent_surname, chat.agent}, #{time_ago_in_words(chat.date)} ago"
-          - if chat.respond_to?('metadata')
-            - if chat.class != Comment
-              .item_title
-            - else
-              Comment
-            - chat.metadata['metadata'].each_pair do |key, value|
-              - next if value.blank?
-              .item_metadata
-                %span.item_metadata_category= key.humanize + ":"
-                %span.item_metadata_value= display_metadata(key, value)
-          - else
-            - if chat.class != Comment
-              .item_title= (chat.respond_to?('linked_name') ? chat.linked_name : (chat.respond_to?('name') ? chat.name : ''))
+.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
+  %dl.sub-nav
+    - @all_titles.to_a.delete_if{|x| x.discussion.empty? }.each_with_index do |title, i|
+      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "title_#{title.id}"}= link_to "#{title.title} (#{title.year})", "#title_#{title.id}"
 
+      
+.row.with_title
+  .small-10.columns.small-offset-1
+    %h2= "Aggregated entries for #{@item.creator}"
+
+
+- @all_titles.to_a.delete_if{|x| x.discussion.empty? }.each do |title|
+  %a{:name => "title_#{title.id}"}
+  .aggregate{:"data-magellan-destination" => "title_#{title.id}"}
+    .row
+      .small-8.columns.small-offset-2
+        %h4
+          = link_to raw(title.name), title
+          - if title.respond_to?('linkto')
+            = link_to image_tag('/img/icons/external-link.png'), title.linkto, :target => "_blank"
+    .row
+      .small-8.columns.text-center.small-offset-2
+        = raw one_or_slideshow(title)
+        = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => title}
+    - title.discussion.each do |chat|  
+      - if show_entry?(chat)
+        .row.item.discussion
+          .left.small-2.columns
+            .index_image
+              = image_tag chat.agent_icon(:large) unless chat.class == Comment
+              .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
           
+              - if agent_signed_in? && chat.class != Comment
+                - if chat.agent == current_agent
+                  = link_to 'Edit', "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit",  class: [:button, :tiny, :secondary]
+          
+            - if chat.respond_to?('metadata')
+              .metadata
+                - if chat.class != Comment
+                  .item_title
+                - else
+                  Comment
+                = chat.formatted_date
+                - chat.metadata['metadata'].each_pair do |key, value|
+                  - next if value.blank?
+                  .item_metadata
+                    %span.item_metadata_category= key.humanize + ":"
+                    %span.item_metadata_value= display_metadata(key, value) 
+              
+          .small-8.small-offset-1.columns.left{:class => (chat.class == Comment ? 'comment' : '')}
+            - if chat.class == Comment
+              .comment_image
+                = image_tag chat.agent_icon(:small)
+                - if agent_signed_in? 
+                  .way_small= link_to_if(chat.agent == current_agent, 'edit', "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit") {}
+              .agent_name= raw "Comment by Agent #{link_to chat.agent_surname, chat.agent}, #{time_ago_in_words(chat.date)} ago"
+            - else
+              - unless display_comment(chat).blank?
+                .comment
+                  %span.big= raw('&ldquo;')
+                  = raw display_comment(chat)
+                .entered_date= "entered " + time_ago_in_words(chat.created_at) + " ago"
 
+      - else
+        - if chat.class != Comment
+          .item_title= (chat.respond_to?('linked_name') ? chat.linked_name : (chat.respond_to?('name') ? chat.name : ''))
           .item_description= chat.comment
           = raw one_or_slideshow(chat, '/system/no_image.png', :full, true)     
+
 = content_for :jquery do
   :plain
     $('.slick_carousel').slick({autoplay: true});

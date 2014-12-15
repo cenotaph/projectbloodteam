@@ -10,8 +10,10 @@
 #master_container {
   padding-top: 2.5rem;
 }
+
 .entered_date {
-  font-size: 0.55em;
+  font-size: 0.6rem;
+  margin-top: 1rem;
 }
 
 .first_comment {
@@ -157,6 +159,33 @@
     span.big {
       float: left;
       font-size: 2em;
+    }
+  }
+}
+
+.aggregate {
+  padding: 2rem 0px;
+  border-bottom: 1px dotted $primary-color;
+  
+  .discussion {
+    padding-top: 1.5rem;
+    &.item {
+      padding: 2rem 0px;
+      border-bottom: 1px dotted $secondary-color;
+    }
+  }
+  .comment {
+    font-weight: 300;
+    color: #444;
+    font-size: 1.2rem;
+    line-height: 1.9rem;
+    .big {
+      font-size: 2rem;
+      float: left;
+      margin-right: 0.6rem;
+    }
+    p {
+     font: inherit;
     }
   }
 }
