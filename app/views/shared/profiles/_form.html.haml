@@ -1,24 +1,42 @@
 - if flash[:error]
   = flash[:error]
 
-= semantic_form_for profile, :html => {:multipart => true} do |f|
-  Year:
-  = profile.year
-  = f.input :year, :as => :hidden 
-  = f.input :agent_id, :as => :hidden, :value => current_agent.id.to_s
-  = f.input :surname
-  = f.input :age
-  = f.input :location
-  = f.input :missionname
-  - unless f.object.new_record?
-    = image_tag f.object.avatar.url(:thumb)
-  = f.input :avatar, :label => "Profile picture"  + (f.object.new_record? ? '(choose)' : '(change)')
-  = f.input :theme
-  = f.input :currency, :label => "Default currency"
-  = f.input :dateformat, :label => raw('Date format (<a href="http://www.wetware.co.nz/blog/2009/07/rails-date-formats-strftime/" target="_blank">Explanation</a>)')
+.row
+  .small-8.small-offset-2.columns
+    = semantic_form_for profile, :html => {:multipart => true} do |f|
+      .form_wrapper
+        .row
+          .small-6.columns
+            %h2 
+              Your profile for
+              = profile.year
+            = f.input :year, :as => :hidden 
+            = f.input :agent_id, :as => :hidden, :data => {:value => current_agent.id.to_s }
+        .row
+          .small-6.columns= f.input :surname
+        .row
+          .small-6.columns= f.input :age
+        .row
+          .small-6.columns= f.input :location
+        .row
+          .small-6.columns= f.input :missionname
+        .row
+          .small-10.columns
+            - unless f.object.new_record?
+              = image_tag f.object.avatar.url(:thumb)
+            = f.input :avatar, :label => "Profile picture"  + (f.object.new_record? ? '(choose)' : '(change)')
+        .row
+          .small-6.columns= f.input :theme
+        .row
+          .small-6.columns= f.input :currency, :label => "Default currency"
+        .row
+          .small-6.columns= f.input :dateformat, :label => raw('Date format (<a href="http://www.wetware.co.nz/blog/2009/07/rails-date-formats-strftime/" target="_blank">Explanation</a>)')
   
-  = f.input :freetext, :label => "Free text for profile page"
-  = f.input :shortfilms, :label => 'Allow separate page for short films'
-  = f.input :theme_settings, :label => "Custom CSS"
-  = f.buttons do
-    = f.submit
+        .row
+          .small-6.columns= f.input :freetext, :label => "Free text for profile page"
+        .row
+          .small-6.columns= f.input :shortfilms, :label => 'Allow separate page for short films'
+        .row
+          .small-6.columns= f.input :theme_settings, :label => "Custom CSS"
+        .row
+          .small-6.columns= f.submit 'Save', class: [:button, :small]

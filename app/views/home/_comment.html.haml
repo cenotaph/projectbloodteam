@@ -3,7 +3,7 @@
   .newsfeed_icon= entry_agent_icon(entry)
   .newsfeed_delete= remove_from_newsfeed(entry)
   .newsfeed_date= "posted " + time_ago_in_words(entry.created_at) + " ago"
-.small-6.only_comment.columns.left
+.small-6.small-offset-2.only_comment.columns.left
   .newsfeed_comment
     %span.big= raw('&ldquo;')
     = raw display_comment(entry.entry)

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class AgentsController < InheritedResources::Base
   respond_to :html, :rss
-  before_filter :login_required, :only => [:your_settings, :edit, :update]
+  before_filter :authenticate_agent!, :only => [:your_settings, :edit, :update]
   
   
   def change_password 

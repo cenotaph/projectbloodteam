@@ -3,21 +3,25 @@
   
 - if flash[:error]
   .error= flash[:error]
-#your_settings
-  %fieldset
-    %legend= link_to 'Account details' , edit_agent_path(current_agent)
-    This is where you set account basics such as your username, email address, and your last.fm/twitter names.  This information will apply to all years in which you have PBT data.
+#your_settings.row
+  .small-12.columns.text-center
+    %h1 Your PBT settings
+.row
+  .small-8.columns.small-offset-2
+    %fieldset
+      %legend= link_to 'Account details' , edit_agent_path(current_agent)
+      This is where you set account basics such as your username, email address, and your last.fm/twitter names.  This information will apply to all years in which you have PBT data.
   
-  %fieldset
-    %legend
-      Edit profile:
-      = @profiles.map{|profile| link_to profile.year, edit_profile_path(profile) }.join('&sdot;')
-    Edit the details of your profile.  These are settings that can be different for every year you have done PBT; you can have a different name, location, age, image and mission name for each year as well as a different theme.
+    %fieldset
+      %legend
+        Edit profile:
+        = raw @profiles.map{|profile| link_to profile.year, edit_profile_path(profile) }.join('&sdot;')
+      Edit the details of your profile.  These are settings that can be different for every year you have done PBT; you can have a different name, location, age, image and mission name for each year as well as a different theme.
     
-  %fieldset
-    %legend= link_to 'Categories', edit_category_path(current_agent)
-    Choose which categories you wish to have available.  You may hide categories that do not interest you, though you can still see other agent's data in these categories.
+    %fieldset
+      %legend= link_to 'Categories', edit_category_path(current_agent)
+      Choose which categories you wish to have available.  You may hide categories that do not interest you, though you can still see other agent's data in these categories.
   
-  %fieldset
-    %legend= link_to 'Column views', edit_view_path(current_agent.views.first.id)
-    Choose which columns in each category are visible to you.
+    %fieldset
+      %legend= link_to 'Column views', edit_view_path(current_agent.views.first.id)
+      Choose which columns in each category are visible to you.

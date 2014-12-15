@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class ProfilesController < InheritedResources::Base
   respond_to :html
-  before_filter :login_required, :only => [:new, :edit, :update, :create, :destroy]
+  before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]
   
   def create
     @profile = Profile.create(params[:profile])
