@@ -120,7 +120,7 @@ class MasterBook < ActiveRecord::Base
   end
 
   def similars
-    MasterBook.find_all_by_author(self.author).delete_if{|x| x == self}
+    MasterBook.where(:author => self.author).to_a.delete_if{|x| x == self}
   end
 
   

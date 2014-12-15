@@ -1,7 +1,7 @@
 .magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
   %dl.sub-nav
     - @all_titles.to_a.delete_if{|x| x.discussion.empty? }.each_with_index do |title, i|
-      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "title_#{title.id}"}= link_to "#{title.title} (#{title.year})", "#title_#{title.id}"
+      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "title_#{title.id}"}= link_to "#{title.title} " + (title.respond_to?(:year) ? "(#{title.year})" : "(#{title.discussion.size})"), "#title_#{title.id}"
 
       
 .row.with_title

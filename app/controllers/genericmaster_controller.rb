@@ -54,6 +54,7 @@ class GenericmasterController < InheritedResources::Base
     # ugly, fix later
     if @item.class == MasterBook
       @all_titles = MasterBook.where(:author => @item.author)
+      set_meta_tags :title => 'All entries for ' + @item.author
     elsif @item.class == MasterMovie
       @all_titles = MasterMovie.where(:director => @item.director).order(:year)
       set_meta_tags :title => 'All entries for ' + @item.director

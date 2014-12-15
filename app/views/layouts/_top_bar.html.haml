@@ -17,7 +17,7 @@
       - if controller.controller_name == 'home' && !@json.blank?
         %li= link_to fa_icon('globe lg') + " (#{@json.size})", '#', onclick: "$('.worldmap-bar').slideToggle(); return false;"
       - unless controller.controller_name == 'forums'
-        %li= link_to fa_icon('comment lg') + (session[:forum_unread].blank? ? '' : (session[:forum_unread] > 0 ? " (#{session[:forum_unread]})" : false )), '#', onclick: "$('.forum-bar').slideToggle(); return false;"
+        %li= link_to fa_icon('comment lg') + (session[:forum_unread].blank? ? '' : (session[:forum_unread] > 0 ? " (#{session[:forum_unread]})" : '' )), '#', onclick: "$('.forum-bar').slideToggle(); return false;"
       %li= link_to fa_icon("users lg"), '#', onclick: "$('.agents-bar .agents').slideToggle(); return false;"
       %li= link_to fa_icon('line-chart lg'), '/stats'
       %li= link_to fa_icon('gear lg'), '/settings'
