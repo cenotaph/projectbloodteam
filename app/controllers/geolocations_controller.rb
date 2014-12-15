@@ -3,10 +3,10 @@ class GeolocationsController < InheritedResources::Base
   respond_to :html, :xml
   before_filter :login_required, :only => [:new, :edit, :update, :create, :destroy]
   
-  caches_page :index 
+  #caches_page :index 
 
   def create
-    expire_page :action => :index
+   # expire_page :action => :index
     super
   end
   
