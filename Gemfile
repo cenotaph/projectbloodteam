@@ -27,6 +27,12 @@ end
     
 gem 'rails4_upgrade'
 
+gem 'capistrano', '~> 3.1.0'
+gem 'capistrano-rails', '~> 1.1.0'
+gem 'capistrano-rvm'
+gem 'capistrano-bundler'
+
+
 gem 'dalli'
 # gem 'dalli-store-extensions', :git => "git://github.com/defconomicron/dalli-store-extensions.git", :group => :production
 gem 'date_validator'
