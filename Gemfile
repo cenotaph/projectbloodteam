@@ -44,7 +44,7 @@ gem 'discogs-wrapper', '2.0.0'
 gem 'figaro'
 gem 'font-awesome-rails'
 gem 'formtastic' , :git => 'git://github.com/justinfrench/formtastic.git'
-gem 'foundation-rails', '5.4.5'
+gem 'foundation-rails', '5.4.5.0'
 gem 'friendly_id', '~> 5.0.0'
 gem 'geocoder'
 # gem 'gmaps4rails'
@@ -57,7 +57,7 @@ gem 'meta-tags', require: 'meta_tags'
 gem 'mini_magick'
 gem "nested_form"
 gem 'paperclip'
-gem 'rails_12factor', group: [:staging, :production]
+# gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'
 gem 'randumb'
 gem 'responders'

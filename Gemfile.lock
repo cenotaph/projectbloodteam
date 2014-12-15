@@ -159,7 +159,7 @@ GEM
     mini_magick (3.8.1)
       subexec (~> 0.2.1)
     mini_portile (0.6.0)
-    minitest (5.4.3)
+    minitest (5.5.0)
     multi_json (1.10.1)
     multi_xml (0.5.5)
     mysql2 (0.3.16)
@@ -196,11 +196,6 @@ GEM
     rails4_upgrade (0.5.0)
       bundler (>= 1.2.2)
       terminal-table (>= 1.4.5)
-    rails_12factor (0.0.2)
-      rails_serve_static_assets
-      rails_stdout_logging
-    rails_serve_static_assets (0.0.2)
-    rails_stdout_logging (0.0.3)
     railties (4.1.7)
       actionpack (= 4.1.7)
       activesupport (= 4.1.7)
@@ -280,7 +275,7 @@ DEPENDENCIES
   figaro
   font-awesome-rails
   formtastic!
-  foundation-rails (= 5.4.5)
+  foundation-rails (= 5.4.5.0)
   friendly_id (~> 5.0.0)
   geocoder
   haml
@@ -301,7 +296,6 @@ DEPENDENCIES
   rails (= 4.1.7)
   rails4-autocomplete
   rails4_upgrade
-  rails_12factor
   randumb
   responders
   sass-rails (~> 4.0.0)
