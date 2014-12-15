@@ -155,7 +155,7 @@ class GenericController < InheritedResources::Base
         hits += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", @item.geolocation.latitude - 1.5, @item.geolocation.latitude + 1.5, @item.geolocation.longitude - 1.5, @item.geolocation.longitude + 1.5]).map{|x| x.send(@category.pluralize.downcase)}.uniq.flatten
 
       end
-      @json = hits.map(&:geolocation).uniq
+      @json = hits.map(&:geolocation).uniq unless hits.nil?
     end
     
     if @item.class == Comment
