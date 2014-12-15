@@ -56,6 +56,7 @@ gem 'kaminari'
 gem 'meta-tags', require: 'meta_tags'
 gem 'mini_magick'
 gem "nested_form"
+gem "non-stupid-digest-assets"
 gem 'paperclip'
 # gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'
