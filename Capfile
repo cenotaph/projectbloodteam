@@ -1,45 +1,29 @@
-load 'deploy' if respond_to?(:namespace) # cap2 differentiator
-Dir['vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
+# Load DSL and Setup Up Stages
+require 'capistrano/setup'
 
-load 'config/deploy' # remove this line to skip loading any of the default tasks
+# Includes default deployment tasks
+require 'capistrano/deploy'
+require 'capistrano/rails'
+require 'capistrano/rvm'
+require 'capistrano/bundler'
+require 'capistrano/rails/migrations'
 
-require 'erb'
+# Includes tasks from other gems included in your Gemfile
+#
+# For documentation on these, see for example:
+#
+#   https://github.com/capistrano/rvm
+#   https://github.com/capistrano/rbenv
+#   https://github.com/capistrano/chruby
+#   https://github.com/capistrano/bundler
+#   https://github.com/capistrano/rails
+#
+# require 'capistrano/rvm'
+# require 'capistrano/rbenv'
+# require 'capistrano/chruby'
+# require 'capistrano/bundler'
+# require 'capistrano/rails/assets'
+# require 'capistrano/rails/migrations'
 
-before "deploy:setup", :db
-after "deploy:update_code", "db:symlink"
-
-namespace :db do
-  desc "Create database yaml in shared path"
-  task :default do
-    db_config = ERB.new <<-EOF
-    development:
-      adapter: mysql
-      database: pbt3_production
-      username: root
-      password: dgmf49h
-      socket: /var/run/mysqld/mysqld.sock
-      pool: 5
-      timeout: 5000
-    production:
-      adapter: mysql
-      database: pbt3_production
-      username: root
-      password: dgmf49h
-      socket: /var/run/mysqld/mysqld.sock
-      pool: 5
-      timeout: 5000
-    EOF
-
-    run "mkdir -p #{shared_path}/config"
-    put db_config.result, "#{shared_path}/config/database.yml"
-  end
-
-  desc "Make symlink for database yaml"
-  task :symlink do
-    run "ln -s #{shared_path}/images #{release_path}/public/"
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-    run "ln -sf #{shared_path}/db/sphinx #{latest_release}/db/sphinx"
-    run "cp #{shared_path}/production.sphinx.conf #{latest_release}/config/"
-  end
-end
-
+# Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
+Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
