@@ -70,45 +70,45 @@
   %a{:name => "#map"}
   #map_container{:"data-magellan-destination" => "map"}
   
-- cache(:action_suffix => 'similars', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id) do
-  - unless @item.similars.empty?
-    - if @item.similars.size > 4
-      .across_strip
-        .row
-          .small-12.columns.text-center
-            = link_to "This appears to be popular. See all aggregated for #{@item.name} ...",  aggregate_generic_path(:category => @item.class.to_s, :id => @item.id)
-    #similars
-      %a{:name => "similars", :"data-magellan-destination" => "similars"}
-      
-
-      
+-# cache(:action_suffix => 'similars', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id) do
+- unless @item.similars.empty?
+  - if @item.similars.size > 4
+    .across_strip
       .row
-        .small-8.small-offset-2.columns.text-center 
-          %h3 Possibly related entries:
-      - @item.similars.in_groups_of(4).each do |similar_group|
-        .row
-          - similar_group.each_with_index do |similar, index|
-            - next if similar.nil?
-            - next unless show_entry?(similar)
-            .small-3.columns{:class => (similar[index+1].nil? ? :end : false)}
-              = raw one_or_slideshow(similar, '/system/no_image.png', :thumb)
-              .similar_link= link_to raw(similar.name), similar
-              .metadata
-                .item_metadata
-                  %span.item_metadata_category Agent:
-                  %span.item_metadata_value= similar.agent.surname
-                .item_metadata
-                  %span.item_metadata_category Date:
-                  %span.item_metadata_value= similar.formatted_date
-                  - if similar.respond_to?('metadata')
-                    - similar.metadata['metadata'].each_pair do |key, value|
-                      - next if value.blank?
-                      - next if value == 0
-                      - if key == 'cost'
-                        - next if value.last.blank? 
-                      .item_metadata{:class => key}
-                        %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
-                        %span.item_metadata_value= display_metadata(key, value)
+        .small-12.columns.text-center
+          = link_to "This appears to be popular. See all aggregated for #{@item.name} ...",  aggregate_generic_path(:category => @item.class.to_s, :id => @item.id)
+  #similars
+    %a{:name => "similars", :"data-magellan-destination" => "similars"}
+    
+
+    
+    .row
+      .small-8.small-offset-2.columns.text-center 
+        %h3 Possibly related entries:
+    - @item.similars.in_groups_of(4).each do |similar_group|
+      .row
+        - similar_group.each_with_index do |similar, index|
+          - next if similar.nil?
+          - next unless show_entry?(similar)
+          .small-3.columns{:class => (similar[index+1].nil? ? :end : false)}
+            = raw one_or_slideshow(similar, '/system/no_image.png', :thumb)
+            .similar_link= link_to raw(similar.name), similar
+            .metadata
+              .item_metadata
+                %span.item_metadata_category Agent:
+                %span.item_metadata_value= similar.agent.surname
+              .item_metadata
+                %span.item_metadata_category Date:
+                %span.item_metadata_value= similar.formatted_date
+                - if similar.respond_to?('metadata')
+                  - similar.metadata['metadata'].each_pair do |key, value|
+                    - next if value.blank?
+                    - next if value == 0
+                    - if key == 'cost'
+                      - next if value.last.blank? 
+                    .item_metadata{:class => key}
+                      %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
+                      %span.item_metadata_value= display_metadata(key, value)
                 
   
 - unless @item.userimages.empty?        
