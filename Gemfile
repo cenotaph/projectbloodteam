@@ -12,8 +12,9 @@ gem 'jquery-ui-rails'
 gem 'jquery-ui-themes'
 gem 'jbuilder', '~> 1.2'
 
-gem 'execjs', :group => :production
-gem 'therubyracer', :group => :production
+gem 'execjs', :group => [:staging, :production]
+
+gem 'therubyracer', :group => [:staging, :production]
 
 # gem 'activerecord', '3.0.3'
 # gem 'buntine-discogs'
