@@ -1,0 +1,29 @@
+/
+/
+/ .add_comment= link_to 'Add a comment', "$('#comment_new').fadeIn(); $(this).fadeOut()", :remote => true
+/ %div{:id => "comment_new", :style => (controller.action_name == 'edit' ? '' : 'display: none;')}
+.row#new_comment
+  .small-2.columns
+    .index_image= image_tag current_agent.agent_icon(:large)
+  .small-10.columns
+    .agent_name
+      = "Agent #{current_agent.surname} ..."
+      %em leave a comment!
+    = semantic_nested_form_for comment, :html => {:multipart => true } do |f|
+      = f.input :foreign_id, :value =>  (item.has_master? ? item.master_id : (@category == 'Comment' ? item.child.id.to_s : item.id)), :as => :hidden
+      = f.input :item_type, :value => (item.has_master? ? "Master#{item.class.to_s}" : (@category == 'Comment' ? item.child.class.to_s : item.class.to_s)), :as => :hidden
+      = f.input :agent_id, :as => :hidden
+      = f.input :content, :label => false, :input_html => {:cols => 50, :rows => 10}
+      .small-12.columns#userimages
+        = f.fields_for :userimages do |ff|
+          = if ff.object.image?
+            = image_tag ff.object.image.url
+          = ff.input :image
+          -#= render :partial => 'shared/userimage_fields', :locals => { :ff => ff }      
+        = f.link_to_add "+ Add an image", :userimages, class: "button tiny secondary"
+      = f.input :add_to_newsfeed, :as => :boolean, :label => 'Show this comment in the public newsfeed', :checked => true    
+      = f.submit "add comment", class: [:button, :tiny]
+      
+= content_for :jquery do
+  :plain
+    var puny_mce = new punymce.Editor({id : 'comment_content'});

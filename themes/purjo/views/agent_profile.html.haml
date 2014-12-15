@@ -1,0 +1,26 @@
+.profile
+  .left.six.columns.alpha
+    = image_tag @agent.agent_icon(:large)
+    %div
+      %u agent details 
+      .profile_details= "Mission name: #{@profile.missionname}"
+      .profile_details= "Name: #{@profile.surname}"
+      .profile_details= "Location: #{@profile.location}"
+      .profile_details= @profile.freetext
+      .profile_details
+        = "Agent Since: #{@agent.agent_since}"
+        = link_to '[history]', history_agent_path(@agent)
+  .right.ten.columns.omega
+    - if @agent.security > 0
+      - if !logged_in?
+        %p This user protects their information only for other PBT agents.
+      - else
+        - pass = true
+    - else
+      - pass = true
+    - if pass == true
+      %h3 Latest activity
+      .newsfeed
+        #results= render :partial => 'shared/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => true}
+      = will_paginate @newsfeed
+      = pageless(@newsfeed.total_pages, '/agents/' + @agent.id.to_s)

@@ -1,0 +1,125 @@
+!!! XML
+!!!
+%html{ :'xml:lang' => "en", :lang => "en" }
+  %head
+    %title PBT 4.0 beta
+    = javascript_include_tag 'application', 'jquery.min.js', 'jquery.tools.min', 'jquery.pageless', 'jquery.cycle.all.min'
+    = javascript_include_tag 'rails'
+    = javascript_include_tag 'jquery.date_input'
+    = stylesheet_link_tag 'classic', 'date_input', 'jquery-ui-1.8.21.custom'
+    = stylesheet_link_tag current_theme_stylesheet_path('pbt')
+    = csrf_meta_tag
+    = yield :head
+  %body
+    #outer_wrapper
+      #top_bar
+        Project Blood Team
+        - if @agent
+          = ": Viewing Agent #{@agent.surname}"
+          - agent_category = @agent.categories.year(getYear).first
+        - else
+          - agent_category = current_agent.categories.year(getYear).first
+        #searchform
+          = form_tag "/search/simple", :method => "post" do |f|
+            = text_field_tag :search
+            = submit_tag 'search'
+      #flume_wrapper
+        #flume_sidebar
+          .system_menu
+            - if @agent
+              = image_tag @agent.agent_icon(:thumb)
+            %p= link_to 'front page', '/'
+            %p= link_to 'your settings', '/agents'
+            %p= link_to 'forum', '/forums'
+            - if current_agent
+              %p= link_to 'logout', '/logout'
+            - else
+              %p= link_to 'login', '/login', :rel => "#overlay"
+            #flume_cat_header categories
+            #flume_sidebar_categories
+              - if !agent_category.nil?
+                - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|
+                  - this_cat = agent_category.send(category.to_s.tableize).to_s
+                  - next if this_cat == "0"
+                  %span.header_item
+                    .category_name
+                      - if logged_in?
+                        - if @agent != current_agent && !@agent.nil?
+                          = link_to this_cat, "/agents/#{@agent.id.to_s}/#{category.table_name}"  
+                        - else 
+                          = link_to this_cat, "/agents/#{current_agent.id.to_s}/#{category.table_name}"
+                      - if @agent
+                        - if @agent == current_agent
+                          - if category.has_master?
+                            %span.way_small= link_to "add new", '#', :rel => "#prompt_#{category.table_name.singularize}"
+                          -else 
+                            %span.way_small= link_to 'add new', "/agents/#{current_agent.id.to_s}/#{category.table_name}/new"
+                      - else
+                        - if !@agent.nil?
+                          = link_to this_cat, "/agents/#{@agent.id.to_s}/#{category.table_name}"
+        #flume_content= yield
+        .flume_overlay#overlay
+          .contentWrap
+        - if current_agent
+          .modal#prompt_movie
+            %h2 New movie
+            %p Enter a title to search for your movie.
+            = form_tag query_agent_movies_path(:agent_id => current_agent.id), :method => :get do 
+              = text_field_tag :query
+              = submit_tag "Search"
+            = link_to 'create custom entry', '/genericmaster/custom/Movie/new'
+          .modal#prompt_music
+            %h2 New music
+            %p Enter a title to search for your music entry.
+            = form_tag query_agent_musics_path(:agent_id => current_agent.id), :method => :get do 
+              = text_field_tag :query
+              = submit_tag "Search"
+            = link_to 'create custom entry', '/genericmaster/custom/Music/new'  
+          .modal#prompt_book
+            %h2 New book
+            %p Enter a title to search for your book.
+            = form_tag query_agent_books_path(:agent_id => current_agent.id), :method => :get do 
+              = text_field_tag :query
+              = submit_tag "Search"
+            = link_to 'create custom entry', '/genericmaster/custom/Book/new'  
+          .modal#prompt_videogame
+            %h2 New videogame
+            %p Enter a title to search for your videogame.
+            = form_tag query_agent_videogames_path(:agent_id => current_agent.id), :method => :get do 
+              = text_field_tag :query
+              = submit_tag "Search"
+            = link_to 'create custom entry', '/genericmaster/custom/Videogame/new'
+:javascript
+  $(document).ready(function() {
+    var triggers = $(".modalInput").overlay({
+    	mask: {
+    		color: "#ebecff",
+    		loadSpeed: 200,
+    		opacity: 0.9
+    	},
+
+    	closeOnClick: false
+     });
+
+     $("a[rel]").overlay({
+       mask: { 
+       color:  '#000000',
+       opacity: 0.8
+     },
+     effect: 'apple',
+     fixed: false,
+     top: 25,
+     		onBeforeLoad: function() {
+
+     			// grab wrapper element inside content
+     			var wrap = this.getOverlay().find(".contentWrap");
+
+     			// load the page specified in the trigger
+     			wrap.load(this.getTrigger().attr("href"));
+     		},
+         onClose: function() {
+           $('.contentWrap').html('');
+         }
+     	});
+     
+   });

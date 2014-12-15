@@ -1,0 +1,35 @@
+- if show_entry?(item)
+  .item
+    .left
+      .index_image
+        = one_or_slideshow(item)
+      .item_metadata
+        = link_to 'item page', item
+        - if logged_in?
+          &sdot;
+          = link_to_if(item.agent == current_agent, 'edit', "/agents/#{current_agent.id.to_s}/#{item.class.table_name}/#{item.id.to_s}/edit") {}  
+    .right.clearfix
+      .agent_icon= image_tag  item.agent_icon(:small), :width => 45
+      .item_right
+        .agent_name
+          = link_to "Agent #{item.agent.surname}", item.agent
+          = "#{time_ago_in_words(item.date)} ago"
+        - if item.respond_to?('metadata')
+          .item_title
+            = link_to raw(item.name), item
+            - if item.respond_to?('linkto')
+              = link_to image_tag('/img/icons/external-link.png'), item.linkto, :target => "_blank"
+
+          - item.metadata['metadata'].each_pair do |key, value|
+            - next if value.blank?
+            - if key == 'cost'
+              - next if value.last.blank? 
+          
+            .item_metadata
+              %span.item_metadata_category= key.humanize + ":"
+              %span.item_metadata_value= display_metadata(key, value)
+        - else
+          .item_title= (item.respond_to?('name') ? item.name : (item.respond_to?('title') ? item.title : ''))
+      
+        .item_description= item.comment
+

@@ -1,0 +1,22 @@
+%p Here you can edit the geographic data for a location. This feature is experimental and may not work completely!
+%p
+  You may find 
+  = link_to ' this tool ' , 'http://itouchmap.com/latlong.html', :target => :_blank
+  helpful for calculating longitude and latitude.
+  
+Editing information for address:
+= @geolocation.address
+
+= semantic_form_for @geolocation do |f|
+  = f.input :address
+  = f.input :latitude
+  = f.input :longitude
+  = f.submit
+  
+The following entries use this location, and editing this will alter the relation for ALL. Do this with care, especially if it is not yours!
+
+- @geolocation.pbt_entries.each do |e|
+  %p
+    = "#{e.class.to_s}: "
+    = e.name
+    %span.small= " [#{e.agent.surname}]"

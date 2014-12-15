@@ -1,0 +1,10 @@
+#results
+  = render :partial => 'item', :collection => @items
+  
+- unless @items.blank?
+  = will_paginate @items
+  = pageless(@items.total_pages, url_for(@items.first.class.table_name))
+:javascript
+  $("img[rel]").live('click', function() {
+    $(this).overlay({effect: 'apple'}).trigger("click");
+  });

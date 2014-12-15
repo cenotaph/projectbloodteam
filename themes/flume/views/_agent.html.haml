@@ -1,0 +1,44 @@
+- if show_entry?(agent)
+  %li{:id => agent.id.to_s, :class => 'flume_box'}
+    .inner.container.fill{:class => agent.class.to_s.pluralize.downcase}
+      - n = (@items[agent_counter+1].nil? ? 0 : @items[agent_counter+1].id)
+      - p = (agent_counter == 0 ? 0 : @items[agent_counter-1].id)
+      = link_to(agent, html_options = {:class => 'brick ' + agent.class.to_s.pluralize.downcase, :style => 'background: transparent url(' + agent.icon + ') no-repeat;', :rel => '#overlay'}) do
+
+        .inside_block
+          - if agent.icon.blank?
+            .flume_caption= agent.name
+          - if agent.comments.size > 0
+            .overlay_others= pluralize(agent.comments.size, 'comment')
+            %br
+          - if agent.respond_to?('others')
+            - if agent.others.size > 1
+              .overlay_others= pluralize(agent.others.size - 1, 'other')
+        .user_hover
+          = agent.date.strftime('%B %d')
+          - unless agent.icon.blank?
+            %br
+            %br
+            .flume_caption= agent.name
+    :javascript
+      $("a[rel]").live('click', function(e) {
+        e.preventDefault();
+        $(this).overlay({
+       mask: { 
+       color:  '#000000',
+       opacity: 0.8
+        },
+       effect: 'apple',
+       fixed: false,
+        top: 25,
+      		onBeforeLoad: function() {
+            // $('#flume_wrapper').css('overflow', 'hidden');
+            var wrap = this.getOverlay().find(".contentWrap");
+            wrap.load(this.getTrigger().attr("href"));
+      		},
+          onClose: function() {
+            $('.contentWrap').html('');
+          },
+      		load: true
+          });
+      });

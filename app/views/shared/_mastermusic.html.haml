@@ -1,0 +1,8 @@
+- m = Discogs::Wrapper.new('PBT4').get_release(item.discogscode)
+
+- unless item.filename.blank?
+  .master_image= image_tag item.filename.url(:full)
+.master_metadata
+  .metadata= "Label: #{item.label}"
+  .metadata= "Format: #{item.format}"
+  .metadata= "Released: #{item.year}"

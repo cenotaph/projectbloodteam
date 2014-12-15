@@ -1,0 +1,5 @@
+= link_to 'item standalone page', @item
+
+#discussion= render :partial => 'shared/discussion', :locals => {:discussion => @item.discussion, :master => true}
+= render :partial => 'shared/new_comment', :locals => {:entry => @item, :@comment => Comment.new} if logged_in?
+

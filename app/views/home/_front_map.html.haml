@@ -1,0 +1,55 @@
+
+  
+= content_for :jquery do
+  :erb
+    var map;
+    
+    <% if center %>
+      var myLatlng = new google.maps.LatLng(<%= center.latitude %>, <%= center.longitude %>);
+    <% else %>
+      var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+    <% end %>
+    var bounds = new google.maps.LatLngBounds();
+    var markers = [];
+    function initialize() {
+      var mapOptions = {
+          disableDefaultUI: true,
+          center: myLatlng
+       };
+             
+      map =  new google.maps.Map(document.getElementById("<%= target %>"), mapOptions);
+      
+      <% json.each do |m| %>
+       <% next unless m.latitude %>
+        var marker_<%= m.id %> = new google.maps.Marker({
+            position: new google.maps.LatLng(<%= m.latitude.to_s %>,<%= m.longitude.to_s %>),
+            map: map
+          });
+          bounds.extend(new google.maps.LatLng(<%= m.latitude.to_s %>,<%= m.longitude.to_s %>));
+          var infowindow_<%= m.id %>  = new google.maps.InfoWindow({
+                content: '<%= escape_javascript(raw(m.infowindow)) %>'
+            });
+            
+          google.maps.event.addListener(marker_<%= m[:id] %>, 'click', function() {
+            infowindow_<%= m.id %>.open(map,marker_<%= m.id %>);
+          });
+          markers.push(marker_<%= m.id %>);
+      <% end %>
+      
+      
+      <% if center %>
+        map.setZoom(15);
+        infowindow_<%= center.id %>.open(map,marker_<%= center.id %>);
+        map.setCenter(marker_<%= center.id %>.getPosition());
+      <% else %>
+        var mc = new MarkerClusterer(map, markers);
+        map.fitBounds(bounds);
+      <% end %>
+    }
+    
+
+    
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+
+    

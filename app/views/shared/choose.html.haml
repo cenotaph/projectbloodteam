@@ -1,0 +1,15 @@
+- unless @localhits.blank?
+  %h3 Results already in PBT database:
+  - @localhits.each do |hit|
+    .choice_title
+      = link_to raw(hit.name), select_genericmaster_path(:agent_id => current_agent.id, :id => "local_#{hit.id}", :category => @category)
+    
+- unless @choices.blank?
+  %h3 Search results:
+  - @choices.each do |choice|
+    .choice.clearfix
+      - unless choice['image'].nil?
+        .choice_image= image_tag choice['image']
+      .choice_title= link_to raw(choice['title'].gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category)
+      - if choice['summary']
+        %div{:style => "font-size: 8pt; width: 70%;"}= choice['summary']

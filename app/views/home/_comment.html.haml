@@ -1,0 +1,11 @@
+.small-2.comment_metadata.columns.text-right
+  .agent_name= entry.agent.surname
+  .newsfeed_icon= entry_agent_icon(entry)
+  .newsfeed_delete= remove_from_newsfeed(entry)
+  .newsfeed_date= "posted " + time_ago_in_words(entry.created_at) + " ago"
+.small-6.only_comment.columns.left
+  .newsfeed_comment
+    %span.big= raw('&ldquo;')
+    = raw display_comment(entry.entry)
+  .newsfeed_entry_link= raw "commenting on #{entry.entry.item.class.to_s.downcase.gsub(/^master/, '')} #{link_to raw(entry.entry.item.name), entry.entry.item}"
+

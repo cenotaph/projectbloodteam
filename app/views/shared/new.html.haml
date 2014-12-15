@@ -1,0 +1,113 @@
+
+.row
+  .small-8.columns.small-offset-2.master_head#details
+    %h2= controller.action_name.to_s.capitalize + " " + @item.class.to_s.downcase
+    .row
+      .small.1.columns
+        = image_tag current_agent.agent_icon
+      .small-11.columns.text-left
+        %p
+          Entering for Agent
+          = current_agent.surname
+    = semantic_nested_form_for([:agent, @item], :html => {:multipart => true, :"data-abide" => ''} ) do |form|
+      = form.input :agent_id, :as => :hidden
+      - @view.columns_for_category(@item.class, true).each do |col|
+        .row
+          .small-12.columns
+            - if col == 'date'
+              .form_wrapper{:class => col}= form.input col, :as => :string, :input_html => { :class => 'date_input', :required => ''}
+      
+            - elsif ((col == 'name' && (@item.class == Restaurant || @item.class == Takeaway || @item.class == Bar || @item.class == Grocery)) || ((col == 'location' || col == 'venue') && @item.respond_to?('venue_address'))) && @item.respond_to?('geolocation')
+              = form.input :geolocation_id, :as => :hidden
+
+              - json = ActiveSupport::JSON.encode( :geolocation_id => "##{@item.class.to_s.downcase}_location" )
+              
+              .form_wrapper{:class => col}= form.input col, 'data-update-elements' => json, :as => :autocomplete, :url =>  ajax_geolocations_path(:category => @item.class), input_html: {:required => ''}
+              
+              .geocode{:style => "display: none; margin-left: 75px; font-size: 7pt;"}
+                Geodata: 
+                Latitude:
+                = text_field_tag :latitude, @item.geolocation.nil? ? '' : @item.geolocation.latitude, :disabled => true
+                Longitude:
+                = text_field_tag :longitude, @item.geolocation.nil? ? '' : @item.geolocation.longitude, :disabled => true
+              - if @item.class == Concert
+                = content_for :jquery do
+                  :plain
+                    $("##{@item.class.to_s.downcase}_venue").bind('railsAutocomplete.select', function(event, data){
+                      /* Do something here */
+                      $('#latitude').val(data.item.lat);
+                      $('#longitude').val(data.item.lng);
+                      $('.geocode').fadeIn();
+                      $("##{@item.class.to_s.downcase}_geolocation_id").val(data.item.geolocation_id);
+                      $("##{@item.class.to_s.downcase}_venue_address").val(data.item.address);
+                      $("##{@item.class.to_s.downcase}_venue").val(data.item.name);
+                    });
+      
+              - elsif @item.class == Event || @item.class == Movie || @item.class == Activity
+                = content_for :jquery do
+                  :plain
+                    $("##{@item.class.to_s.downcase}_location").bind('railsAutocomplete.select', function(event, data){
+                      /* Do something here */
+                      $('#latitude').val(data.item.lat);
+                      $('#longitude').val(data.item.lng);
+                      $('.geocode').fadeIn();
+                      $("##{@item.class.to_s.downcase}_geolocation_id").val(data.item.geolocation_id);
+                      $("##{@item.class.to_s.downcase}_venue_address").val(data.item.address);
+                      $("##{@item.class.to_s.downcase}_location").val(data.item.name);
+                    });
+      
+              - else
+                = content_for :jquery do
+                  :plain
+                    $("##{@item.class.to_s.downcase}_name").bind('railsAutocomplete.select', function(event, data){
+                      /* Do something here */
+                      $('#latitude').val(data.item.lat);
+                      $('#longitude').val(data.item.lng);
+                      $('.geocode').fadeIn();
+                      $("##{@item.class.to_s.downcase}_geolocation_id").val(data.item.geolocation_id);
+                      $("##{@item.class.to_s.downcase}_location").val(data.item.address);
+                      $("##{@item.class.to_s.downcase}_name").val(data.item.name);
+                    });
+              = form.input :dont_geocode, :as => :boolean, :label => "Don't save geographical data"
+            - elsif col == 'cost'
+              .form_wrapper{:class => col}= form.input :currency_id, :as => :select, :collection => Currency.all.collect{|x| [raw( x.symbol),  x.id]}, :label => 'Cost', :input_html => {:class => :currency_select}
+              .form_wrapper{:class => col}= form.input col, :label => @view.agent_column_name(@item, col).humanize, :as => :string, :label => false, :input_html => {:class => :cost_input}
+            - else 
+              .form_wrapper{:class => col}
+                = form.input col, :label => @view.agent_column_name(@item, col).humanize, :as => ( :string unless col == 'comment')
+
+  
+
+
+      .row
+        .small-12.columns#userimages
+          = form.fields_for :userimages do |ff|
+            = if ff.object.image?
+              = image_tag ff.object.image.url
+            = ff.input :image
+            -#= render :partial => 'shared/userimage_fields', :locals => { :ff => ff }      
+          = form.link_to_add "+ Add an image", :userimages, class: "button tiny secondary"
+      .row
+        .small-12.columns.form_wrapper{:class => :add_to_newsfeed}= form.input :add_to_newsfeed, :as => :boolean, :label => 'Post this entry to the public newsfeed', :checked => true
+      .row
+        .small-12.columns
+          - if !current_agent.twitname.blank? && !current_agent.twitpasswd.blank?
+            = form.input :post_to_twitter, :as => :boolean, :label => 'Post this entry to your twitter account', :checked => true
+      .row
+        .small-6.columns
+          = form.submit 'Save', class: [:button, :small]
+  
+
+= content_for :jquery do
+  :plain
+    var puny_mce = new punymce.Editor({id : '#{@category.downcase}_comment'});
+    $('.date_input').datepicker({dateFormat: 'yy-mm-dd'});
+
+    $('input##{@item.class.to_s.downcase}_dont_geocode').change(function () { 
+      if ($('input##{@item.class.to_s.downcase}_venue_address').attr('disabled') == false) {
+        $('input##{@item.class.to_s.downcase}_venue_address').attr('disabled', 'disabled');
+      } else {
+        $('input##{@item.class.to_s.downcase}_venue_address').removeAttr('disabled');
+      }
+    });
+    

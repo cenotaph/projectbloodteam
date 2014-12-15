@@ -1,0 +1,18 @@
+So, you wish to join PBT?  Please enter the following required information:
+.errors= @agent.errors
+
+= semantic_form_for(@agent) do |f|
+  = f.input :surname
+  = f.input :age
+  = f.input :email
+  = f.input :agent_since, :as => :hidden, :value => Time.now.strftime('%Y')
+  = f.input :active, :as => :hidden, :value => 1
+  = f.input :location
+  = f.input :missionname
+  = f.input :username, :label => "Username (you will use this to log in):"
+  = f.input :password
+  = f.input :password_confirmation
+  = f.input :lastfm, :value => "Last.fm username"
+  = f.input :role, :as => :hidden, :value => "agent"
+  = f.input :new_user_password, :label => "New user registration code (get from Daron or other agent):"
+  = f.submit

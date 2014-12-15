@@ -1,0 +1,10 @@
+= semantic_form_for @agent do |f|
+  = f.input :surname
+  = f.input :agent_since
+  = f.input :username, :label => "Username (used only to log into the site, no spaces allowed)"
+  = f.input :public_password, :label => "Public password-protection (leave blank for public PBT)"
+  = f.input :lastfm, :label => "Last.fm username"
+  = f.input :twitname, :label => "Twitter username"
+  = f.input :twitpasswd, :as => :password, :label => "Twitter password"
+  = f.submit
+  

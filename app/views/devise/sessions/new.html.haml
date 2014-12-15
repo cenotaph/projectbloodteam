@@ -1,0 +1,24 @@
+.row
+  .small-12.columns
+    %h2 Sign in to Project Blood Team
+
+= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+  .row
+    .small-6.columns
+      = f.label :login
+      = f.text_field :login
+  .row
+    .small-6.columns
+      = f.label :password
+      = f.password_field :password, autocomplete: "off"
+
+  - if devise_mapping.rememberable?
+    .row
+      .small-4.coluns
+        = f.check_box :remember_me
+        = f.label :remember_me 
+  .row
+    .small-4.columns
+      = f.submit "Sign in", class: [:button, :radius, :tiny]
+  .row
+    .small-12.columns= render "devise/shared/links"

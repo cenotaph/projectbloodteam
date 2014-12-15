@@ -1,0 +1,6 @@
+New security settings for Agents.
+
+0 = Open to everyone
+1 = Open to everyone except comments
+2 = Open only to other agents
+3 = Completely private

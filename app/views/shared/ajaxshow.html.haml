@@ -1,0 +1,7 @@
+- if logged_in?
+  - if @item.agent = current_agent
+    = link_to 'edit this entry', "/agents/#{current_agent.id.to_s}/#{@item.class.table_name}/#{@item.id.to_s}/edit"
+   
+#discussion= render :partial => 'shared/discussion', :locals => {:discussion => @item.discussion, :master => false}
+= render :partial => 'shared/new_comment', :locals => {:entry => @item, :@comment => Comment.new} if logged_in?
+

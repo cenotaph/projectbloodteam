@@ -1,0 +1,35 @@
+#home.row
+  .small-6.columns.small-offset-2.newsfeed
+
+    - if !current_agent
+      - rejected = @newsfeed.reject{|x| !show_entry?(x) }
+      - @newsfeed.to_a.delete_if{|x| !show_entry?(x) }
+      - unless rejected.blank?
+        = "#{rejected.size} items are not visible in the newsfeed, because you are not logged in."
+        = link_to 'Log in!' , '/login', :rel => '#login_overlay'
+
+
+    - if @newsfeed.length == 0
+      The newsfeed begins in 2010, sorry.
+    - else
+.row#newsfeed
+  = render :partial => 'shared/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => false}  
+.row
+  .small-12.columns
+    = paginate @newsfeed
+  
+
+= content_for :jquery do
+  :plain
+    $("#newsfeed").infinitescroll({
+      navSelector: "nav.pagination",
+      nextSelector: "nav.pagination a[rel=next]",
+      itemSelector: "#newsfeed .newsfeed_entry"},
+      function() {
+        $('.discussion .comment_comment').readmore({heightMargin: 12});
+        $('.slick_carousel').slick({autoplay: true});
+        $('.slick_carousel').each(function() {
+          $(this).slickLightbox({slick: {autoplay: true}});
+          });
+      });
+

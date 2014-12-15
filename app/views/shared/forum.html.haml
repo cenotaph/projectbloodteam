@@ -1,0 +1,16 @@
+.row
+  .small-6.columns
+    = link_to 'New forum post', new_forum_path, class: [:button, :small]
+
+#theforum.row
+  .small-10.columns.small-offset-1
+    = paginate @forums
+    %table{:border => 0}
+      %thead
+        %tr
+          %th subject
+          %th posts
+      %tbody#results= render :partial => 'shared/forum_list', :collection => @forums
+  
+    = paginate @forums
+    = pageless(@forums.total_pages, forums_path)

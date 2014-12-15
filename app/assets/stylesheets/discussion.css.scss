@@ -1,0 +1,159 @@
+@import "foundation/functions";
+@include exports("global") {}
+@import "foundation/components/global";
+
+#new_comment {
+  margin: 2.5rem 0px;
+  clear: both;
+}
+
+.entered_date {
+  font-size: 0.55em;
+}
+
+.first_comment {
+  color: #444;
+}
+#similars {
+  margin: 2.5rem;
+  padding: 2rem 0rem;
+}
+.metadata {
+  margin-bottom: 1rem;
+  
+  .item_metadata {
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    &.label {
+      background: inherit;
+      font: inherit;
+      padding: 0;
+      text-align: right;
+      color: inherit;
+    }
+    &.date {
+      font-weight: 300;
+      margin-bottom: 15px;
+    }
+    span.item_metadata_category {
+      color: #444;
+    }
+    span.item_metadata_value {
+      font-weight: 300;
+    }
+  }
+}
+
+.discussion_entry {
+  margin-top: 45px;
+  border-bottom: 1px dotted $primary-color;
+  padding-bottom: 25px;
+  &.last {
+    border-bottom: none;
+  }
+  
+  .comment_metadata {
+    min-height: 200px;
+    
+      .inner {
+        font-size: 1.1em;
+        font-weight: 300;    
+        background-color: white;
+        color: black;
+        opacity: 0.8;
+        float: left;
+        padding: 6px;
+        border-radius: 10px;
+        margin: 10px 0px;
+        .standalone_date {
+          margin-top: 5px;
+          font-size: 0.75em;
+        }
+  
+    }
+  }
+  
+  .agent_metadata {
+    min-height: 140px;
+    .inner {
+      font-size: 1.1em;
+      font-weight: 300;    
+      background-color: white;
+      color: black;
+      opacity: 0.8;
+      float: left;
+      padding: 6px;
+      border-radius: 10px;
+      margin: 10px 0px;
+      .standalone_date {
+        margin-top: 5px;
+        font-size: 0.75em;
+      }
+    }
+  }    
+  
+  .entry_metadata {
+    text-align: left;
+    font-weight: 100;
+    font-size: 0.95em;
+    line-height: 1.5em;
+    
+    .agent_name {
+      font-weight: 500;
+      color: #666;
+      font-size: 0.9em;
+    }
+    .newsfeed_date {
+      font-size: 0.7em;
+    }
+    .item_metadata {
+      &.label {
+        background: inherit;
+        font: inherit;
+        padding: 0;
+        text-align: right;
+        color: inherit;
+      }
+      &.date {
+        font-weight: 300;
+        margin-bottom: 15px;
+      }
+      span.item_metadata_category {
+        color: #444;
+      }
+      span.item_metadata_value {
+        font-weight: 300;
+      }
+    }
+  }
+  
+  .comment_comment {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    em {
+      font-style: italic;
+    }
+    p { font: inherit; }
+  
+    span.big {
+      float: left;
+      font-size: 2em;
+    }
+  }
+  .discussion_comment {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    color: #444;
+    em {
+      font-style: italic;
+    }
+    p { font: inherit; }
+    
+    span.big {
+      float: left;
+      font-size: 2em;
+    }
+  }
+}

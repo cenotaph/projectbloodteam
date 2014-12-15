@@ -1,0 +1,22 @@
+= image_tag '/images/banner_skulls.png'
+%h2 welcome to project blood team!
+members only!
+%br/
+%div{:style => "margin-left: 70px;"}
+  = form_tag session_path do 
+    .row
+      .label Login:
+      .formw= text_field_tag 'username'
+
+    .row
+      .label Password:
+      .formw= password_field_tag 'password' 
+
+    .row
+      .label Remember me:
+      .formw= check_box_tag 'remember_me'
+
+
+    .row
+      .label &nbsp;
+      .formw= submit_tag 'Log in'

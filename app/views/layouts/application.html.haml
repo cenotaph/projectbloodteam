@@ -1,0 +1,115 @@
+!!! XML
+!!!
+%html{ :'xml:lang' => "en", :lang => "en" }
+  %head
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+    = raw(display_meta_tags :site => 'PBT 5.0')
+    
+    %meta{ :"http-equiv" => "Content-Type", :content => "text/html; charset=utf-8" }
+    %link{ :rel => "shortcut icon", :href => "/images/favicon.ico", :type => "image/x-icon"}/
+    
+    %script{:src => "//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&libraries=geometry", :type => "text/javascript"}
+    
+    %script{:src => "//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js", :type => "text/javascript"}
+    = javascript_include_tag "vendor/modernizr"
+
+    = yield :head
+    = stylesheet_link_tag :application
+    -#= stylesheet_link_tag 'classic','layout', 'skeleton1200', 'date_input', 'superfish', 'jquery-ui-1.8.21.custom'
+    - if controller.controller_name == 'stats' || controller.action_name == 'history'
+      = javascript_include_tag 'raphael-min', 'g.raphael', 'g.bar', 'g.line', 'g.dot'
+    - if @agent
+      = stylesheet_link_tag "http://#{request.host}#{request.port  != 80 ? ':' + request.port.to_s : ''}/css/#{@agent.id.to_s}.css"
+     
+    = csrf_meta_tag
+
+
+  %body
+    .sticky
+      %nav.top-bar{:"data-topbar" => '', :role => :navigation}
+        = render :partial => 'layouts/top_bar'
+        
+        .agents-bar
+          -#= link_to image_tag("/img/logos/#{getYear}_small.jpg", :width => 65), '#', onclick: "$('.agents').toggle('slide', {direction: 'both'} );;return false;"
+          .agents
+            - @active_agents.each do |agent|
+              = link_to image_tag(agent.avatar(:small), height: 65), agent.agent
+        .forum-bar.row
+          .small-3.columns
+            %table{:border => 0}
+              - cache(:agent => (agent_signed_in? ? current_agent.id : 'null'), :action_suffix => 'forum_frontpage', :page => params[:page]) do
+                %tbody#results
+                  %thead
+                    %th= link_to 'See entire forum', forums_path
+                    %th= link_to fa_icon('plus-square-o'), new_forum_path
+                  = render :partial => 'shared/forum_list', :collection => @forums
+        - if controller.controller_name == 'home' && !@json.blank?
+          .worldmap-bar.row
+            #front_map
+            = render :partial => 'front_map', locals: {json: @json , target: 'front_map', center: nil}
+            
+          
+    = yield.force_encoding('utf-8')
+    %footer
+      .row
+        .small-8.small-offset-2.columns.past_years.text-center
+          %p
+            %strong Project Blood Team
+          %p Since 2002
+          %p
+            - 2014.downto(2002).map(&:to_s).each do |y|
+              = link_to image_tag("/img/logos/#{y}_small.jpg"), "http://#{y}.bloodteam.com"
+    - if current_agent
+      .modal#prompt_movie
+        %h2 New movie
+        %p Enter a title to search for your movie.
+        = form_tag query_agent_movies_path(:agent_id => current_agent.id), :method => :get do 
+          = text_field_tag :query
+          = submit_tag "Search"
+        = link_to 'create custom entry', '/genericmaster/custom/Movie/new'
+      .modal#prompt_music
+        %h2 New music
+        %p Enter a title to search for your music entry.
+        = form_tag query_agent_musics_path(:agent_id => current_agent.id), :method => :get do 
+          = text_field_tag :query
+          = submit_tag "Search"
+        %p or enter the discogs.com id number directly
+        = form_tag directid_agent_musics_path(:agent_id => current_agent.id), :method => :get do
+          = text_field_tag :id
+          = submit_tag 'Create'
+        %p or
+        = link_to 'create custom entry', '/genericmaster/custom/Music/new'  
+      .modal#prompt_book
+        %h2 New book
+        %p Enter a title to search for your book.
+        = form_tag query_agent_books_path(:agent_id => current_agent.id), :method => :get do 
+          = text_field_tag :query
+          = submit_tag "Search"
+        = link_to 'create custom entry', '/genericmaster/custom/Book/new'  
+      .modal#prompt_videogame
+        %h2 New videogame
+        %p Enter a title to search for your videogame.
+        = form_tag query_agent_videogames_path(:agent_id => current_agent.id), :method => :get do 
+          = text_field_tag :query
+          = submit_tag "Search"
+        = link_to 'create custom entry', '/genericmaster/custom/Videogame/new'  
+    = javascript_include_tag "application" 
+  #login_overlay
+    .login_content
+  
+
+
+
+= yield :scripts
+= yield :more   
+
+:javascript
+  $(document).ready(function() {
+    $('#searchform input').clearField();
+    $('.discussion .comment_comment').readmore({heightMargin: 12});
+    $('.slick_carousel').slick({autoplay: true});
+    $('.slick_carousel').each(function() {
+      $(this).slickLightbox({slick: {autoplay: true}});
+    });
+     #{yield :jquery}
+   });   

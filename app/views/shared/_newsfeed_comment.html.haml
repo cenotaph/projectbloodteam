@@ -1,0 +1,39 @@
+-content_for :head do
+  = include_puny_mce
+- style = (entry.entry_type == 'Forum' ? 'reply' : 'comment')
+.add_comment= link_to image_tag('/img/icons/plus.png'), "$('#comment_new_#{entry.id.to_s}').fadeIn(); $(this).fadeOut()", :remote => :true
+%div{:id => "comment_new_#{entry.id.to_s}", :style => "margin-left: 100px; display: none;"}
+  = semantic_form_for(@comment = Comment.new(:add_to_newsfeed => true), :remote => true,  :html => {:multipart => true}) do |f|
+    = f.input :foreign_id, :value =>  (entry.entry.has_master? ? entry.entry.master_id : (entry.entry_type == "Comment" ? entry.entry.child.id.to_s : entry.entry_id)), :as => :hidden
+    = f.input :item_type, :value => (entry.entry.has_master? ? "Master#{entry.entry_type}" : (entry.entry_type == "Comment" ? entry.entry.child.class.to_s : entry.entry_type)), :as => :hidden
+    = f.input :agent_id, :value =>  current_agent.id, :as => :hidden
+    = f.input :content, :label => style, :input_html => {:cols => 30, :rows => 5, :id => "comment_content_#{entry.id.to_s}"}
+    - if entry.entry.class == Comment
+      .image_attach= link_to "Attach an image to this post", url_for(entry.entry.child) + '#comment_new'
+    - else
+      .image_attach= link_to "Attach an image to this post", url_for(entry.entry) + '#comment_new'
+    = f.input :add_to_newsfeed, :as => :boolean, :label => 'Show this comment in the public newsfeed', :checked => true     
+    = f.submit "add #{style}"
+= raw puny_mce "puny_mce", "comment_content_#{entry.id.to_s}",  {:min_width => 360, :min_height => 100 }
+
+:javascript
+  $("#comment_new_#{entry.id.to_s} form").on("ajax:beforeSend", function() {
+        var $submitButton = $("#comment_new_#{entry.id.to_s}").find('input[name="commit"]');
+
+        // Update the text of the submit button to let the user know stuff is happening.
+        // But first, store the original text of the submit button, so it can be restored when the request is finished.
+        $submitButton.data( 'origText', $(this).text() );
+        $submitButton.attr('value', "Submitting..." );
+        $submitButton.attr('disabled', 'disabled');
+      })
+      .on("ajax:complete", function(evt, data, status, xhr) {
+  
+        var $form = $("#comment_new_#{entry.id.to_s} form");
+
+        // Reset fields and any validation errors, so form can be used again, but leave hidden_field values intact.
+        $form.find('textarea,input[type="text"],input[type="file"]').val("");
+
+        // Insert response partial into page below the form.
+        $('#comment_new_#{entry.id.to_s}').html(data);
+
+      })

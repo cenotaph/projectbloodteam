@@ -1,0 +1,26 @@
+%p
+  = pluralize(@items.size, 'search result')
+  - if !logged_in?
+    - missing = @items.reject{|x| x.agent.security == 0}.size
+    - if missing > 0
+      %em= " (#{pluralize(missing, 'protected entry')} in search results that are only visible to other PBT agents.)"
+    - @items.delete_if{|x| x.agent.security != 0}
+  = "for '#{@searchterm}'"
+- @items.group_by{|x| x.class}.each do |cl|
+  .search_header
+    = pluralize(cl.last.size, cl.first.to_s)
+  - cl.last.each do |item|
+    = render :partial => 'shared/item', :locals => {:item =>  item, :searchterm => @searchterm}
+
+:javascript
+  $(document).ready(function() {
+    $('.slideshow').cycle({
+      speed: 300,
+      timeout: 2000,
+    	fx: 'scrollDown' // choose your transition type, ex: fade, scrollUp, shuffle, etc...
+    });
+    $("img[rel]").live('click', function() {
+      $(this).overlay({effect: 'apple'}).trigger("click");
+    }); 
+  });
+   

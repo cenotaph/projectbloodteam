@@ -1,0 +1,116 @@
+-content_for :head do
+  = include_puny_mce
+  = javascript_include_tag "autocomplete-rails.js"
+
+- if flash[:error]
+  .error= flash[:error]
+.form_title
+  = @item.master.name
+  - if @item.respond_to?('linkto')
+    - unless @item.linkto.blank?
+      = link_to image_tag('/img/icons/external-link.png'), @item.linkto, :target => "_blank" 
+= render :partial => "shared/master#{@item.class.to_s.downcase}", :locals => {:item => @item.master}
+
+- if @item.others.size > 0
+  This has been added by
+  = @item.others.size
+  others.
+  = link_to 'show me!', '#', :onclick => "$('.item_others').slideToggle();"
+  .item_others{:style => 'display: none;'}
+    - @item.others.sort_by{|x| x.date}.each do |other|
+      .other= link_to other.agent.surname + " (#{other.date.strftime('%b %d, %Y')})", other, :rel => '#overlay'
+  .item_image= image_tag @item.master.filename.url
+  .apple_overlay#overlay
+    .contentWrap
+= semantic_form_for([@item.agent, @item], :html => {:multipart => true} ) do |form|
+  - @view.columns_for_category(@item.class, true).each do |col|
+    - if @item.class.columns_hash[col].type == :date
+      .form_wrapper{:class => col}= form.input col, :as => :string, :input_html => { :class => 'date_input'}
+    - elsif (col == 'location' && @item.respond_to?('venue_address')) && @item.respond_to?('geolocation')
+      = form.input :geolocation_id, :as => :hidden
+      - json = ActiveSupport::JSON.encode( :geolocation_id => "##{@item.class.to_s.downcase}_location" )
+      .form_wrapper{:class => col}= form.input col, 'data-update-elements' => json, :as => :autocomplete, :url =>  ajax_geolocations_path(:category => @item.class)
+      .geocode{:style => "display: none; margin-left: 75px; font-size: 7pt;"}
+        Geodata: 
+        Latitude:
+        = text_field_tag :latitude, @item.geolocation.nil? ? '' : @item.geolocation.latitude, :disabled => true
+        Longitude:
+        = text_field_tag :longitude, @item.geolocation.nil? ? '' : @item.geolocation.longitude, :disabled => true
+        :javascript
+          $("##{@item.class.to_s.downcase}_location").bind('railsAutocomplete.select', function(event, data){
+            /* Do something here */
+            $('#latitude').val(data.item.lat);
+            $('#longitude').val(data.item.lng);
+            $('.geocode').fadeIn();
+            $("##{@item.class.to_s.downcase}_geolocation_id").val(data.item.geolocation_id);
+            $("##{@item.class.to_s.downcase}_venue_address").val(data.item.address);
+            $("##{@item.class.to_s.downcase}_location").val(data.item.name);
+          });
+      = form.input :dont_geocode, :as => :boolean, :label => "Don't save geographical data",:input_html => {:class => 'no_geocode'}
+    - elsif col == 'cost'
+      .form_wrapper{:class => col}
+        = form.input :currency_id, :as => :select, :collection => Currency.find(:all).collect{|x| [raw( x.symbol),  x.id]}, :label => 'Cost', :input_html => {:class => :currency_select}
+        = form.input col, :label => @view.agent_column_name(@item, col).humanize, :as => :string, :label => false, :input_html => {:class => :cost_input}
+    - else 
+      .form_wrapper{:class => col}= form.input col, :label => @view.agent_column_name(@item, col).humanize
+  = form.input :agent_id, :value => current_agent.id, :as => :hidden
+  - symbol = ((@master.gsub(/^Master/, 'master_') + '_id').downcase).to_sym
+  = form.input symbol, :as => :hidden
+
+  #userimages
+    = form.semantic_fields_for :userimages do |ff|
+      = render :partial => 'shared/userimage_fields', :locals => { :ff => ff }
+    .add_link.system= link_to_add_fields "+ Add another image", form, :userimages
+  - if @category == 'Movie'
+    .form_wrapper{:class => :add_to_newsfeed}= form.input :is_short, :label => 'Display on separate page for short films' 
+  .form_wrapper{:class => :add_to_newsfeed}= form.input :add_to_newsfeed, :as => :boolean, :label => 'Post this entry to the public newsfeed', :checked => true
+  - if !current_agent.twitname.blank? && !current_agent.twitpasswd.blank?
+    = form.input :post_to_twitter, :as => :boolean, :label => 'Post this entry to your twitter account', :checked => true
+  = form.submit 
+= puny_mce "puny_mce", "#{@category.downcase}_comment"  
+
+= content_for :jquery do
+  :plain
+    $('.metadata_small').readmore();  
+
+
+    $(".date_input").date_input();
+    $('input.no_geocode').change(function () { 
+      if ($('input#movie_venue_address').attr('disabled') == false) {
+        $('input#movie_venue_address').attr('disabled', 'disabled');
+      } else {
+        $('input#movie_venue_address').removeAttr('disabled');
+      }
+    });
+    $("a[rel]").overlay({
+
+    		mask: '#ebecff',
+    		effect: 'apple',
+
+    		onBeforeLoad: function() {
+
+    			// grab wrapper element inside content
+    			var wrap = this.getOverlay().find(".contentWrap");
+
+    			// load the page specified in the trigger
+    			wrap.load(this.getTrigger().attr("href"));
+    		}
+
+    	});
+  });
+  $.extend(DateInput.DEFAULT_OPTS, {
+  stringToDate: function(string) {
+  var matches;
+  if (matches = string.match(/^(\d{4,4})-(\d{2,2})-(\d{2,2})$/)) {
+  return new Date(matches[1], matches[2] - 1, matches[3]);
+  } else {
+  return null;
+  };
+  },
+  dateToString: function(date) {
+  var month = (date.getMonth() + 1).toString();
+  var dom = date.getDate().toString();
+  if (month.length == 1) month = "0" + month;
+  if (dom.length == 1) dom = "0" + dom;
+  return date.getFullYear() + "-" + month + "-" + dom;
+  }

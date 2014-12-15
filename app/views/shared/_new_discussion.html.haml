@@ -1,0 +1,48 @@
+- discussion.each_with_index do |chat, index|
+  - view = View.where(:agent_id => chat.agent_id).where(:year => chat.date.strftime("%Y")).first
+  - if show_entry?(chat)
+    - if chat.class == Comment
+      .row
+        .small-10.small-offset-1.columns.discussion_entry
+          .row
+            .small-12.columns{:class => [cycle("even", "odd"), (index+1 == discussion.size ? :last : false)]}[chat]
+              .row
+                .small-7.columns.small-offset-2
+                  .comment_comment
+                    %span.big= raw('&ldquo;')
+
+                    = raw display_comment(chat)
+                  - unless chat.userimages.empty?
+                    = raw one_or_slideshow(chat)
+                .small-2.comment_metadata.columns
+                  = image_tag chat.agent_icon(:large)
+                  .agent_metadata
+                    .inner
+                      .agent_name= link_to "Agent #{chat.agent.surname}", chat.agent
+                      .standalone_date= chat.formatted_date
+    - else  
+      .row
+        .small-10.small-offset-1.columns.discussion_entry{:class => [cycle("even", "odd"), (index+1 == discussion.size ? :last : false)]}
+          .row[chat]
+            .small-2.agent_metadata.columns
+              = image_tag chat.agent_icon(:large)
+              .inner
+                .agent_name= link_to "Agent #{chat.agent.surname}", chat.agent
+                .standalone_date= chat.formatted_date
+            .small-7.columns
+              .discussion_comment
+                - unless chat.comment.blank?
+                  %span.big= raw('&ldquo;')
+                = raw display_comment(chat)
+            .small-3.columns.entry_metadata
+              - if chat.respond_to?('metadata')
+                - chat.metadata['metadata'].each_pair do |key, value|
+                  - next if value.blank?
+                  - next if value == 0
+                  - if key == 'cost'
+                    - next if value.last.blank? 
+                  .item_metadata{:class => key}
+                    %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
+                    %span.item_metadata_value= display_metadata(key, value)
+
+      

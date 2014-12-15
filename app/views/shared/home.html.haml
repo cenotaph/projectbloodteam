@@ -1,0 +1,109 @@
+#home.row
+  .small-6.columns.small-offset-2.newsfeed
+    %h3 Latest Activity
+    - if !current_agent
+      - rejected = @newsfeed.reject{|x| !show_entry?(x) }
+      - @newsfeed.to_a.delete_if{|x| !show_entry?(x) }
+      - unless rejected.blank?
+        = "#{rejected.size} items are not visible in the newsfeed, because you are not logged in."
+        = link_to 'Log in!' , '/login', :rel => '#login_overlay'
+
+
+    - if @newsfeed.length == 0
+      The newsfeed begins in 2010, sorry.
+    - else
+.row#newsfeed
+  = render :partial => 'shared/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => false}  
+.row
+  .small-12.columns
+    = paginate @newsfeed
+  
+
+
+  / #right.one-third.column.omega
+  /
+  /   .section.clearfix
+  /     .section_heading
+  /       Recent geographic activity
+  /       %div{:style => 'float: right; padding-right: 5px; font-size: 8pt'}= link_to 'see all', geolocations_path
+  /     = gmaps4rails(@json)
+  /   .section.clearfix
+  /     .section_heading
+  /       Agents
+  /       = select "agent", "agent_id", Agent.active_menu, { :include_blank => true }, {:onchange => "document.location.href='/agents/' + this.value" }
+  /     - @random_agents.each do |agent|
+  /       .random_agent= link_to image_tag(agent.avatar(:small), :width => 62), agent.agent
+  /   .section.clearfix
+  /     .section_heading
+  /       Forum
+  /       %div{:style => 'float: right; padding-right: 5px; font-size: 8pt'}
+  /         = link_to 'all', forums_path
+  /         = " / "
+  /         = link_to " + ", new_forum_path
+  /     #theforum
+  /       %table{:border => 0}
+  /         - cache(:agent => (agent_signed_in? ? current_agent.id : 'null'), :action_suffix => 'forum_frontpage', :page => params[:page]) do
+  /           %tbody#results= render :partial => 'shared/forum_list', :collection => @forums
+  /
+  /   .section
+  /     .section_heading
+  /       On this day ...
+  /       %div{:style => 'float: right;'}
+  /         %a{:class => "prev browse left"}= image_tag('/img/icons/arrow-closed-invert.png')
+  /         %a{:class => "next browse right left"}= image_tag('/img/icons/arrow-closed.png')
+  /     .scrollable
+  /       .otds
+  /
+  /         - if @on_this_day.empty?
+  /           Somehow, nothing has ever happened on this day.
+  /         - else
+  /           - @on_this_day.each do |otd|
+  /             .otd
+  /               .otd_image= one_or_slideshow(otd)
+  /               .otd_agent_title
+  /                 Agent
+  /                 = link_to otd.agent_surname, otd.agent
+  /                 = " in #{otd.class == Forum ? link_to('the forum', forum_path(otd)) : link_to(otd.agent_category, '/' + otd.class.table_name)} "
+  /               .otd_date= otd.formatted_date
+  /               .otd_title
+  /                 = link_to otd.metadata['name'].gsub(/<\/?.*?>/, ""), otd
+  /                 - if otd.respond_to?('linkto')
+  /                   = link_to image_tag('/img/icons/external-link.png'), otd.linkto, :target => "_blank"
+  /               - otd.metadata['metadata'].each_pair do |key, value|
+  /                 - next if value.blank?
+  /                 - if key == 'cost'
+  /                   - next if value.last.blank?
+  /                 .otd_metadata
+  /                   %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
+  /                   %span.item_metadata_value= display_metadata(key, value)
+  /
+  /
+  /   .section
+  /     .section_heading Notes
+  /     still to do
+  /     %ul
+  /       %li Full import system for Excel era
+  /       %li Better user-interface, design, front-end, etc.
+  /       %li Improve (or reduce?) themes
+  /       %li Twitter support w/Oauth + bit.ly integration
+  /       %li Delicious and rss support as before
+  /       %li HTML validation
+  /       %li Stats
+  /       %li More granular security
+  /       %li Facebook integration?
+  /       %li Better item aggregation (particularly with music across formats)
+  /       %li iPhone app or at least mobile skins
+  /       %li Netflix integration?
+  /       %li Projects support
+  /       %li Loans support
+  /       %li Tasks support
+  /       %li Google calendar integration?
+  /       %li Share images from previous entries
+= content_for :jquery do
+  :plain
+
+
+    $("#newsfeed").infinitescroll({
+      navSelector: "nav.pagination",
+      nextSelector: "nav.pagination a[rel=next]",
+      itemSelector: "#newsfeed .newsfeed_entry"});

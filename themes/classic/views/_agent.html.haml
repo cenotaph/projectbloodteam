@@ -1,0 +1,31 @@
+
+%tr{:class => cycle('odd', 'even') }
+  - @view.columns_for_category(agent.class).each_with_index do |col, index|
+    - next if col == 'venue_address'
+    - next unless show_entry?(agent)
+    %td{:class => "#{agent.class.table_name} #{col}"}
+      = display_column(agent, col, agent.agent_id)
+      - if col == 'name' || col == 'title'
+        - if agent.respond_to?('linkto')
+          - unless agent.linkto.blank?
+            = link_to image_tag('/img/icons/external-link.png'), agent.linkto, :target => "_blank" 
+      - if col == 'location'
+        - if agent.respond_to?('geolocation')
+          - unless agent.geolocation.nil?
+            %span.small= link_to '[edit location details]', edit_geolocation_path(agent.geolocation)
+      - if index == 1
+        / %p
+        /
+        /   = raw one_or_slideshow(agent)
+        %p
+          = link_to 'item page', agent
+          - c = []
+          - if agent.discussion.size > 1
+            - c.push pluralize(agent.comments.size, 'comment')
+          - if agent.others.size > 0
+            - c.push pluralize(agent.others.size, 'other')
+          .way_small= c.join(' | ')
+        - if agent_signed_in?
+          - if agent.agent == current_agent
+            .pbt_options= link_to 'edit', "/agents/#{current_agent.id.to_s}/#{agent.class.table_name}/#{agent.id.to_s}/edit"
+            .pbt_options= link_to 'delete', agent,  :confirm => 'Are you sure?', :method => :delete

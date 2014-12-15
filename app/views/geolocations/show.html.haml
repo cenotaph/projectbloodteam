@@ -1,0 +1,10 @@
+%h4 All data for location:
+
+%p= @geolocation.address
+#standalone_map= gmaps({ "map_options" => {"auto_adjust" => false, "zoom" => 15, "center_latitude" => (@geolocation.latitude), "center_longitude" => @geolocation.longitude}, "markers" => {"data" => @json } })
+%ul
+  - @geolocation.pbt_entries.each do |entry|
+    %li
+      = link_to entry.name, entry
+      = "(Agent #{entry.agent.surname})"
+      %span.pbt_date= entry.formatted_date

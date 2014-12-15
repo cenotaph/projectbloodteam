@@ -1,0 +1,358 @@
+* {
+  padding: 0; 
+  margin: 0; 
+}
+
+
+a {
+  -webkit-transition: color 0.5s linear;
+  -moz-transition: color 0.5s linear;
+}
+
+html, body {
+  height: 100%;
+}
+
+#outer_wrapper {
+  height: 100%;
+}
+
+#top_bar {
+	background-color: #EEEEEE;
+	font-size:10pt;
+}
+
+#top_bar form {
+	display: inline;
+	position: absolute;
+	right: 0;
+}
+
+.btn {
+	font-size: 7pt;
+}
+
+#top_bar select {
+	font-size: 7pt;
+}
+
+#top_bar input {
+	font-size: 7pt;
+}
+
+#flume_sidebar {
+	background-color:#EEEEEE;
+	border-right:1px solid #999999;
+  width:250px;
+  float: left;
+  height: 100%;
+  padding-left: 10px;
+}
+
+  #flume_sidebar .system_menu a {
+    font-size:11px;
+  }
+  
+  #flume_sidebar .system_menu img {
+    float: left;
+    margin-right: 10px;
+  }
+  
+  #flume_sidebar .system_menu p {
+    margin: 2px 0 2px 0;
+  }
+	#flume_sidebar_categories a {
+		text-decoration: none;
+		text-transform: lowercase;
+		color: #005599;
+	}
+	
+	#flume_sidebar_categories a:hover {
+		color: #009955;
+	}
+	
+	#flume_sidebar_categories .category_name a {
+	  font-size: 11pt;
+	}
+	
+	#flume_sidebar_categories .category_name span.way_small a {
+	  font-size: 8pt;
+	}
+	
+	#flume_cat_header {
+	  clear: left;
+	  margin-top: 10px;
+		text-decoration: underline;
+	}
+  .blocks li img {
+  	float: right;
+  	margin-left:4px;
+  	margin-top:4px;
+  }
+
+  ul.flume_box li, a.brick {
+  	height: 113px;
+  	width: 166px;
+  }
+
+  ul.frontgrid {
+  	margin-left: -30px;
+  	margin-top: 0;
+  }
+
+  .grid li, .frontgrid li {
+  	float:left;
+  	height:115px;
+  	position:relative;
+  	width:20%;
+  }
+
+  .blocks li {
+  	background-color:#FFFFFF;
+  	margin:0;
+  	padding:0;
+  	text-align:left;
+  	width: 151px;
+  	-moz-background-clip: -moz-initial; 
+  	-moz-background-origin: -moz-initial; 
+  	-moz-background-inline-policy: -moz-initial;
+  }
+
+
+  .grid li .container, .frontgrid li .container {
+  	border: 1px solid #999999;
+  /*	border-right:1px solid #999999;*/
+  	overflow:hidden;
+  /*	width: 150px;*/
+  }
+
+  .blocks li .container {
+  	background:white none repeat scroll 0 0;
+  }
+
+  .blocks .fill {
+  	bottom:0;
+  	height:auto;
+  	left:0;
+  	position:absolute;
+  	right: -1px;
+  	top:0;
+  	width:auto;
+  }
+  
+  #flume_content {
+    width: 750px;
+    float: left;
+  }
+
+  #flume_wrapper {
+    height: 100%;
+    width: 1020px;
+  }
+  
+  #flume_content ul li, #flume_front_boxes ul li {
+  	background:transparent none repeat scroll 0 0;
+  	list-style-image:none;
+  	list-style-position:outside;
+  	list-style-type:none;
+  }
+
+  .inside_block {
+  	padding-top: 25px;
+  }
+  .flume_caption {
+  	padding: 2px 3px 1px 3px;
+  	-x-system-font:none;
+  	background-color:#232323;
+  	color: #dedecd;
+  	font-size: 11px;
+  	font-size-adjust:none;
+  	font-stretch:normal;
+  	font-style:normal;
+  	font-variant:normal;
+  	font-weight:bold;
+  	line-height: 14px;
+  }
+
+
+  a.brick {
+  	-x-system-font:none;
+  	background-color:#FDFCFF;
+  /*	border-color:#666666 #AAAAAA #AAAAAA;
+  	border-style:solid;
+  	border-width:3px 1px 1px;*/
+  	color:#444444;
+  	display:block;
+  	float:left;
+  	font-size:11px;
+  	font-size-adjust:none;
+  	font-stretch:normal;
+  	font-style:normal;
+  	font-variant:normal;
+  	font-weight:normal;
+  	line-height:normal;
+  	list-style-type:none;
+  /*	margin:0 25px 25px 0;*/
+  	overflow:hidden;
+  	position:relative;
+  	text-decoration:none;
+/*    width: 151px;*/
+  }
+  	ul.movies li, a.movies {
+  		width:89px;
+  		height:140px;
+  	}
+    a.brick.movies .user_hover {
+      font-size: 9pt;
+
+    }
+    
+
+  	ul.books li, a.books, .inner .books {
+  		height: 162px;
+  		width: 107px;
+  	}
+
+  	ul.musics li, a.musics {
+  		height: 151px;
+  		width: 151px;
+  	}
+  	a.brick:hover {
+  	    cursor: pointer;
+  	}
+
+  	a.brick a {
+  	    color: #007BFF;
+  	}
+
+  	a.link {
+  	    font-weight: bold;
+  	    font-size: 18px;
+  	}
+
+
+  div.user_hover {
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      padding-top: 20px;
+      background-color: #000;
+      display: none;
+      z-index: 10;
+      text-align: center;
+      color: #fff;
+      font-weight: bold;
+      font-size: 18px;
+
+      opacity: 0.75;
+      filter: alpha(opacity = 75);
+      -moz-opacity: .75;
+
+  }
+
+
+
+  a.brick:hover div.user_hover {
+      display: block;
+  }
+ 
+  /* the overlayed element */
+.flume_overlay {
+
+	/* initially overlay is hidden */
+	display:none;
+
+	/* growing background image */
+	background-image:url(../img/overlay/white.png);
+
+	/* 
+		width after the growing animation finishes
+		height is automatically calculated
+	*/
+	width:650px;		
+  height: 650px;
+	/* some padding to layout nested elements nicely  */
+	padding: 25px;
+
+	/* a little styling */	
+	font-size:11px;
+}
+
+#flume_content #overlay .contentWrap #discussion .item .left {
+  display: none;
+}
+#flume_content #overlay .contentWrap {
+  height: 490px;
+  padding: 10px;
+}
+
+#overlay {
+  height: 700px;
+}
+#flume_content #overlay .contentWrap a {
+  color: #dddddd;
+}
+
+#flume_content form {
+  padding-left: 10px;
+}
+
+#flume_content form li {
+  margin-bottom: 10px;
+}
+
+#flume_content form li label {
+  width: 120px;
+  text-align: right;
+  float: left;
+  margin-right: 10px;
+}
+
+select.currency_select {
+  float: left;
+  width: 50px;
+}
+
+input.cost_input {
+  width: 70px;
+}
+
+#flume_content  form textarea {
+  width: 500px;
+}
+
+
+.flume_overlay .close , #login_overlay .close, .image_overlay .close {
+	background-image:url(/img/overlay/close.png);
+	position:absolute; right:5px; top:5px;
+	cursor:pointer;
+	height:35px;
+	width:35px;
+}
+
+.flume_overlay .contentWrap #discussion .discussion.item.odd {
+  background-color: #DFDEDD;
+}
+
+.contentWrap .add_comment {
+  background: none;
+  padding-left: 0px;
+}
+
+#overlay #discussion .item a {
+  color: #7890FF;
+}
+
+#flume_wrapper #overlay .contentWrap {
+  padding: 10px;
+  height: auto;
+  overflow: auto;
+  background-color: #EFEFfF;
+  color: black;
+}
+
+#flume_wrapper #overlay .contentWrap #comment_new {
+  margin-left: 80px;
+}

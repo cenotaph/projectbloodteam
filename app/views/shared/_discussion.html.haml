@@ -1,0 +1,67 @@
+- discussion.each_with_index do |chat, index|
+  - view = View.where(:agent_id => chat.agent_id).where(:year => chat.date.strftime("%Y")).first
+  - if show_entry?(chat)
+    .item.discussion.clearfix{:class => cycle("even", "odd")}
+      .two.columns.alpha
+        .index_image
+          = image_tag chat.agent_icon(:small) unless chat.class == Comment
+          &nbsp;
+          - unless chat.id == @item.id
+            - unless chat.class == Comment
+              .system_small.way_small{:style => 'clear: both'}= link_to 'standalone', chat 
+          - if agent_signed_in? && chat.class != Comment
+            - if chat.agent == current_agent
+              %br/
+              .system_small.way_small= link_to 'edit entry', "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
+  
+      .ten.columns.omega{:class => (chat.class == Comment ? 'comment' : '')}
+        - if chat.class == Comment
+          .comment_image.two_columns.alpha
+            .agent_image= image_tag chat.agent_icon(:small)
+            - if agent_signed_in? 
+              - if chat.agent == current_agent
+                .system_small.way_small= link_to  'edit', "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"  
+          .agent_name= "Comment by Agent #{link_to chat.agent_surname, chat.agent}, posted #{time_ago_in_words(chat.date)} ago"
+        - else
+          .agent_name= "Agent #{link_to chat.agent_surname, chat.agent}, posted #{time_ago_in_words(chat.date)} ago"
+          -# - if chat.respond_to?('date')
+        .metadata.ten.columns.alpha
+          - if chat.respond_to?('metadata')
+            - if chat.class != Comment
+              .item_title
+                - unless index == 0 || master == true
+                  = link_to raw(chat.name), chat
+                  - if chat.respond_to?('linkto')
+                    = link_to image_tag('/img/icons/external-link.png'), chat.linkto, :target => "_blank"
+                - unless chat.respond_to?('received')
+                  .item_date= chat.formatted_date
+            - else
+              Comment
+            - chat.metadata['metadata'].each_pair do |key, value|
+              - next if value.blank?
+              - next if view.agent_column_name(chat, key).nil?
+              .item_metadata
+                %span.item_metadata_category
+                  = view.agent_column_name(chat, key).humanize + ":"
+                %span.item_metadata_value= display_metadata(key, value)
+          - else
+            - if chat.class != Comment
+              .item_title= (chat.respond_to?('linked_name') ? chat.linked_name : (chat.respond_to?('name') ? chat.name : ''))     
+        .column.ten.alpha= one_or_slideshow(chat, '/system/no_image.png', :full, master)
+        .item_description= chat.comment
+        - unless @json.blank? || index > 0 || master == true
+          %span.system_small= link_to 'edit location details', edit_geolocation_path(@item.geolocation)
+          #standalone_map.ten.columns.alpha
+            = gmaps({ "map_options" => {"auto_adjust" => false, "zoom" => 14, "center_latitude" => (@item.geolocation.latitude), "center_longitude" => @item.geolocation.longitude}, "markers" => {"data" => @json } })
+            .resize_link
+              .system= link_to 'expand map', 'javascript:$("#target .gmaps4rails_map").css("position", "absolute");$("#target .gmaps4rails_map").css("width", "100%");$("#target .gmaps4rails_map").css("height", "500px");$("#target .gmaps4rails_map").css("left", "0");$(".container").css("padding-bottom", "350px"); google.maps.event.trigger(map, "resize");$(this).fadeOut();'
+                     
+  - else
+    .item.discussion{:class => cycle("even", "odd")}
+      .left
+      .right
+        %em Protected entry; only visible to other agents.
+:javascript
+  $(document).ready(function() {
+
+  });

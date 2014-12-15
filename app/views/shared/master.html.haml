@@ -1,0 +1,154 @@
+.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
+  %dl.sub-nav
+    %dd.active{:"data-magellan-arrival" => "details"}= link_to 'Details', "#details"
+    - unless @json.blank?
+      %dd{:"data-magellan-arrival" => "map"}= link_to 'Map', "#map"
+    %dd{:"data-magellan-arrival" => "discussion"}= link_to "Comments & discussion (#{@item.discussion.size})", "#discussion"
+    - unless @item.similars.empty?
+      %dd{:"data-magellan-arrival" => "similars"}= link_to 'Possibly related items', "#similars"
+- unless @json.blank?
+  = content_for :jquery do
+    :erb
+    
+      function bindLiToMarker($li, marker){
+        $li.on('click', function(){
+          handler.getMap().setZoom(14);
+          marker.setMap(handler.getMap()); //because clusterer removes map property from marker
+          marker.panTo();
+          google.maps.event.trigger(marker.getServiceObject(), 'click');
+        })
+      };
+      
+      handler = Gmaps.build('Google');
+      
+      handler.buildMap({ provider: {}, internal: {id: 'map_container'}}, function(){
+        markers = handler.addMarkers(<%= raw @json.to_json %>);
+        for (m in markers) {
+          google.maps.event.addListener(m, 'click', function() {
+              map.setZoom(8);
+              map.setCenter(m.getPosition());
+            });
+        }
+        
+        <% if @json.size == 1 %>
+ 
+          handler.map.centerOn(markers[0]);
+          handler.getMap().setZoom(13);
+        <% else %>
+          handler.bounds.extendWith(markers);
+          handler.fitMapToBounds();
+        <% end %>
+      });
+      
+.row
+  .small-10.columns.small-offset-1.master_head#details
+    %a{:name => "#details"}
+    .row
+      .small-3.columns= image_tag @item.icon(:full)
+      .small-9.columns.text-center
+        .main_title{:"data-magellan-destination" => "details"}
+          = raw @item.title
+          - if @item.respond_to?('linkto')
+            %span.link_to= link_to image_tag('/img/icons/external-link.png'), @item.linkto, :target => "_blank"
+        .secondary_title= raw @item.secondary_title
+        
+        = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => @item}
+- unless @json.blank?
+  .row 
+    %a{:name => "#map"}
+    .small-10.columns.small-offset-1
+      #map_container{:"data-magellan-destination" => "map"}
+      %p= link_to 'hide map', "#", onclick: "javascript:$('#map_container').fadeOut();", class: [:button, :tiny]
+
+
+#discussion
+  %a{:name => "discussion", :"data-magellan-destination" => "discussion"}
+  = render :partial => 'shared/new_discussion', :locals => {:discussion => @item.discussion, :json => @json, :master => false}
+
+- cache(:action_suffix => 'similars', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id) do
+
+  - if @item.respond_to?('author')
+    - if @item.similars.map{|x| x.author}.include?(@item.author)
+      .across_strip
+        .row
+          .small-12.columns
+            
+            = link_to "There are multiple entries by this author. See all aggregated for #{@item.author} ...", aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
+
+  - if @item.respond_to?('director')
+    - if @item.similars.map{|x| x.director}.include?(@item.director)
+      .across_strip
+        .row
+          .small-12.columns
+            
+            = link_to "There are multiple entries by this director. See all aggregated for #{@item.director} ...", aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
+
+  - if @item.respond_to?('artist')
+    - if @item.similars.map{|x| x.artist}.include?(@item.artist)
+      .across_strip
+        .row
+          .small-12.columns
+            
+            = link_to "There are multiple entries by this artist. See all aggregated for #{@item.artist} ...", aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
+  - unless @item.similars.empty?
+    #similars
+      %a{:name => "similars", :"data-magellan-destination" => "similars"}
+      .row
+        .small-12.columns.text-center 
+          %h3 Possibly related entries:
+
+      - @item.similars.in_groups_of(4).each do |similar_group|
+        .row
+          - similar_group.each do |similar|
+            - next if similar.nil?
+            .small-3.columns
+              = raw one_or_slideshow(similar, '/system/no_image.png', :thumb)
+              .similar_link= link_to raw(similar.name), similar
+              .metadata
+                = "Agents: #{similar.items.map{|x| x.agent.surname }.uniq.join(', ')}"
+
+
+/ = content_for :more do
+/   :javascript
+/     Gmaps.map.callback = function() {
+/       var marker = Gmaps.map.markers[0];
+/       var infowindow = marker.infowindow;
+/       infowindow.open(Gmaps.map.map, marker.serviceObject);
+/     }
+/
+/ - if agent_signed_in?
+/   -content_for :head do
+/     = include_puny_mce
+/
+/ .standalone#target.twelve.columns.alpha
+/   .standalone_title.generic_heading
+/     - if @item.respond_to?('agent')
+/       - agent_category = @item.agent.categories.year(getYear).first.send(@item.class.to_s.tableize).singularize + ": "
+/     - else
+/       - agent_category = @item.class.to_s.gsub(/Master/, '') + ": "
+/     %b= agent_category
+/     = @item.name
+/     - if @item.respond_to?('linkto')
+/       - unless @item.linkto.blank?
+/         = link_to image_tag('/img/icons/external-link.png'), @item.linkto, :target => "_blank"
+/   .standalone_date= @item.formatted_date
+/   
+/   %div{:style => "clear:left; margin-bottom: 25px;"}
+/     %span.system_small= link_to 'edit master record', edit_master_genericmaster_path(:category => @item.class.to_s, :id => @item.master_id)
+/   - unless @json.blank?
+/     #master_map
+/       = gmaps4rails(@json)
+/       .resize_link
+/         .system= link_to 'expand map', 'javascript:$("#target .gmaps4rails_map").css("width", "100%");$("#target .gmaps4rails_map").css("height", "400px");$("#target .map_container").css("width", "100%");$("#target .map_container").css("height", "400px");google.maps.event.trigger(map, "resize"); $(".resize_link").fadeOut();'
+/   - cache(:action_suffix => 'discussion', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id, :agent => (agent_signed_in? ? current_agent.id : 'null')) do
+/
+/     .generic_heading Entries and discussion:
+/     #discussion= render :partial => 'shared/discussion', :locals => {:discussion => @item.discussion, :master => true, :json => @json}
+/     = render :partial => 'shared/new_comment', :locals => {:entry => @item, :@comment => Comment.new(:add_to_newsfeed => true)} if agent_signed_in?
+/ .right_master.four.columns.omega
+/
+
+/
+
+/
+/

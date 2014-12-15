@@ -1,0 +1,14 @@
+
+.master_image.three.columns.alpha= image_tag item.filename.url(:thumb) if item.filename?
+
+.master_metadata.nine.columns.omega
+  - unless item.amazoncode.blank?
+    - cache(:id => item.id.to_s, :action => "show", :category => 'masterbook', :action_suffix => 'amazondata') do
+      - book = Amazon::Ecs.item_search(item.amazoncode, {:response_group => 'Medium'}).items[0]
+      - review =  book.get('EditorialReviews/EditorialReview/Content')
+      - unless review.nil?
+        %blockquote.book_review= raw review.gsub(/&#x2019;/, '\'').gsub(/&lt;/, '<').gsub(/&gt;/, '>')
+        
+= content_for :jquery do
+  :plain
+    $('.book_review').readmore();        

@@ -1,0 +1,20 @@
+= form_for @category do |cat| 
+
+  %p You may edit your categories here. The checkbox enables the category, and you may customise the name of the category.
+  %p 
+    Editing categories for year: 
+    //= getYear
+
+  #inputform
+    - Category.columns.each do |c|
+      - next if c.name == 'id' || c.name == 'agent_id' || c.name == 'year' || c.name == 'loans' || c.name == 'projects' || c.name == 'tasks'
+      .row
+        = cat.check_box 'has_' + c.name.to_s, :checked => (@category.send(c.name) == "0" ? false : true)
+        - if @category.send(c.name) == "0"
+          = cat.text_field c.name, :value => c.human_name
+        - else
+          = cat.text_field c.name, :value => @category.send(c.name)
+    
+    = cat.hidden_field :year 
+    = cat.submit "Edit"
+

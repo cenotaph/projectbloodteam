@@ -1,0 +1,6 @@
+= content_for :jquery do
+  :plain
+    handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map_container'}}, function(){
+    });
+    markers = handler.addMarkers(%{raw @json});

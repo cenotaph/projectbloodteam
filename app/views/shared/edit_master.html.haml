@@ -1,0 +1,53 @@
+- if @item.agents.uniq.size > 1
+  = "Warning: This item is used by #{pluralize(@item.agents.size, 'other agent')}.  Editing this record will also edit it for them.  Please only use this feature to correct mistakes by the automatic IMDB/Amazon/Discogs data loading."
+  
+- if @category == 'MasterMovie'
+  
+  = semantic_form_for(@item, :html => {:multipart => true}) do |f|
+    = f.input :title, :as => :string
+    = f.input :director, :as => :string
+    = f.input :country, :as => :string
+    = f.input :year, :as => :string
+    = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
+    = f.input :filename    
+    - if @followup == 'new'
+      = f.input :followup, :as => :hidden, :value => @followup
+    = f.buttons do
+      = f.submit
+      
+- if @category == 'MasterMusic'
+  = semantic_form_for(@item, :html => {:multipart => true}) do |f|
+    = f.input :artist, :as => :string
+    = f.input :title, :as => :string
+    = f.input :label, :as => :string
+    = f.input :year, :as => :string
+    = f.input :format, :as => :string
+    = f.input :discogscode, :as => :string, :input_html => {:maxlength => 16 }
+    = f.input :filename
+    - if @followup == 'new'
+      = f.input :followup, :as => :hidden, :value => @followup
+    = f.buttons do
+      = f.submit
+      
+- if @category == 'MasterBook'
+  = semantic_form_for(@item, :html => {:multipart => true}) do |f|
+    = f.input :author, :as => :string
+    = f.input :title, :as => :string
+    = f.input :amazoncode, :as => :string
+    = f.input :filename    
+    - if @followup == 'new'
+      = f.input :followup, :as => :hidden, :value => @followup
+    = f.buttons do
+      = f.submit   
+
+- if @category == 'MasterVideogame'
+  = semantic_form_for(@item, :html => {:multipart => true}) do |f|
+    = f.input :title, :as => :string
+    = f.input :creator, :as => :string
+    = f.input :platform, :as => :string
+    = f.input :amazoncode, :as => :string
+    = f.input :filename    
+    - if @followup == 'new'
+      = f.input :followup, :as => :hidden, :value => @followup
+    = f.buttons do
+      = f.submit

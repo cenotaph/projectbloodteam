@@ -1,0 +1,26 @@
+.new_userimage
+  Add one or more custom images:
+  %div{:id => "local_image_upload_new_userimages"}
+    - unless ff.object.new_record?
+      = image_tag ff.object.image.url(:thumb)
+      = ff.input '_destroy', :as => :boolean, :label => 'delete this image'
+    = ff.input :image, :label => (ff.object.new_record? ? 'Choose image' : 'Change image')
+    = ff.input :primary, :as => :hidden
+    .system= link_to 'or add an image from the web instead', '#', :id => "open_url_upload_new_userimages"
+  %div{:id => "url_image_upload_new_userimages", :style => 'display: none;'}
+    = ff.input :image_url, :input_html => {:class => "clearfield" }
+    .system= link_to 'or upload an image from your computer instead', '#', :id => "open_local_upload_new_userimages"
+  
+:javascript
+  $(function() {
+    $("#open_url_upload_new_userimages").click(function() {
+      $("#local_image_upload_new_userimages").css('display', 'none');
+      $("#url_image_upload_new_userimages").fadeIn();
+      return false;
+    });
+     $("#open_local_upload_new_userimages").click(function() {
+       $("#url_image_upload_new_userimages").css('display', 'none');
+       $("#local_image_upload_new_userimages").fadeIn();
+       return false;
+     });
+  });

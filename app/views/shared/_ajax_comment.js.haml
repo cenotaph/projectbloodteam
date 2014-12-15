@@ -1,0 +1,7 @@
+.comment{:class => cycle('innereven', 'innerodd')}
+  %div{:class => "comment_icon " + (comment.class == Comment ? "right" : "")}= image_tag comment.agent_icon(:small), :width => 40   
+  .comment_data
+    %span.newsfeed_agent_title= (comment.class == Comment ? "comment by " : "") +  "Agent #{comment.agent.surname} "
+    %span.newsfeed_date= time_ago_in_words(comment.created_at) + " ago"
+    .comment_comment= display_comment(comment)
+   

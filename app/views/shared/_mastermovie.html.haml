@@ -1,0 +1,18 @@
+- cache(:id => item.id.to_s, :action => "show", :category => 'mastermovie', :action_suffix => 'imdbdata') do
+  - m = IMDB.new(item.imdbcode) unless item.imdbcode.blank?
+  .row
+    .small-12.columns
+      - unless item.imdbcode.blank?
+        .master_metadata
+          .metadata= m.tagline
+          .metadata
+            %blockquote= m.plot
+          .metadata.text-left
+            %p= "Released: #{m.release_date}"
+          .metadata.text-left
+            Featuring:
+            .metadata_small.cast= raw m.actors.delete_if{|x, y| x.blank?}.map {|x, y| x + ' as ' + y.sub(/\/character/, 'http://www.imdb.com/character') }.join(' &sdot; ')
+
+= content_for :jquery do
+  :plain
+    $('.metadata_small').readmore();

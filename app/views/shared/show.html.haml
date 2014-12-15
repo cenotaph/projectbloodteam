@@ -1,0 +1,125 @@
+.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
+  %dl.sub-nav
+    %dd.active{:"data-magellan-arrival" => "details"}= link_to 'Details', "#details"
+    - unless @item.userimages.empty?
+      %dd{:"data-magellan-arrival" => "images"}= link_to pluralize(@item.userimages.size, 'image'), "#images"
+    - unless @item.discussion.size == 1
+      %dd{:"data-magellan-arrival" => "discussion"}= link_to "Comments & discussion (#{@item.discussion.size - 1})", "#discussion"
+
+    - unless @json.blank?
+      = render :partial => 'home/front_map', locals: {json: @json, target: 'map_container', center: @item.geolocation}
+      %dd{:"data-magellan-arrival" => "map"}= link_to 'Map', "#map"
+    - unless @item.similars.empty?
+      %dd{:"data-magellan-arrival" => "similars"}= link_to "Possibly related items (#{@item.similars.size})", "#similars"
+
+
+  
+
+.container#outer{:style => @item.userimages.empty? ? false : "background: linear-gradient(rgba(255,255,255,0),rgba(255,255,255,0)), url(http://bloodteam.com#{@item.userimages.first.image.url(:full)});  background-size: cover; "}
+  %a{:name => "#details"}
+  .row{:"data-magellan-destination" => "details"}
+    .small-8.columns.small-offset-2.forum_head{:style => @item.userimages.blank? ? "background: url(http://bloodteam.com#{@item.agent_icon(:large)}) no-repeat; background-size: cover" : "background-color: white; opacity: 0.9"}
+      .inner.text-center
+        %span.big= raw('&ldquo;') if @item.class == Forum
+        .main_title= @item.title
+        - if @item.respond_to?('secondary_title')
+          - unless @item.secondary_title.blank?
+            %br/
+            .secondary_title= raw @item.secondary_title
+        %span.big= raw('&rdquo;') if @item.class == Forum
+      .agent_metadata{:class => @item.userimages.empty? ? false : 'text-center', :style => @item.userimages.empty? ? 'float: left' : false}
+        .agent_name= link_to "Agent #{@item.agent.surname}", @item.agent
+        .standalone_date= @item.formatted_date
+
+
+
+  .row
+    .small-8.columns.small-offset-2.first_comment{:style => @item.userimages.blank? ? false : "background-color: white; opacity: 0.87"}
+      - if show_entry?(@item)
+        - if @item.respond_to?('metadata')
+          .metadata
+            - @item.metadata['metadata'].each_pair do |key, value|
+              - next if key == 'date' || key == 'location'
+              - next if value.blank?
+              - next if value == 0
+              - if key == 'cost'
+                - next if value.last.blank? 
+              .item_metadata{:class => key}
+                %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
+                %span.item_metadata_value= display_metadata(key, value)
+            
+        - unless display_comment(@item).blank?
+          %span.big= raw('&ldquo;')
+        = raw display_comment(@item)
+        .entered_date= "entered " + time_ago_in_words(@item.created_at) + " ago"
+
+  %a{:name => "#images"}        
+  .row#slideshow{:"data-magellan-destination" => "images"}
+    .small-8.columns.small-offset-2
+      = raw one_or_slideshow(@item)
+
+  %a{:name => "#discussion"}            
+  #discussion{:style => @item.userimages.blank? ? false : "background-color: white; opacity: 0.9", :"data-magellan-destination" => "discussion"}= render :partial => 'shared/new_discussion', :locals => {:discussion => @item.discussion[1..-1], :json => @json, :master => false}
+
+  - if agent_signed_in?
+    .row
+      .small-8.columns.small-offset-2= render :partial  => 'shared/new_comment', :locals => {comment: Comment.new(:item => @item, agent: current_agent), item: @item}
+
+    
+- unless @json.blank?
+  %a{:name => "#map"}
+  #map_container{:"data-magellan-destination" => "map"}
+  
+- cache(:action_suffix => 'similars', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id) do
+  - unless @item.similars.empty?
+    - if @item.similars.size > 4
+      .across_strip
+        .row
+          .small-12.columns.text-center
+            = link_to "This appears to be popular. See all aggregated for #{@item.name} ...",  aggregate_generic_path(:category => @item.class.to_s, :id => @item.id)
+    #similars
+      %a{:name => "similars", :"data-magellan-destination" => "similars"}
+      
+
+      
+      .row
+        .small-8.small-offset-2.columns.text-center 
+          %h3 Possibly related entries:
+      - @item.similars.in_groups_of(4).each do |similar_group|
+        .row
+          - similar_group.each_with_index do |similar, index|
+            - next if similar.nil?
+            - next unless show_entry?(similar)
+            .small-3.columns{:class => (similar[index+1].nil? ? :end : false)}
+              = raw one_or_slideshow(similar, '/system/no_image.png', :thumb)
+              .similar_link= link_to raw(similar.name), similar
+              .metadata
+                .item_metadata
+                  %span.item_metadata_category Agent:
+                  %span.item_metadata_value= similar.agent.surname
+                .item_metadata
+                  %span.item_metadata_category Date:
+                  %span.item_metadata_value= similar.formatted_date
+                  - if similar.respond_to?('metadata')
+                    - similar.metadata['metadata'].each_pair do |key, value|
+                      - next if value.blank?
+                      - next if value == 0
+                      - if key == 'cost'
+                        - next if value.last.blank? 
+                      .item_metadata{:class => key}
+                        %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
+                        %span.item_metadata_value= display_metadata(key, value)
+                
+  
+- unless @item.userimages.empty?        
+  = content_for :jquery do
+    :plain
+      
+      $(document).scroll(function(){     
+        var opac = $(window).scrollTop() / ($('#outer').height() - 600);
+   
+        $('#outer').css({'background': '-webkit-linear-gradient(rgba(255,255,255,' + opac + '),rgba(255,255,255,' + opac + ')), url(http://bloodteam.com#{@item.userimages.first.image.url(:fuller)})'});
+      
+        $('#outer').css({'background': 'linear-gradient(rgba(255,255,255,' + opac + '),rgba(255,255,255,' + opac + ')), url(http://bloodteam.com#{@item.userimages.first.image.url(:fuller)})', 'background-repeat':'no-repeat','background-size':'cover'});
+        $('#slideshow').css('opacity',  opac);
+      });        

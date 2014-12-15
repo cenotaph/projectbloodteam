@@ -1,0 +1,27 @@
+
+%tr{:class => cycle('odd', 'even') }
+  - @view.columns_for_category(agent.class).each_with_index do |col, index|
+    %td
+      = display_column(agent, col)
+      - if index == 1
+        = one_or_slideshow(agent)
+        %p
+          = link_to 'item page', agent
+          - c = []
+          - if agent.discussion.size > 1
+            - c.push pluralize(agent.comments.size, 'comment')
+          - if agent.others.size > 0
+            - c.push pluralize(agent.others.size, 'other')
+          .way_small= c.join(' | ')
+        - if logged_in?
+          - if agent.agent == current_agent
+            = link_to 'edit', "/agents/#{current_agent.id.to_s}/#{agent.class.table_name}/#{agent.id.to_s}/edit"
+            = link_to 'delete', agent,  :confirm => 'Are you sure?', :method => :delete
+  :javascript
+    $(document).ready(function() {
+        $('.slideshow').cycle({
+        speed: 300,
+        timeout: 2000,
+    		fx: 'scrollDown' // choose your transition type, ex: fade, scrollUp, shuffle, etc...
+    	});
+    });

@@ -1,0 +1,27 @@
+- if @category == 'Movie' 
+  - if controller.action_name != 'shorts'
+    - if @agent.profile(getYear).shortfilms
+      - @items = @items.delete_if{|x| x.is_short}
+      = link_to 'See short films', shorts_agent_movies_path(:agent_id => @agent.id)
+  - else
+    = link_to 'See feature-length films', agent_movies_path(:agent_id => @agent.id)
+- elsif @category == 'Music'
+  - if agent_signed_in?
+    - if current_agent == @agent
+      = link_to_if current_agent == @agent, 'suggest unreviewed', unreviewed_agent_musics_path
+
+- unless @items.blank?
+
+  %table.responsive#classic{:border => 0}
+    %thead
+      - @view.columns_for_category(@items[0].class).each do |col|
+        - next if col == 'venue_address'
+        %th= @view.agent_column_name(@items[0], col)
+
+    %tbody#results
+      = render :partial => '/agent', :collection => @items
+            
+          
+- unless @items.blank?
+  = paginate @items
+  -#= pageless(@items.total_pages, url_for(@items.first.class.table_name))

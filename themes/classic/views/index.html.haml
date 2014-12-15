@@ -1,0 +1,19 @@
+- if @items.blank? 
+  No data for year <%= getYear 
+- else    
+  %table{:border => 1}
+    %thead
+      - @view.columns_for_category(@items[0].class).each do |col|
+        %th= @view.agent_column_name(@items[0], col)
+
+    %tbody
+      - @items.each do |item| 
+        %tr{:class => cycle('odd', 'even') }
+          - @view.columns_for_category(item.class).each do |col|
+            %td
+              = display_column(item, col)
+
+            
+            
+          
+                
