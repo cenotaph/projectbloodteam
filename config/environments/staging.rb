@@ -6,6 +6,7 @@ Pbt4::Application.configure do
   config.cache_classes = true
   config.cache_store = :file_store , "tmp/cache/"
   config.eager_load = true
+  config.assets.compile = false
   config.static_cache_control = "public, max-age=2592000"
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
@@ -17,14 +18,15 @@ Pbt4::Application.configure do
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
 
+  config.assets.js_compressor = :uglifier
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
-
+  config.assets.precompile += %w( vendor/modernizr )
   # Disable Rails's static asset server
   # In production, Apache or nginx will already do this
   config.serve_static_assets = false
   config.static_cache_control = "public, max-age=2592000"
-  # config.assets.digest = true
+  config.assets.digest = true
   
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
