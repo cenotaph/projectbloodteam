@@ -3,44 +3,12 @@
     %dd.active{:"data-magellan-arrival" => "details"}= link_to 'Details', "#details"
     - unless @json.blank?
       %dd{:"data-magellan-arrival" => "map"}= link_to 'Map', "#map"
+      = render :partial => 'home/front_map', locals: {json: @json, target: 'map_container', center: @json.size > 1 ? false : @json.first}
     %dd{:"data-magellan-arrival" => "discussion"}= link_to "Comments & discussion (#{@item.discussion.size})", "#discussion"
     - unless @item.similars.empty?
       %dd{:"data-magellan-arrival" => "similars"}= link_to 'Possibly related items', "#similars"
-- unless @json.blank?
-  = content_for :jquery do
-    :erb
-    
-      function bindLiToMarker($li, marker){
-        $li.on('click', function(){
-          handler.getMap().setZoom(14);
-          marker.setMap(handler.getMap()); //because clusterer removes map property from marker
-          marker.panTo();
-          google.maps.event.trigger(marker.getServiceObject(), 'click');
-        })
-      };
-      
-      handler = Gmaps.build('Google');
-      
-      handler.buildMap({ provider: {}, internal: {id: 'map_container'}}, function(){
-        markers = handler.addMarkers(<%= raw @json.to_json %>);
-        for (m in markers) {
-          google.maps.event.addListener(m, 'click', function() {
-              map.setZoom(8);
-              map.setCenter(m.getPosition());
-            });
-        }
-        
-        <% if @json.size == 1 %>
- 
-          handler.map.centerOn(markers[0]);
-          handler.getMap().setZoom(13);
-        <% else %>
-          handler.bounds.extendWith(markers);
-          handler.fitMapToBounds();
-        <% end %>
-      });
-      
-.row
+
+.row#master_container
   .small-10.columns.small-offset-1.master_head#details
     %a{:name => "#details"}
     .row
@@ -54,11 +22,9 @@
         
         = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => @item}
 - unless @json.blank?
-  .row 
-    %a{:name => "#map"}
-    .small-10.columns.small-offset-1
-      #map_container{:"data-magellan-destination" => "map"}
-      %p= link_to 'hide map', "#", onclick: "javascript:$('#map_container').fadeOut();", class: [:button, :tiny]
+  %a{:name => "#map"}
+  #map_container{:"data-magellan-destination" => "map"}
+
 
 
 #discussion

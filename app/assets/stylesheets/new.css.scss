@@ -19,6 +19,7 @@ header { display: none;
   position: fixed;
   top: 40px;
 }
+
 .newsfeed_entry {
   margin: 35px 0px !important;
   border-bottom: 1px solid #888;
@@ -296,7 +297,18 @@ header { display: none;
   }
   
   .worldmap-bar {
-
+    display: none;
+    .map_title {
+      height: 1.4rem;
+      background-color: $secondary-color;
+      font-size: 0.8rem;
+      font-weight: 300;
+      width: 500px;
+      a {
+        float: right;
+        color: $primary-color;
+      }
+    }
     position: absolute;
     top: 40px;
     z-index: 100;

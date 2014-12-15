@@ -2,6 +2,9 @@
 @include exports("global") {}
 @import "foundation/components/global";
 
+.gmnoprint img {
+    max-width: none; 
+}
 
 .marker_icon {
   float: left;
@@ -44,6 +47,11 @@
       line-height: 1rem;
       margin: 0;
       padding: 0;
+      .main_title {
+        float: left;
+        margin-right: 3px;
+        color: #444;
+      }
       .secondary_title { display: none;
       }
     }

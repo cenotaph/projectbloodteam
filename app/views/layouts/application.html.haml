@@ -45,6 +45,9 @@
                   = render :partial => 'shared/forum_list', :collection => @forums
         - if controller.controller_name == 'home' && !@json.blank?
           .worldmap-bar.row
+            .map_title
+              Recent geographic locations
+              = link_to 'See all', geolocations_path
             #front_map
             = render :partial => 'front_map', locals: {json: @json , target: 'front_map', center: nil}
             

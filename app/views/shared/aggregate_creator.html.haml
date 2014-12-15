@@ -1,11 +1,11 @@
 %h3= "Aggregated entries for #{@item.creator}"
-- @all_titles.delete_if{|x| x.discussion.empty? }.sort_by{|x| x.discussion.flatten.sort_by{|a| a.created_at}.reverse.first.created_at }.reverse.each do |title|
+- @all_titles.to_a.delete_if{|x| x.discussion.empty? }.sort_by{|x| x.discussion.flatten.sort_by{|a| a.created_at}.reverse.first.created_at }.reverse.each do |title|
   %hr
   .item_title
     = link_to raw(title.name), title
     - if title.respond_to?('linkto')
       = link_to image_tag('/img/icons/external-link.png'), title.linkto, :target => "_blank"
-  = one_or_slideshow(title, '/system/no_image.png', :full, false)     
+  = raw one_or_slideshow(title, '/system/no_image.png', :full, false)     
   - title.discussion.each do |chat|
     
     - if show_entry?(chat)
@@ -14,13 +14,13 @@
           .index_image
             = image_tag chat.agent_icon(:small) unless chat.class == Comment
             .way_small= link_to 'standalone', chat unless chat.class == Comment
-            - if logged_in? && chat.class != Comment
+            - if agent_signed_in? && chat.class != Comment
               = link_to_if(chat.agent == current_agent, 'edit', "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit") {}  
         .right{:class => (chat.class == Comment ? 'comment' : '')}
           - if chat.class == Comment
             .comment_image
               = image_tag chat.agent_icon(:small)
-              - if logged_in? 
+              - if agent_signed_in? 
                 .way_small= link_to_if(chat.agent == current_agent, 'edit', "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit") {}
             .agent_name= "Comment by Agent #{link_to chat.agent_surname, chat.agent}, #{time_ago_in_words(chat.date)} ago"
           - else
@@ -42,14 +42,10 @@
           
 
           .item_description= chat.comment
-          = one_or_slideshow(chat, '/system/no_image.png', :full, true)     
-  :javascript
-    $(document).ready(function() {
-        $('.slideshow').cycle({
-        speed: 300,
-        timeout: 4000,
-        pause: 1,
-    		fx: 'scrollDown' // choose your transition type, ex: fade, scrollUp, shuffle, etc...
-    	});
+          = raw one_or_slideshow(chat, '/system/no_image.png', :full, true)     
+= content_for :jquery do
+  :plain
+    $('.slick_carousel').slick({autoplay: true});
+    $('.slick_carousel').each(function() {
+      $(this).slickLightbox({slick: {autoplay: true}});
     });
-  / #discussion= render :partial => "shared/discussion", :locals => {:discussion => title.discussion, :master => true}

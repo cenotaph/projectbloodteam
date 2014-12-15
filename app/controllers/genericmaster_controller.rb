@@ -253,9 +253,11 @@ class GenericmasterController < InheritedResources::Base
     if @category =~ /^Master/
       @singular = @category.gsub(/^Master/, '').downcase
       @master = @category
+
       @item = @master.classify.constantize.includes([:comments, 
         {"#{@singular.downcase.pluralize}".to_sym => [:agent, :userimages, "#{@master.tableize.singularize}".to_sym]}
-        ]).find(params[:id])
+        ]).find(params[:id])      
+        item = @item
     else
       @singular = @category
       @master = 'master_' + @category.downcase
@@ -272,19 +274,14 @@ class GenericmasterController < InheritedResources::Base
     # ).find(params[:id])
     
 
-    
+
     if item.class == Movie || item.class == MasterMovie
       json = @item.discussion.delete_if{|x| x.class == Comment}.compact.delete_if{|x| x.geolocation_id.nil?}.map{|x| x.geolocation }.compact.delete_if{|x| x.latitude.nil? }
       # if !json.blank?
       #   json += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", json.first.latitude - 1, json.first.latitude + 1, json.first.longitude - 1, json.first.longitude + 1])
       # end
-      @json = Gmaps4rails.build_markers(@item.discussion.delete_if{|x| !x.respond_to?('geolocation')}.delete_if{|x| x.geolocation.nil?}) do |item, marker|
-        marker.json({:id => item.id})
-        marker.infowindow "<div class='marker_icon'><img src='http://bloodteam.com#{item.agent_icon(:thumb)}' width='36'></div><div class='marker_metadata'><div class='agent_name'>Agent #{item.agent.surname}</div><div class='marker_date'>#{item.date.strftime('%d %B %Y')}</div></div>"
-        marker.lat item.geolocation.latitude
-        marker.lng item.geolocation.longitude
-      end
-
+      @json = @item.discussion.delete_if{|x| !x.respond_to?('geolocation')}.delete_if{|x| x.geolocation.nil?}.map(&:geolocation).uniq.compact
+      
     end
     set_meta_tags :title => @item.name
     if request.xhr?
