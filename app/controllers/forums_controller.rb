@@ -59,6 +59,7 @@ class ForumsController < InheritedResources::Base
     if request.xhr?
       render :partial => 'shared/forum_list', :collection => @forums
     else
+      session.delete(:forum_unread)
       set_meta_tags :title => 'PBT forum'
       render :template => 'shared/forum'
     end

@@ -11,7 +11,7 @@ class HomeController < ApplicationController
     # else
     #   page = params[:page]
     # end
-    @forums = Comment.paginate_with_items(params[:page], 6)
+
     # @on_this_day = []
     # categories = [Movie, Music, Book, Restaurant, Concert, Activity, Bar, Airport, Brewing, Event, Videogame, Musicplayed, Takeaway].sort_by{ rand }
     #   while @on_this_day.size < 15  && !categories.empty?
