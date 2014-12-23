@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-class ForumsController < InheritedResources::Base 
+class ForumsController < ApplicationController
    before_filter :login_required, :only => [:new, :edit, :add, :choose, :create, :update]
   
   def create

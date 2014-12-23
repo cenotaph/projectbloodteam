@@ -1,53 +1,74 @@
-- if @item.agents.uniq.size > 1
-  = "Warning: This item is used by #{pluralize(@item.agents.size, 'other agent')}.  Editing this record will also edit it for them.  Please only use this feature to correct mistakes by the automatic IMDB/Amazon/Discogs data loading."
-  
-- if @category == 'MasterMovie'
-  
-  = semantic_form_for(@item, :html => {:multipart => true}) do |f|
-    = f.input :title, :as => :string
-    = f.input :director, :as => :string
-    = f.input :country, :as => :string
-    = f.input :year, :as => :string
-    = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
-    = f.input :filename    
-    - if @followup == 'new'
-      = f.input :followup, :as => :hidden, :value => @followup
-    = f.buttons do
-      = f.submit
+.container
+  .row
+    .small-10.columns.small-offset-1
+      - if @item.agents.uniq.size > 1
+        = "Warning: This item is used by #{pluralize(@item.agents.size, 'other agent')}.  Editing this record will also edit it for them.  Please only use this feature to correct mistakes by the automatic IMDB/Amazon/Discogs data loading."
       
-- if @category == 'MasterMusic'
-  = semantic_form_for(@item, :html => {:multipart => true}) do |f|
-    = f.input :artist, :as => :string
-    = f.input :title, :as => :string
-    = f.input :label, :as => :string
-    = f.input :year, :as => :string
-    = f.input :format, :as => :string
-    = f.input :discogscode, :as => :string, :input_html => {:maxlength => 16 }
-    = f.input :filename
-    - if @followup == 'new'
-      = f.input :followup, :as => :hidden, :value => @followup
-    = f.buttons do
-      = f.submit
+      %h2
+        Editing master entry for
+        = @item.name
       
-- if @category == 'MasterBook'
-  = semantic_form_for(@item, :html => {:multipart => true}) do |f|
-    = f.input :author, :as => :string
-    = f.input :title, :as => :string
-    = f.input :amazoncode, :as => :string
-    = f.input :filename    
-    - if @followup == 'new'
-      = f.input :followup, :as => :hidden, :value => @followup
-    = f.buttons do
-      = f.submit   
+      - if @category == 'MasterMovie'
+  
+        = semantic_form_for(@item, :html => {:multipart => true}) do |f|
+          .form_wrapper
+            = f.input :title, :as => :string
+            = f.input :director, :as => :string
+            = f.input :country, :as => :string
+            = f.input :year, :as => :string
+            = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
+            = f.input :filename    
+            - if @followup == 'new'
+              = f.input :followup, :as => :hidden, :value => @followup
+            = f.submit 'Save', class: [:button, :small]
+      
+      - if @category == 'MasterMusic'
+        = semantic_form_for(@item, :html => {:multipart => true}) do |f|
+          .form_wrapper
+            .row
+              .large-6.columns= f.input :artist, :as => :string
+            .row
+              .large-6.columns= f.input :title, :as => :string
+            .row
+              .large-6.columns= f.input :label, :as => :string
+            .row
+              .large-6.columns= f.input :year, :as => :string
+            .row
+              .large-6.columns= f.input :format, :as => :string
+            .row
+              .large-6.columns= f.input :discogscode, :as => :string, :input_html => {:maxlength => 16 }
+            .row
+              .large-6.columns= f.input :filename
+            - if @followup == 'new'
+              .row
+                .large-6.columns= f.input :followup, :as => :hidden, :value => @followup
+            .row
+              .large-6.columns= f.submit 'Save', class: [:button, :small]
+      
+      - if @category == 'MasterBook'
+        = semantic_form_for(@item, :html => {:multipart => true}) do |f|
+          .form_wrapper
+            .row
+              .large-6.columns= f.input :author, :as => :string
+            .row
+              .large-6.columns= f.input :title, :as => :string
+            .row
+              .large-6.columns= f.input :amazoncode, :as => :string
+            .row
+              .large-6.columns= f.input :filename    
+            - if @followup == 'new'
+              .row
+                .large-6.columns= f.input :followup, :as => :hidden, :value => @followup
+            .row
+              .large-6.columns= f.submit 'Save', class: [:button, :small]
 
-- if @category == 'MasterVideogame'
-  = semantic_form_for(@item, :html => {:multipart => true}) do |f|
-    = f.input :title, :as => :string
-    = f.input :creator, :as => :string
-    = f.input :platform, :as => :string
-    = f.input :amazoncode, :as => :string
-    = f.input :filename    
-    - if @followup == 'new'
-      = f.input :followup, :as => :hidden, :value => @followup
-    = f.buttons do
-      = f.submit
+      - if @category == 'MasterVideogame'
+        = semantic_form_for(@item, :html => {:multipart => true}) do |f|
+          = f.input :title, :as => :string
+          = f.input :creator, :as => :string
+          = f.input :platform, :as => :string
+          = f.input :amazoncode, :as => :string
+          = f.input :filename    
+          - if @followup == 'new'
+            = f.input :followup, :as => :hidden, :value => @followup
+          = f.submit 'Save', class: [:button, :small]

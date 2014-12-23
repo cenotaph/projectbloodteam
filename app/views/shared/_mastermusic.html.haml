@@ -1,9 +1,6 @@
 - m = Discogs::Wrapper.new('PBT4').get_release(item.discogscode)
 .row
-  .small-4.columns
-    - unless item.filename.blank?
-      .master_image= image_tag item.filename.url(:full)
-  .small-8.columns
+  .small-12.columns
     .master_metadata.metadata
       .item_metadata
         %span.item_metadata_category Label:

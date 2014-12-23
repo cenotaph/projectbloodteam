@@ -16,6 +16,14 @@ class MasterTvseries < ActiveRecord::Base
     "#{title}-#{year}"
   end
   
+  def filename
+    image
+  end
+  
+  def filename?
+    image?
+  end
+  
   def self.choose(key)
 
     if key =~ /^local_/

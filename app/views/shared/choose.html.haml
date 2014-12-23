@@ -35,12 +35,23 @@
 - unless @choices.blank?
   %a{:name => "#choices"}
   .row{:"data-magellan-destination" => "choices"}
-    .small-8.columns
+    .small-12.columns
       %h3 Other search results:
-      - @choices.each do |choice|
-        .choice
-          -# .choice_image= image_tag choice.poster
-          .choice_title= link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.id, :category => @category)
-          / - if choice['summary']
-          /   %div{:style => "font-size: 8pt; width: 70%;"}= choice['summary']
+      - if @category == "Movie" || @category == "Tvseries"
+        - @choices.each do |choice|
+          .choice
+            .choice_title= link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.id, :category => @category)
+      - elsif @category == "Book"
+        - @choices.in_groups_of(4).each do |group|
+          .row.choice_row
+            - group.each_with_index do |choice, i|
+              .small-3.columns{class: i == 3 ? :end : false }
+                - next if choice.nil?
+                .row
+                  .small-3.columns
+                    - if choice['image']
+                      = link_to image_tag(choice['image']), select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category)
+                  .small-9.columns
+                    .choice_title= link_to raw(choice['title'].gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category)
+
           

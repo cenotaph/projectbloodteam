@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-class EntriesController < InheritedResources::Base
+class EntriesController < ApplicationController
   respond_to :html, :xml
   before_filter :login_required, :only => [:new, :edit, :update, :create, :destroy]
   

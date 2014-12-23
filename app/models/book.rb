@@ -86,7 +86,7 @@ class Book < ActiveRecord::Base
   
   def metadata
     {'name' => self.master_book.linked_name, 'date' => [self.received, self.started, self.finished],
-      'metadata' => { 'received on' => self.received, 'started on' => self.started, 'finished on' => self.finished, 'time taken to read' =>
+      'metadata' => { 'received on' => self.received, 'started on' => self.started, 'finished on' => self.finished, 'time taken' =>
          (self.finished.blank? ? nil : 
                                         (self.started.blank? ? "" : 
                                                                     ((self.finished - self.started).to_i + 1).to_s + ' day' + (
@@ -110,7 +110,7 @@ class Book < ActiveRecord::Base
     self.master_book.linkto
   end
   def others
-    self.master_book.books.delete_if{|x| x == self}
+    self.master_book.books.to_a.delete_if{|x| x == self}
   end
   
   def similars

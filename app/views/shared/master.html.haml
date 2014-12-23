@@ -21,6 +21,7 @@
         .secondary_title= raw @item.secondary_title
         
         = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => @item}
+        %p= link_to 'Edit master record', edit_master_genericmaster_path(:category => @item.class.to_s, :id => @item.master_id), class: [:button, :tiny, :secondary]
 - unless @json.blank?
   %a{:name => "#map"}
   #map_container{:"data-magellan-destination" => "map"}

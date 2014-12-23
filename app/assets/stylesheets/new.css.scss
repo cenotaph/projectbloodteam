@@ -425,6 +425,14 @@ table#classic {
   font-size: 1.1rem;
   margin-top: 1.8rem;
 }
+
+.error {
+  background-color: red;
+  color: white;
+  padding: 0.7rem 0rem;;
+  font-size: 1.1rem;
+  margin-top: 1.8rem;
+}
 form {
 
   li {
@@ -512,6 +520,7 @@ footer {
 }
 
 .chooser {
+
   .choice_title {
     .secondary_title {
       color: #999;
@@ -521,6 +530,54 @@ footer {
       font-size: 0.8rem;
       color: #444;
       margin-top: 1rem;
+    }
+  }
+}
+
+.choice_row {
+  margin-bottom: 1rem !important;
+  .choice_title {
+    .secondary_title {
+      color: #999;
+      font-size: 0.75rem;
+    }
+  }
+}
+
+
+// new css here for classic entries
+table#classic {
+  tr {
+    
+    td {
+      border-collapse: collapse;
+      font-weight: 300;
+      color: #444;
+      vertical-align: top;
+      &.comment {
+
+        line-height: 1.5rem;
+      }
+      &.name {
+        font-size: 1.0rem;
+        font-weight: 500;
+        .secondary_title {
+          font-color: #999;
+          font-weight: 300;
+          font-size: 0.8rem;
+        }
+      }
+      &.label {
+        font-size: 0.875rem !important;
+        white-space: pre-line;
+      }
+      span.small, .small {
+        font-size: 0.7rem;
+      }
+      .venue_address {
+        font-size: 0.7rem;
+        color: #999;
+      }
     }
   }
 }

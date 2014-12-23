@@ -18,7 +18,7 @@ gem 'therubyracer', :group => [:staging, :production]
 
 # gem 'activerecord', '3.0.3'
 # gem 'buntine-discogs'
-gem 'amazon-ecs', '2.2.0'
+gem 'amazon-ecs', '2.3.0'
 group :development do
   gem 'better_errors'
   gem "binding_of_caller"

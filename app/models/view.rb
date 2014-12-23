@@ -37,7 +37,13 @@ class View < ActiveRecord::Base
       end
     end
     if category.has_master? && is_new == false
-      category.master_cols.each{|x| out.insert(1, x) }
+      if category == Book
+        category.master_cols.each{|x| out.insert(3, x) }
+      elsif category == Tvseries
+        category.master_cols.each{|x| out.insert(2, x) }
+      else
+        category.master_cols.each{|x| out.insert(1, x) }
+      end
     end
     return out
   end

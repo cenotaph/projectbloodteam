@@ -34,7 +34,7 @@ module ApplicationHelper
           elsif item.send(column).nil?
             raw item['venue_address']
           else
-            raw(item.send(column) + ", #{item['venue_address']}")
+            raw(item.send(column) + "<div class='venue_address'>#{item['venue_address']}</div>")
           end
         else
           raw(item.send(column)) #[column.to_sym])

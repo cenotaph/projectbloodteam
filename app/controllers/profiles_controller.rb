@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-class ProfilesController < InheritedResources::Base
+class ProfilesController < ApplicationController
   respond_to :html
   before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]
   

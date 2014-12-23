@@ -58,7 +58,7 @@
         .row
           .small-12.columns
             - if @item.class.columns_hash[col].type == :date
-              .form_wrapper{:class => col}= form.input col, :as => :string, :input_html => { :class => 'date_input', :required => ''}
+              .form_wrapper{:class => col}= form.input col, :as => :string, :input_html => { :class => 'date_input', :required => col == :date ? '' : false}
           
             - elsif (col == 'location' && @item.respond_to?('venue_address')) && @item.respond_to?('geolocation')
               = form.input :geolocation_id, :as => :hidden

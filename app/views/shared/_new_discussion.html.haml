@@ -20,6 +20,7 @@
                     .inner
                       .agent_name= link_to "Agent #{chat.agent.surname}", chat.agent
                       .standalone_date= chat.formatted_date
+
     - else  
       .row
         .small-10.small-offset-1.columns.discussion_entry{:class => [cycle("even", "odd"), (index+1 == discussion.size ? :last : false)]}
@@ -29,6 +30,10 @@
               .inner
                 .agent_name= link_to "Agent #{chat.agent.surname}", chat.agent
                 .standalone_date= chat.formatted_date
+                - if agent_signed_in?
+                  - if current_agent == chat.agent
+                    = link_to fa_icon('pencil'), "/agents/#{current_agent.slug}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
+                    = link_to fa_icon('trash'), chat, :method => :delete, data: {confirm: 'Are you sure you wish to delete this entry?'}
             .small-7.columns
               .discussion_comment
                 - unless chat.comment.blank?

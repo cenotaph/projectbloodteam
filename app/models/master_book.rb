@@ -97,21 +97,23 @@ class MasterBook < ActiveRecord::Base
   end
   
   def name
-      if self.author.blank?
-        self.title
-      else
-        self.title + " <span class='small_meta'>by</span> <span class='book_author'>" + self.author  +  "</span>"
-      end
+    if self.author.blank?
+      out = "<div class='main_title'>#{title.strip}</div>"
+    else
+      out = "<div class='main_title'>#{title.strip}</div> <div class='secondary_title'>#{secondary_title}</div>"
+      out.html_safe
+    end
   end
   
   def secondary_title
-    " <span class='small_meta'>by</span> <span class='book_author'>" + self.author  +  "</span>"
+    " <span class='small_meta'>by</span> " + self.author
   end
+  
   def self.query(searchterm)
     hits = Amazon::Ecs.item_search(searchterm, {:response_group => 'Medium'}).items
     results = []
     hits.each do |hit|
-      results << {"title" => hit.get('ItemAttributes/Title').to_s + ' by ' + hit.get('ItemAttributes/Author').to_s,
+      results << {"title" => hit.get('ItemAttributes/Title').to_s + '<div class="secondary_title">' + hit.get('ItemAttributes/Author').to_s + '</div>',
                   "key" => hit.get('ASIN'), 
                   'image' => hit.get('SmallImage').nil? ? nil : hit.get('SmallImage').gsub(/\<\/url\>.*/i, '').sub(/\<url\>/i, '')
                 }

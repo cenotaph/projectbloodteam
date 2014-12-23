@@ -155,12 +155,14 @@ class GenericmasterController < ApplicationController
   def edit
     @item = @category.classify.constantize.find(params[:id])
     if @item.agent == current_agent
+      set_meta_tags :title => 'Editing entry: ' + @item.name
       render :template => 'shared/new_master'
     end
   end
   
   def edit_master
     @item = @category.classify.constantize.find(params[:id])
+    set_meta_tags :title => 'Editing master record: ' + @item.name
     render :template => 'shared/edit_master'
   end
   
@@ -202,6 +204,7 @@ class GenericmasterController < ApplicationController
       if request.xhr?
         render :partial => '/agent', :collection => @items
       else
+        set_meta_tags :title => @category.pluralize + " for " + @agent.surname
         render :template => 'index_for_agent'
       end
     else
