@@ -181,6 +181,14 @@
   .title {
     margin-bottom: 1rem;
     font-size: 1.8rem;
+    a {
+      color: #444;
+    }
+    small {
+      a {
+        color: $primary-color;
+      }
+    }
     .main_title {
       font-size: 1.8rem;
     }

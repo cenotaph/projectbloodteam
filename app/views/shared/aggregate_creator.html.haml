@@ -15,9 +15,10 @@
     .row
       .small-8.columns.small-offset-2.title
         = link_to raw(title.name), title
-
-        - if title.respond_to?('linkto')
-          = link_to fa_icon('external-link'), title.linkto, :target => "_blank"
+        %small
+          = link_to fa_icon('eye'), title
+          - if title.respond_to?('linkto')
+            = link_to fa_icon('external-link'), title.linkto, :target => "_blank"
     .row
       .small-8.columns.text-center.small-offset-2
         .row
