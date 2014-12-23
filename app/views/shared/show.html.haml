@@ -16,7 +16,7 @@
   
 
 .container#outer{:style => @item.userimages.empty? ? false : "background: linear-gradient(rgba(255,255,255,0),rgba(255,255,255,0)), url(http://bloodteam.com#{@item.userimages.first.image.url(:full)});  background-size: cover; "}
-  %a{:name => "#details"}
+  %a{:name => "details"}
   .row{:"data-magellan-destination" => "details"}
     .small-8.columns.small-offset-2.forum_head{:style => @item.userimages.blank? ? "background: url(http://bloodteam.com#{@item.agent_icon(:large)}) no-repeat; background-size: cover" : "background-color: white; opacity: 0.9"}
       .inner.text-center
@@ -53,12 +53,12 @@
         = raw display_comment(@item)
         .entered_date= "entered " + time_ago_in_words(@item.created_at) + " ago"
 
-  %a{:name => "#images"}        
+  %a{:name => "images"}        
   .row#slideshow{:"data-magellan-destination" => "images"}
     .small-8.columns.small-offset-2
       = raw one_or_slideshow(@item)
 
-  %a{:name => "#discussion"}            
+  %a{:name => "discussion"}            
   #discussion{:style => @item.userimages.blank? ? false : "background-color: white; opacity: 0.9", :"data-magellan-destination" => "discussion"}= render :partial => 'shared/new_discussion', :locals => {:discussion => @item.discussion[1..-1], :json => @json, :master => false}
 
   - if agent_signed_in?
@@ -67,7 +67,7 @@
 
     
 - unless @json.blank?
-  %a{:name => "#map"}
+  %a{:name => "map"}
   #map_container{:"data-magellan-destination" => "map"}
   
 -# cache(:action_suffix => 'similars', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id) do

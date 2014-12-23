@@ -1,3 +1,15 @@
+.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
+  %dl.sub-nav
+    - @discussion.reverse.group_by{|x| x.date.year }.map(&:first).each_with_index do |year, i|
+      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "year_#{year}"}= link_to year, "#year_#{year}"
 
-.generic_heading= "Aggregated entries for #{@item.name}"
-#discussion.sixteen.columns= render :partial => "shared/discussion", :locals => {:discussion => @discussion, :master => false}
+.row.with_title
+  .small-10.columns.small-offset-1
+    %h2= "Aggregated entries for #{@item.name}"
+    
+- @discussion.reverse.group_by{|x| x.date.year }.map.each do |year|
+  %a{:name => "year_#{year.first.to_s}"}
+  .aggregate.row{:"data-magellan-destination" => "year_#{year.first.to_s}"}
+    .small-8.columns.small-offset-2
+      - year.last.each do |chat|
+        = render :partial => "shared/discussion_entry", :locals => {:chat => chat}

@@ -1,13 +1,21 @@
 # -*- encoding : utf-8 -*-
 class GeolocationsController < ApplicationController
   respond_to :html, :xml
-  before_filter :login_required, :only => [:new, :edit, :update, :create, :destroy]
+  before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]
   
   #caches_page :index 
 
   def create
-   # expire_page :action => :index
-    super
+    @geolocation = Geolocation.new(params[:geolocation])
+    if @geolocation.save
+      flash[:notice] = 'Location saved.'
+      redirect_to '/'
+    end
+
+  end
+  
+  def edit
+    @geolocation = Geolocation.find(params[:id])
   end
   
   def index

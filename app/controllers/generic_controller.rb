@@ -25,6 +25,7 @@ class GenericController < ApplicationController
       discussion << s.discussion
     end
     @discussion = discussion.flatten.sort{|x,y| y.created_at <=> x.created_at }
+    set_meta_tags :title => "Aggregate entries for " + @item.name
     render :template => 'shared/aggregate'
   end
    

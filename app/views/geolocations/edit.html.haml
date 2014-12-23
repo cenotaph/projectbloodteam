@@ -1,22 +1,39 @@
-%p Here you can edit the geographic data for a location. This feature is experimental and may not work completely!
-%p
-  You may find 
-  = link_to ' this tool ' , 'http://itouchmap.com/latlong.html', :target => :_blank
-  helpful for calculating longitude and latitude.
-  
-Editing information for address:
-= @geolocation.address
+.container
+  .row
+    .small-12.columns
+      %h2 Edit location data
+  .row
+    .small-12.columns
+      %p Here you can edit the geographic data for a location. This feature is experimental and may not work completely!
+      %p
+        You may find 
+        = link_to ' this tool ' , 'http://itouchmap.com/latlong.html', :target => :_blank
+        helpful for calculating longitude and latitude.
+  .row
+    .small-8.columns
+      %h6
+        Editing information for address:
+        = @geolocation.address
 
-= semantic_form_for @geolocation do |f|
-  = f.input :address
-  = f.input :latitude
-  = f.input :longitude
-  = f.submit
+  = semantic_form_for @geolocation do |f|
+    .form_wrapper
+      .row
+        .large-8.columns= f.input :address
+      .row
+        .large-8.columns= f.input :latitude
+      .row
+        .large-8.columns= f.input :longitude
+      .row
+        .large-8.columns= f.submit 'Save', class: [:button, :small]
   
-The following entries use this location, and editing this will alter the relation for ALL. Do this with care, especially if it is not yours!
+  .row
+    .small-12.columns
+      %p The following entries use this location, and editing this will alter the relation for ALL. Do this with care, especially if it is not yours!
 
-- @geolocation.pbt_entries.each do |e|
-  %p
-    = "#{e.class.to_s}: "
-    = e.name
-    %span.small= " [#{e.agent.surname}]"
+  - @geolocation.pbt_entries.each do |e|
+    .row
+      .small-12.columns
+        = "#{e.class.to_s}: "
+        = e.name
+        %span.small= " [#{e.agent.surname}]"
+        = link_to fa_icon('external-link'), e, target: :_blank
