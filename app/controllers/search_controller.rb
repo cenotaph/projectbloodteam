@@ -23,11 +23,11 @@ class SearchController < ApplicationController
     scope = []
     case params[:search_scope]
       when 'all'
-        scope = [Movie, Book, Music, Concert, Event, Restaurant, Bar, Takeaway, Activity, Comment, Forum, Airport, Brewing, Eating,  Grocery, Mile, Musicplayed, Videogame]
+        scope = [Movie, Book, Music, Concert, Event, Restaurant, Bar, Takeaway, Activity, Comment, Forum, Airport, Brewing, Eating,  Grocery, Videogame]
       when 'forums'
         scope = [Forum, Comment]
       else
-        scope = [Movie, Book, Music, Concert, Event, Restaurant, Bar, Takeaway, Activity, Airport, Brewing, Eating,  Grocery, Mile, Musicplayed, Videogame]
+        scope = [Movie, Book, Music, Concert, Event, Restaurant, Bar, Takeaway, Activity, Airport, Brewing, Eating,  Grocery,   Videogame]
     end
     
     for cat in scope do

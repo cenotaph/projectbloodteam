@@ -179,6 +179,17 @@
       font-size: 1rem;
     }
   }
+  .newsfeed_entry_link {
+    font-style: italic;
+    font-weight: 100;
+    margin-left: 50px;
+    font-size: 1.0em;
+    float: right;
+    a {
+      font-weight: 300;
+    }
+  }
+  
   .discussion {
     padding-top: 1.5rem;
     &.item {

@@ -1,7 +1,7 @@
 .magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
   %dl.sub-nav
     - @all_titles.to_a.delete_if{|x| x.discussion.empty? }.each_with_index do |title, i|
-      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "title_#{title.id}"}= link_to "#{title.title} " + (title.respond_to?(:year) ? "(#{title.year})" : "(#{title.discussion.size})"), "#title_#{title.id}"
+      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "title_#{title.id}"}= link_to raw("#{title.title} " + (title.respond_to?(:year) ? "(#{title.year})" : "(#{title.discussion.size})")), "#title_#{title.id}"
 
       
 .row.with_title
@@ -13,17 +13,20 @@
   %a{:name => "title_#{title.id}"}
   .aggregate{:"data-magellan-destination" => "title_#{title.id}"}
     .row
-      .small-8.columns.small-offset-2
-        %h4
-          = link_to raw(title.name), title
-          - if title.respond_to?('linkto')
-            = link_to image_tag('/img/icons/external-link.png'), title.linkto, :target => "_blank"
+      .small-8.columns.small-offset-2.title
+        = link_to raw(title.name), title
+
+        - if title.respond_to?('linkto')
+          = link_to fa_icon('external-link'), title.linkto, :target => "_blank"
     .row
       .small-8.columns.text-center.small-offset-2
-        = raw one_or_slideshow(title)
-        = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => title}
-    - title.discussion.each do |chat|
-      = render :partial => "shared/discussion_entry", locals: {:chat => chat}
+        .row
+          .large-2.columns= raw one_or_slideshow(title)
+          .large-10.columns= render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => title}
+    .row
+      .small-8.columns.small-offset-2
+        - title.discussion.each do |chat|
+          = render :partial => "shared/discussion_entry", locals: {:chat => chat}
 
 
 = content_for :jquery do

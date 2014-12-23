@@ -1,14 +1,20 @@
 - if show_entry?(chat)
   .row.item.discussion
-    .left.small-3.columns
-      .index_image
-        = image_tag chat.agent_icon(:large) unless chat.class == Comment
-        .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
+    .left.large-3.columns.text-right
+      - if chat.class == Comment
+        .agent_name= "Agent #{link_to chat.agent.surname, chat.agent}"
+        .newsfeed_icon= image_tag chat.agent_icon(:large)
+        .newsfeed_delete= remove_from_newsfeed(chat)
+
+      - else
+        .index_image
+          = image_tag chat.agent_icon(:large) unless chat.class == Comment
+          .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
     
-        - if agent_signed_in? && chat.class != Comment
-          = link_to fa_icon('eye'), chat
-          - if chat.agent == current_agent
-            = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
+          - if agent_signed_in? && chat.class != Comment
+            = link_to fa_icon('eye'), chat
+            - if chat.agent == current_agent
+              = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
     
       - if chat.respond_to?('metadata')
         .metadata
@@ -25,11 +31,11 @@
         
     .small-8.small-offset-1.columns.left{:class => (chat.class == Comment ? 'comment' : '')}
       - if chat.class == Comment
-        .comment_image
-          = image_tag chat.agent_icon(:small)
-          - if agent_signed_in? 
-            .way_small= link_to_if(chat.agent == current_agent, 'edit', "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit") {}
-        .agent_name= raw "Comment by Agent #{link_to chat.agent_surname, chat.agent}, #{time_ago_in_words(chat.date)} ago"
+        .row
+          .small-8.small-offset-2.columns
+            %span.big= raw('&ldquo;')
+            = raw display_comment(chat)
+          .newsfeed_entry_link= raw "comment posted " + time_ago_in_words(chat.created_at) + " ago"
       - else
         - unless display_comment(chat).blank?
           .comment
