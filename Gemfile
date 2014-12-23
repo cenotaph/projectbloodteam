@@ -2,7 +2,7 @@
 source 'http://gemcutter.org'
 source 'https://rubygems.org'
 ruby '2.1.1'
-gem 'rails', '4.1.7'
+gem 'rails', '4.2'
 gem 'mysql2'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
@@ -51,7 +51,8 @@ gem 'geocoder'
 gem 'haml'
 gem 'haml-rails'
 gem 'hpricot'
-gem 'inherited_resources', github: 'josevalim/inherited_resources'
+gem 'imdb', github: 'cenotaph/imdb'
+gem 'inherited_resources'
 gem 'kaminari'
 gem 'meta-tags', require: 'meta_tags'
 gem 'mini_magick'
@@ -61,9 +62,10 @@ gem 'paperclip'
 # gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'
 gem 'randumb'
-gem 'responders'
+gem 'responders', '2.0.2'
 
 gem 'themes_for_rails', github: 'boxcar21/themes_for_rails', branch: 'master'
-gem 'thinking-sphinx', '3.1.0'
-# gem 'underscore-rails'
-# gem 'will_paginate',  '~> 3.0'
+gem 'thinking-sphinx', '~> 3.1.1',
+  :git    => 'git://github.com/pat/thinking-sphinx.git',
+  :branch => 'develop',
+  :ref    => 'd3e2ad4a4b'

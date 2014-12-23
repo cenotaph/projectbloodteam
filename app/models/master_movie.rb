@@ -18,9 +18,9 @@ class MasterMovie < ActiveRecord::Base
     else
       existing = self.where(:imdbcode => key)
       if existing.empty?
-        m = IMDB::new(key)
-        big_poster = m.poster_link # rescue nil
-        mynew = self.new(:title => m.title, :imdbcode => key, :director => m.directors.join(', '), :country => m.country, :year => m.year)
+        m = Imdb::Movie.new(key)
+        big_poster = m.poster # rescue nil
+        mynew = self.new(:title => m.title, :imdbcode => key, :director => m.director.join(', '), :country => m.countries.join(' / '), :year => m.year)
         require 'open-uri'
         if mynew.save
           unless big_poster.blank?
@@ -29,7 +29,7 @@ class MasterMovie < ActiveRecord::Base
             mynew.filename_content_type = 'image/jpeg'
             system("mkdir -p " + Rails.root.to_s + '/public/images/master_movies/' + mynew.id.to_s + '/thumb')
             system("mkdir -p " + Rails.root.to_s + '/public/images/master_movies/' + mynew.id.to_s + '/full')
-            open(Rails.root.to_s + '/public/images/master_movies/' + mynew.id.to_s + '/thumb/' +   imdbcode + '.jpg', "wb").write(open(m.poster_small).read) unless m.poster_small.blank?
+            open(Rails.root.to_s + '/public/images/master_movies/' + mynew.id.to_s + '/thumb/' +   imdbcode + '.jpg', "wb").write(open(m.poster).read) unless m.poster.blank?
             open(Rails.root.to_s + '/public/images/master_movies/' + mynew.id.to_s + '/full/' +   imdbcode + '.jpg', "wb").write(open(big_poster).read)
             mynew.save!
           end
@@ -109,13 +109,14 @@ class MasterMovie < ActiveRecord::Base
     out.html_safe
   end
   
+
   def secondary_title
     out = " ("  + [director, country, year].compact.delete_if{|x| x.blank? }.join(', ') + ")"
     out.html_safe
   end
   
   def self.query(searchterm)
-    imdbhits = IMDB::new(searchterm, :interactive_load => true).pbt_menu
+    imdbhits = Imdb::Search.new(searchterm).movies
 
   end
 

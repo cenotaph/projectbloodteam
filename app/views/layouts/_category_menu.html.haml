@@ -26,7 +26,7 @@
                 = link_to @agent.surname, "/agents/#{@agent.id.to_s}/#{category.table_name}"
       
             - if category.has_master?
-              = link_to fa_icon("plus-square-o"), '#', :rel => "#prompt_#{category.table_name.singularize}", :class => 'has_overlay'
+              = link_to fa_icon("plus-square-o"), '#', :"data-reveal-id" => "prompt_#{category.table_name.singularize}"
             -else 
               = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.id.to_s}/#{category.table_name}/new"
 %li.divider
@@ -37,28 +37,3 @@
     - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|
       %li{:class => cycle('odd', 'even')}= link_to category.to_s.pluralize, "/#{category.table_name}" 
               
-/ - else
-/   %ul.header_category_list.sf-menu
-/     - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|
-/       - if @agent.nil?
-/         - this_cat = category.to_s.pluralize
-/       - else
-/         - agent_category = @agent.categories.year(getYear).first
-/         - unless agent_category.nil?
-/           - this_cat = agent_category.send(category.to_s.tableize).to_s
-/           - if this_cat == "0"
-/             - othercats << category
-/             - next
-/       %li{:style => "float: left;"}
-/         %span.category= link_to_if @agent.nil?, this_cat,  "/#{category.table_name}"
-/         %span.spacer= "//"
-/         - unless @agent.nil?
-/           %ul
-/             %li.even= link_to 'AGENT', "/agents/#{@agent.id.to_s}/#{category.table_name}"
-/             %li.odd= link_to 'ALL', "/#{category.table_name}"
-/     - unless othercats.empty?
-/       %li
-/         = fa_icon 'bars'
-/         %ul.moremenu
-/           - othercats.sort{|x, y| x.to_s <=> y.to_s }.each do |category|
-/             %li{:class => cycle('odd', 'even')}= link_to category.to_s.pluralize, "/#{category.table_name}"

@@ -1,42 +1,46 @@
-- if @category == 'Movie'
+.row.container
+  .small-8.columns.small-offset-2
+    %h2 Custom entry
+    - if @category == 'Movie'
   
-  = semantic_form_for(@movie = MasterMovie.new, :method => :post, :url => "/genericmaster/create_custom/Movie") do |f|
-    = f.input :title, :as => :string
-    = f.input :director, :as => :string
-    = f.input :country, :as => :string
-    = f.input :year, :as => :string
-    = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
-    - if @followup == 'new'
-      = f.input :followup, :as => :hidden, :value => @followup
-    = f.submit
+      = semantic_form_for(@movie = MasterMovie.new, :method => :post, :url => "/genericmaster/create_custom/Movie") do |f|
+        .form_wrapper
+          = f.input :title, :as => :string
+          = f.input :director, :as => :string
+          = f.input :country, :as => :string
+          = f.input :year, :as => :string
+          = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
+          - if @followup == 'new'
+            = f.input :followup, :as => :hidden, :value => @followup
+          = f.submit 'Create', class: [:button, :create]
       
-- if @category == 'Music'
-  = semantic_form_for(@music = MasterMusic.new, :method => :post, :url => "/genericmaster/create_custom/Music") do |f|
-    = f.input :artist, :as => :string
-    = f.input :title, :as => :string
-    = f.input :label, :as => :string
-    = f.input :year, :as => :string
-    = f.input :format, :as => :string
-    = f.input :discogscode, :as => :string, :input_html => {:maxlength => 16 }
-    - if @followup == 'new'
-      = f.input :followup, :as => :hidden, :value => @followup
-    = f.submit
+    - if @category == 'Music'
+      = semantic_form_for(@music = MasterMusic.new, :method => :post, :url => "/genericmaster/create_custom/Music") do |f|
+        = f.input :artist, :as => :string
+        = f.input :title, :as => :string
+        = f.input :label, :as => :string
+        = f.input :year, :as => :string
+        = f.input :format, :as => :string
+        = f.input :discogscode, :as => :string, :input_html => {:maxlength => 16 }
+        - if @followup == 'new'
+          = f.input :followup, :as => :hidden, :value => @followup
+        = f.submit 'Create', class: [:button, :create]
       
-- if @category == 'Book'
-  = semantic_form_for(@book = MasterBook.new, :method => :post, :url => "/genericmaster/create_custom/Book") do |f|
-    = f.input :author, :as => :string
-    = f.input :title, :as => :string
-    = f.input :amazoncode, :as => :string
-    - if @followup == 'new'
-      = f.input :followup, :as => :hidden, :value => @followup
-    = f.submit
+    - if @category == 'Book'
+      = semantic_form_for(@book = MasterBook.new, :method => :post, :url => "/genericmaster/create_custom/Book") do |f|
+        = f.input :author, :as => :string
+        = f.input :title, :as => :string
+        = f.input :amazoncode, :as => :string
+        - if @followup == 'new'
+          = f.input :followup, :as => :hidden, :value => @followup
+        = f.submit 'Create', class: [:button, :create]
       
-- if @category == 'Videogame'
-  = semantic_form_for(@videogame = MasterVideogame.new, :method => :post, :url => "/genericmaster/create_custom/Videogame") do |f|
-    = f.input :title, :as => :string
-    = f.input :creator, :as => :string
-    = f.input :platform, :as => :string
-    = f.input :amazoncode, :as => :string
-    - if @followup == 'new'
-      = f.input :followup, :as => :hidden, :value => @followup
-    = f.submit
+    - if @category == 'Videogame'
+      = semantic_form_for(@videogame = MasterVideogame.new, :method => :post, :url => "/genericmaster/create_custom/Videogame") do |f|
+        = f.input :title, :as => :string
+        = f.input :creator, :as => :string
+        = f.input :platform, :as => :string
+        = f.input :amazoncode, :as => :string
+        - if @followup == 'new'
+          = f.input :followup, :as => :hidden, :value => @followup
+        = f.submit 'Create', class: [:button, :create]

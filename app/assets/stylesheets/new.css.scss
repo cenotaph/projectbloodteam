@@ -419,6 +419,7 @@ table#classic {
 }
 
 form {
+
   li {
     list-style-type: none;
     &.boolean {
@@ -437,6 +438,9 @@ form {
     width: 2.5rem !important;
   }
   .form_wrapper {
+    input.date_input {
+      width: 175px;
+    }
     &.cost {
       float: left;
       label {
@@ -496,6 +500,20 @@ footer {
         max-height: 40px;
         opacity: 0.6;
       }
+    }
+  }
+}
+
+.chooser {
+  .choice_title {
+    .secondary_title {
+      color: #999;
+      font-size: 0.75rem;
+    }
+    .metadata {
+      font-size: 0.8rem;
+      color: #444;
+      margin-top: 1rem;
     }
   }
 }

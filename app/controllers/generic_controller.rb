@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-class GenericController < InheritedResources::Base
+class GenericController < ApplicationController
   respond_to :html, :xml
   before_filter :getView, :getCategory
   before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]

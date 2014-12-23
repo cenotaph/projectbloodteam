@@ -50,6 +50,7 @@ Pbt4::Application.routes.draw do
       collection do
         get :query
         get :shorts
+        get :directid
       end
     end
     resources :master_movies, :controller => :genericmaster, :category => 'MasterMovie'

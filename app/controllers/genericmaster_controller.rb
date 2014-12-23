@@ -1,9 +1,9 @@
 # -*- encoding : utf-8 -*-
-class GenericmasterController < InheritedResources::Base
+class GenericmasterController < ApplicationController
   respond_to :html, :xml
   before_filter :getView
   before_filter :getCategory
-  before_filter :authenticate_agent, :only => [:new, :edit, :update, :create, :destroy,  :unreviewed]
+  before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy, :directid,  :unreviewed]
   theme :getTheme
   autocomplete :movie, :location
   
@@ -67,7 +67,7 @@ class GenericmasterController < InheritedResources::Base
   end
 
   def create
-    @item = @category.classify.constantize.new(params[@category.downcase])
+    @item = @category.classify.constantize.new(params[@category.downcase].permit!)
     if @item.save 
       flash[:notice] = 'Entry created'
       expire_fragment(/genericmaster\/#{Regexp.escape(@item.master.id.to_s)}\?(.*)category\=#{Regexp.escape(@item.master.class.to_s.downcase)}/)
@@ -126,6 +126,7 @@ class GenericmasterController < InheritedResources::Base
   
   def custom_master
     @followup = params[:followup]
+    set_meta_tags :title => "Custom entry"
     render :template => 'shared/custom'
   end
   
@@ -138,11 +139,12 @@ class GenericmasterController < InheritedResources::Base
   end
   
   def directid
-    @item = @category.classify.constantize.new(:agent_id => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id]), :add_to_newsfeed => true)
+    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id].gsub(/^tt/, '')), :add_to_newsfeed => true)
     @item.userimages << Userimage.new(:primary => true)
     if @item.respond_to?('currency_id')
       @item.currency_id = current_agent.default_currency
     end
+    set_meta_tags :title => 'New entry for ' + @item.name
     render :template => 'shared/new_master'
   end
   
@@ -213,23 +215,27 @@ class GenericmasterController < InheritedResources::Base
   end  
   
   def query
-    begin
-      @localhits = @master.classify.gsub(/^Master/, '').constantize.search(params[:query]).map{|x| x.master}.uniq
-    rescue Riddle::ResponseError 
-      @localhits = []
-    end      
-    @choices = @master.classify.constantize.query(params[:query]).delete_if{|x| @localhits.map{|y| y.external_index}.include?(x['key'].to_i) }.each 
-    render :template => 'shared/choose'
+    if params[:directid]
+      redirect_to :action => :directid, id: params[:directid]
+    else
+      begin
+        @localhits = @master.classify.gsub(/^Master/, '').constantize.search(ThinkingSphinx::Query.escape(params[:query])).map{|x| x.master}.uniq
+      rescue ThinkingSphinx::ConnectionError
+        @localhits = []
+      end      
+      @choices = @master.classify.constantize.query(params[:query]) #.delete_if{|x| @localhits.map{|y| y.external_index}.include?(x['key'].to_i) }.each 
+      render :template => 'shared/choose'
+    end
   end
 
     
   def select
-    @item = @category.classify.constantize.new(:agent_id => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id]), :add_to_newsfeed => true)
+    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id]), :add_to_newsfeed => true)
     @item.userimages << Userimage.new(:primary => true)
     if @item.respond_to?('currency_id')
       @item.currency_id = current_agent.default_currency
     end
-
+    set_meta_tags :title => "New entry for " + @item.name
     render :template => 'shared/new_master'
   end
   

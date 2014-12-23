@@ -1,15 +1,46 @@
-- unless @localhits.blank?
-  %h3 Results already in PBT database:
-  - @localhits.each do |hit|
-    .choice_title
-      = link_to raw(hit.name), select_genericmaster_path(:agent_id => current_agent.id, :id => "local_#{hit.id}", :category => @category)
+- unless @localhits.blank? || @choices.blank?
+  .magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
+    %dl.sub-nav
+      %dd.active{:"data-magellan-arrival" => "localhits"}= link_to "Existing PBT entries (#{@localhits.size})", "#localhits"
+      %dd{:"data-magellan-arrival" => "choices"}= link_to "Other search results (#{@choices.size})", "#choices"
+
+        
+.container.chooser
+  .row
+    .small-8.columns.small-2-offset
+      %h2
+        = "Searching for "
+        %em= params[:query]
+  - unless @localhits.blank?
+    %a{:name => "#localhits"}
+    .row{:"data-magellan-destination" => "localhits"}
+      .small-12.columns
+        %h3 Results already in PBT database:
+        - @localhits.in_groups_of(3).each do |group|
+          .choice_title.row
+            - group.each_with_index do |hit, i|
+              .small-4.columns{class: i == 2 ? :end : false }
+                - next if hit.nil?
+                .row
+                  .small-3.columns
+                    - if hit.filename?
+                      = link_to image_tag(hit.filename.url(:small))
+                  .small-9.columns
+                    = link_to raw(hit.name), select_genericmaster_path(:agent_id => current_agent.id, :id => "local_#{hit.id}", :category => @category)
+                    .metadata
+                      = "Agents: #{hit.items.map{|x| x.agent.surname }.uniq.join(', ')}"
+                
+
     
 - unless @choices.blank?
-  %h3 Search results:
-  - @choices.each do |choice|
-    .choice.clearfix
-      - unless choice['image'].nil?
-        .choice_image= image_tag choice['image']
-      .choice_title= link_to raw(choice['title'].gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category)
-      - if choice['summary']
-        %div{:style => "font-size: 8pt; width: 70%;"}= choice['summary']
+  %a{:name => "#choices"}
+  .row{:"data-magellan-destination" => "choices"}
+    .small-8.columns
+      %h3 Other search results:
+      - @choices.each do |choice|
+        .choice
+          -# .choice_image= image_tag choice.poster
+          .choice_title= link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.id, :category => @category)
+          / - if choice['summary']
+          /   %div{:style => "font-size: 8pt; width: 70%;"}= choice['summary']
+          

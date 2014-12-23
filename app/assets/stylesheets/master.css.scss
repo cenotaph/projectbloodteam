@@ -46,6 +46,17 @@
       color: white;
     }
   }
+  .item_others {
+    .other {
+      .other_date {
+        font-size: 0.9rem;
+      }
+      span.big {
+        font-size: 2em;
+        float: left;
+      }
+    }
+  }
 }
 
 #similars {

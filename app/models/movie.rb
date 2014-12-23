@@ -6,10 +6,11 @@ class Movie < ActiveRecord::Base
   belongs_to :currency
   has_many :userimages, :as => :entry, :dependent => :destroy
   accepts_nested_attributes_for :userimages, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank?  && attributes['image_url'].blank?  && attributes['id'].blank?}
-  validates_presence_of :master_movie_id, :date
+  validates_presence_of :master_movie_id, :date, :agent_id
   has_many :comments, -> { where( 'item_type = \'MasterMovie\'') }, :foreign_key => 'foreign_id', :primary_key => 'master_movie_id'                          
   has_many :entries, :as => :entry, :dependent => :delete_all
   validates :date, :date => {  :message => 'Invalid date.' }
+
   belongs_to :geolocation
   geocoded_by :my_address
   after_validation do

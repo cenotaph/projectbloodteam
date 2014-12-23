@@ -21,8 +21,10 @@ class ApplicationController < ActionController::Base
   end
   
   def getView
+
+      
     if params[:agent_id]
-      agent = Agent.find(params[:agent_id])
+      agent = Agent.friendly.find(params[:agent_id])
       views = View.where(:agent => agent).where(:year => getYear)
       if views.empty?
         @view = View.where(:agent => agent).first
@@ -30,7 +32,6 @@ class ApplicationController < ActionController::Base
         @view = views.first
       end
     end
-    
   end
   
   def getData

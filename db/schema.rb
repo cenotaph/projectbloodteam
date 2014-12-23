@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141215123443) do
+ActiveRecord::Schema.define(version: 20141222191757) do
 
   create_table "activities", force: true do |t|
     t.integer  "agent_id"
@@ -525,6 +525,21 @@ ActiveRecord::Schema.define(version: 20141215123443) do
     t.boolean   "converted",                        default: false, null: false
   end
 
+  create_table "master_tvs", force: true do |t|
+    t.string   "name"
+    t.string   "image_file_name"
+    t.integer  "image_file_size"
+    t.string   "image_content_type"
+    t.integer  "height"
+    t.integer  "width"
+    t.datetime "image_updated_at"
+    t.boolean  "delta"
+    t.string   "slug"
+    t.integer  "imdbcode"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "master_videogames", force: true do |t|
     t.string   "amazoncode"
     t.string   "title"
@@ -749,6 +764,27 @@ ActiveRecord::Schema.define(version: 20141215123443) do
     t.datetime "modified"
     t.text     "defaultcss"
   end
+
+  create_table "tvseries", force: true do |t|
+    t.integer  "agent_id"
+    t.integer  "master_tv_id"
+    t.date     "started"
+    t.date     "finished"
+    t.integer  "season"
+    t.float    "rating",         limit: 24
+    t.text     "comment"
+    t.boolean  "first"
+    t.string   "userimage"
+    t.string   "location"
+    t.string   "venue_address"
+    t.integer  "geolocation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tvseries", ["agent_id"], name: "index_tvseries_on_agent_id", using: :btree
+  add_index "tvseries", ["geolocation_id"], name: "index_tvseries_on_geolocation_id", using: :btree
+  add_index "tvseries", ["master_tv_id"], name: "index_tvseries_on_master_tv_id", using: :btree
 
   create_table "userimages", force: true do |t|
     t.integer  "entry_id"

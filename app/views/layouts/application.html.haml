@@ -1,4 +1,3 @@
-!!! XML
 !!!
 %html{ :'xml:lang' => "en", :lang => "en" }
   %head
@@ -63,39 +62,55 @@
             - 2014.downto(2002).map(&:to_s).each do |y|
               = link_to image_tag("/img/logos/#{y}_small.jpg"), "http://#{y}.bloodteam.com"
     - if current_agent
-      .modal#prompt_movie
+    
+      .reveal-modal#prompt_movie{:"data-reveal" => ''}
         %h2 New movie
-        %p Enter a title to search for your movie.
-        = form_tag query_agent_movies_path(:agent_id => current_agent.id), :method => :get do 
-          = text_field_tag :query
-          = submit_tag "Search"
-        = link_to 'create custom entry', '/genericmaster/custom/Movie/new'
-      .modal#prompt_music
+        .row
+          .small-4.columns
+            = form_tag query_agent_movies_path(:agent_id => current_agent.id), :method => :get do 
+              %p Enter a title to search for your movie.
+              = text_field_tag :query
+              = submit_tag 'Search', :class => [:button, :small]
+          .small-4.columns
+            = form_tag directid_agent_movies_path(:agent_id => current_agent.id), :method => :get do 
+              %p or enter the IMDB code directly
+              = text_field_tag :directid
+              = submit_tag 'Create', :class => [:button, :small]
+          .small-4.columns.end
+            %p or
+            = link_to 'create custom entry', '/genericmaster/custom/Movie/new', class: [:button, :tiny, :secondary]
+        
+      .reveal-modal#prompt_music{:"data-reveal" => ''}
         %h2 New music
-        %p Enter a title to search for your music entry.
-        = form_tag query_agent_musics_path(:agent_id => current_agent.id), :method => :get do 
-          = text_field_tag :query
-          = submit_tag "Search"
-        %p or enter the discogs.com id number directly
-        = form_tag directid_agent_musics_path(:agent_id => current_agent.id), :method => :get do
-          = text_field_tag :id
-          = submit_tag 'Create'
-        %p or
-        = link_to 'create custom entry', '/genericmaster/custom/Music/new'  
-      .modal#prompt_book
+        .row
+          .small-4.columns
+            %p Enter a title to search for your music entry.
+            = form_tag query_agent_musics_path(:agent_id => current_agent.id), :method => :get do 
+              = text_field_tag :query
+              = submit_tag "Search", :class => [:button, :small]
+          .small-4.columns
+            %p or enter the discogs.com id number directly
+            = form_tag directid_agent_musics_path(:agent_id => current_agent.id), :method => :get do
+              = text_field_tag :id
+              = submit_tag 'Create', :class => [:button, :small]
+          .small-4.columns
+            %p or
+            = link_to 'create custom entry', '/genericmaster/custom/Music/new', class: [:button, :tiny, :secondary]
+        
+      .reveal-modal#prompt_book{:"data-reveal" => ''}
         %h2 New book
         %p Enter a title to search for your book.
         = form_tag query_agent_books_path(:agent_id => current_agent.id), :method => :get do 
           = text_field_tag :query
-          = submit_tag "Search"
-        = link_to 'create custom entry', '/genericmaster/custom/Book/new'  
-      .modal#prompt_videogame
+          = submit_tag "Search", :class => [:button, :small]
+        = link_to 'create custom entry', '/genericmaster/custom/Book/new', class: [:button, :tiny, :secondary]
+      .reveal-modal#prompt_videogame{:"data-reveal" => ''}
         %h2 New videogame
         %p Enter a title to search for your videogame.
         = form_tag query_agent_videogames_path(:agent_id => current_agent.id), :method => :get do 
           = text_field_tag :query
-          = submit_tag "Search"
-        = link_to 'create custom entry', '/genericmaster/custom/Videogame/new'  
+          = submit_tag "Search", :class => [:button, :small]
+        = link_to 'create custom entry', '/genericmaster/custom/Videogame/new', class: [:button, :tiny, :secondary]  
     = javascript_include_tag "application" 
   #login_overlay
     .login_content
