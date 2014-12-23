@@ -16,6 +16,10 @@ class GenericmasterController < ApplicationController
         @master = 'MasterMovie'
       when 'Music' 
         @master = 'MasterMusic'
+      when 'Tvseries'
+        @master = 'MasterTvseries'
+      when 'MasterTvseries'
+        @master = 'MasterTvseries'
       when 'MasterMusic'
         @master = 'MasterMusic'
       when 'Book'
@@ -166,23 +170,34 @@ class GenericmasterController < ApplicationController
     else
       date = ' date '
     end
+   
     joins = [:agent,  :userimages]
     joins.push(:geolocation) if @category == 'Movie'
     if params[:agent_id]
-      @agent = Agent.find(params[:agent_id])
-      if @category == 'Book' || @category == 'Videogame'
+      @agent = Agent.friendly.find(params[:agent_id])
+      if @category == 'Book' || @category == 'Videogame' 
         if getYear == Time.now.strftime('%Y')
           @items = @category.classify.constantize.includes([:agent, :userimages, :comments,
             {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
-              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where(:agent_id => params[:agent_id]).order('date desc').paginate(:per_page =>  (theme_name == 'flume' ? 50 : 20 ), :page => params[:page])
+              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where(:agent => @agent).order('date desc').page(params[:page]).per(50)
         else
           @items = @category.classify.constantize.includes([:agent, :userimages, :comments,
             {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
-              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where(:agent_id => params[:agent_id]).where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").order('date desc').paginate(:per_page =>  (theme_name == 'flume' ? 50 : 20 ), :page => params[:page])
+              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where(:agent => @agent).where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").order('date desc').page(params[:page]).per(50)
+        end
+      elsif @category == 'Tvseries' 
+        if getYear == Time.now.strftime('%Y')
+          @items = @category.classify.constantize.includes([:agent, :userimages, :comments,
+            {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
+              ]).select("*, greatest(coalesce(started,finished), coalesce(finished,  started)) as date").where(:agent => @agent).order('date desc').page(params[:page]).per(50)
+        else
+          @items = @category.classify.constantize.includes([:agent, :userimages, :comments,
+            {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
+              ]).select("*, greatest(coalesce(started,finished), coalesce(finished, started)) as date").where(:agent => @agent).where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").order('date desc').page(params[:page]).per(50)
         end
       else
         @items = @category.classify.constantize.includes([:agent , :comments,  
-            "master_#{@category.downcase}".to_sym, :userimages]).where(:agent => Agent.find(params[:agent_id])).where("date <= '#{getYear}-12-31'").order(date + ' DESC').page(params[:page]).per(50)
+            "master_#{@category.downcase}".to_sym, :userimages]).where(:agent => @agent).where("date <= '#{getYear}-12-31'").order(date + ' DESC').page(params[:page]).per(50)
       end
       if request.xhr?
         render :partial => '/agent', :collection => @items
@@ -224,6 +239,7 @@ class GenericmasterController < ApplicationController
         @localhits = []
       end      
       @choices = @master.classify.constantize.query(params[:query]) #.delete_if{|x| @localhits.map{|y| y.external_index}.include?(x['key'].to_i) }.each 
+      set_meta_tags :title => 'Searching for ' + params[:query]
       render :template => 'shared/choose'
     end
   end
@@ -231,6 +247,7 @@ class GenericmasterController < ApplicationController
     
   def select
     @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id]), :add_to_newsfeed => true)
+
     @item.userimages << Userimage.new(:primary => true)
     if @item.respond_to?('currency_id')
       @item.currency_id = current_agent.default_currency
@@ -260,6 +277,7 @@ class GenericmasterController < ApplicationController
   end
   
   def show
+
     require 'discogs' if @category =~ /Music/
     if @category =~ /^Master/
       @singular = @category.gsub(/^Master/, '').downcase
@@ -270,6 +288,7 @@ class GenericmasterController < ApplicationController
         ]).find(params[:id])      
         item = @item
     else
+ 
       @singular = @category
       @master = 'master_' + @category.downcase
       item = @singular.classify.constantize.find(params[:id])
@@ -294,6 +313,7 @@ class GenericmasterController < ApplicationController
       @json = @item.discussion.delete_if{|x| !x.respond_to?('geolocation')}.delete_if{|x| x.geolocation.nil?}.map(&:geolocation).uniq.compact
       
     end
+
     set_meta_tags :title => @item.name
     if request.xhr?
       @item = @category.classify.constantize.find(params[:id])

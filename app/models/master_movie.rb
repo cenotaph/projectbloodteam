@@ -116,7 +116,7 @@ class MasterMovie < ActiveRecord::Base
   end
   
   def self.query(searchterm)
-    imdbhits = Imdb::Search.new(searchterm).movies
+    imdbhits = Imdb::Search.new(searchterm, {:ttype => :ft}).movies
 
   end
 

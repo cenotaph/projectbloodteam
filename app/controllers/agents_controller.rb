@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-class AgentsController < InheritedResources::Base
+class AgentsController < ApplicationController
   respond_to :html, :rss
   before_filter :authenticate_agent!, :only => [:your_settings, :edit, :update]
   
@@ -27,19 +27,21 @@ class AgentsController < InheritedResources::Base
   end
   
   def create 
-    create! { 
-       '/missing_profile'
-    }
+    @agent = Agent.new(params[:agent])
+    if @agent.save
+      redirect_to '/'
+    end
   end
   
   def edit
-    @agent = Agent.find(params[:id])
+    @agent = Agent.friendly.find(params[:id])
     if current_agent == @agent
       @agent.twitpasswd = @agent.twitpasswd.tr("A-Ma-mN-Zn-z","N-Zn-zA-Ma-m") if @agent.twitpasswd
     else
      flash[:notice] = 'You cannot edit another agent\'s profile.'
      redirect_to '/settings/'
     end
+    set_meta_tags :title => 'Editing your details'
   end
 
   def history
@@ -145,8 +147,29 @@ class AgentsController < InheritedResources::Base
     end
   end
   
+  def update
+    @agent = Agent.friendly.find(params[:id])
+    if @agent == current_agent
+      if @agent.update_attributes(agent_params)
+        flash[:notice] ='Your settings have been updated.'
+        redirect_to '/settings'
+      else
+        flash[:error] = 'There was an error saving your changes.'
+      end
+    end
+  end
+      
+  
   def your_settings
     @profiles = Profile.where(:agent_id => current_agent.id).sort{|x, y| y.year <=> x.year }
+    set_meta_tags :title => 'Your PBT settings'
     render :template => 'shared/your_settings'
   end
+  
+  private
+  
+  def agent_params
+    params.require(:agent).permit(:surname, :agent_since, :lastfm, :twitname, :username, :public_password)
+  end
+  
 end

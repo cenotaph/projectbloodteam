@@ -44,7 +44,15 @@ Pbt4::Application.routes.draw do
     resources :takeaway, :controller => :generic, :category => 'Takeaway', :path => 'takeaway'
     resources :weights, :controller => :generic, :category => 'Weight', :path => 'weight'
     resources :forums
-
+    
+    resources :tvseries, :controller => :genericmaster, :category => 'Tvseries' do
+      collection do
+        get :query
+        get :directid
+      end
+    end
+    
+    resources :master_tvseries, :controller => :genericmaster, :category => 'MasterTvseries'
     
     resources :movies, :controller => :genericmaster, :category => 'Movie' do
       collection do
@@ -129,6 +137,8 @@ Pbt4::Application.routes.draw do
   resources :master_books, :controller => :genericmaster, :category => 'MasterBook'
   resources :videogames, :controller => :genericmaster, :category => 'Videogame'
   resources :master_videogames, :controller => :genericmaster, :category => 'MasterVideogame'
+  resources :tvseries, :controller => :genericmaster, :category => 'Tvseries'
+  resources :master_tvseries, :controller => :genericmaster, :category => 'MasterTvseries'
   
   resources :forums, :has_many => :comments
   resources :comments, :controller => :generic, :category => 'Comment'

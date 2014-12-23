@@ -30,7 +30,9 @@
 #discussion
   %a{:name => "discussion", :"data-magellan-destination" => "discussion"}
   = render :partial => 'shared/new_discussion', :locals => {:discussion => @item.discussion, :json => @json, :master => false}
-
+  - if agent_signed_in?
+    .row
+      .small-8.columns.small-offset-2= render :partial  => 'shared/new_comment', :locals => {comment: Comment.new(:item => @item, agent: current_agent), item: @item}
 - cache(:action_suffix => 'similars', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id) do
 
   - if @item.respond_to?('author')

@@ -1,20 +1,23 @@
-= form_for @category do |cat| 
+.container
+  .row
+    .large-6.columns.large-offset-3.small-10.small-offset-1
+      %h2= "Agent #{@category.agent.surname}'s categories for #{@category.year}"
+      = form_for @category do |cat| 
 
-  %p You may edit your categories here. The checkbox enables the category, and you may customise the name of the category.
-  %p 
-    Editing categories for year: 
-    //= getYear
+        %p You may edit your categories here. The checkbox enables the category, and you may customise the name of the category.
 
-  #inputform
-    - Category.columns.each do |c|
-      - next if c.name == 'id' || c.name == 'agent_id' || c.name == 'year' || c.name == 'loans' || c.name == 'projects' || c.name == 'tasks'
-      .row
-        = cat.check_box 'has_' + c.name.to_s, :checked => (@category.send(c.name) == "0" ? false : true)
-        - if @category.send(c.name) == "0"
-          = cat.text_field c.name, :value => c.human_name
-        - else
-          = cat.text_field c.name, :value => @category.send(c.name)
+        #inputform
+          - Category.columns.each do |c|
+            - next if c.name == 'id' || c.name == 'agent_id' || c.name == 'year' || c.name == 'loans' || c.name == 'projects' || c.name == 'tasks'
+            .row
+              .small-1.columns.text-right
+                = cat.check_box 'has_' + c.name.to_s, :checked => (@category.send(c.name) == "0" ? false : true)
+              .large-5.columns.text-left.end.small-10
+                - if @category.send(c.name) == "0"
+                  = cat.text_field c.name, :value => c.human_name
+                - else
+                  = cat.text_field c.name, :value => @category.send(c.name)
     
-    = cat.hidden_field :year 
-    = cat.submit "Edit"
+          = cat.hidden_field :year 
+          = cat.submit "Edit", class: [:button, :small]
 

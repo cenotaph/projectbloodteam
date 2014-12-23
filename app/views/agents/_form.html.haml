@@ -1,10 +1,21 @@
-= semantic_form_for @agent do |f|
-  = f.input :surname
-  = f.input :agent_since
-  = f.input :username, :label => "Username (used only to log into the site, no spaces allowed)"
-  = f.input :public_password, :label => "Public password-protection (leave blank for public PBT)"
-  = f.input :lastfm, :label => "Last.fm username"
-  = f.input :twitname, :label => "Twitter username"
-  = f.input :twitpasswd, :as => :password, :label => "Twitter password"
-  = f.submit
+.container
+  .row
+    .small-8.columns.small-offset-2
+      = semantic_form_for @agent do |f|
+        .row.form_wrapper
+          .small-12.columns= f.input :surname
+        .row.form_wrapper
+          .small-12.columns= f.input :agent_since
+        .row.form_wrapper
+          .small-12.columns= f.input :username, :label => "Username", :hint => "used only to log into the site, no spaces allowed"
+        .row.form_wrapper
+          .small-12.columns= f.input :public_password, :label => "Public password-protection?", :hint => "Enter password or leave blank for public PBT"
+        .row.form_wrapper
+          .small-12.columns= f.input :lastfm, :label => "Last.fm username", :hint => "not currently functional"
+        .row.form_wrapper
+          .small-12.columns= f.input :twitname, :label => "Twitter username", :hint => "not currently functional"
+        .row.form_wrapper
+          .small-12.columns= f.input :twitpasswd, :as => :password, :label => "Twitter password", :hint => "not currently functional"
+        .row.form_wrapper
+          .small-6.columns= f.submit 'Save', class: [:button, :small]
   

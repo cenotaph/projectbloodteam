@@ -33,6 +33,7 @@ Pbt4::Application.configure do
   # end 
      
   # Don't care if the mailer can't send
+  config.active_record.raise_in_transactional_callbacks = true
   config.action_mailer.raise_delivery_errors = false
 end
 ActionController::Base.asset_host = Proc.new { |source| 

@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  agent_id: 
+  master_tv_id: 
+  started: 2014-12-22
+  finished: 2014-12-22
+  season: 1
+  rating: 1.5
+  comment: MyText
+  first: false
+  userimage: MyString
+  location: MyString
+  venue_address: MyString
+  geolocation_id: 
+
+two:
+  agent_id: 
+  master_tv_id: 
+  started: 2014-12-22
+  finished: 2014-12-22
+  season: 1
+  rating: 1.5
+  comment: MyText
+  first: false
+  userimage: MyString
+  location: MyString
+  venue_address: MyString
+  geolocation_id: 

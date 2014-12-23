@@ -12,7 +12,7 @@
         - agent_category = current_agent.categories.year(getYear).first
 
       - unless agent_category.nil?      
-        - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|
+        - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Tvseries, Videogame, Weight].each do |category|
           - this_cat = agent_category.send(category.to_s.tableize).to_s
           -  if this_cat == "0"
             - othercats << category

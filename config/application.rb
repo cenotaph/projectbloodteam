@@ -40,6 +40,6 @@ module Pbt4
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters << :password
-    config.active_record.raise_in_transactional_callbacks = true
+    
   end
 end

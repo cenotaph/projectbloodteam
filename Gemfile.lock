@@ -21,6 +21,14 @@ GIT
       actionpack (>= 3.2.13)
 
 GIT
+  remote: git://github.com/norman/friendly_id.git
+  revision: 519ef0768ea6440d9402e40a7fa4a1fc1fcb3619
+  branch: master
+  specs:
+    friendly_id (5.1.0.beta.1)
+      activerecord (>= 4.0.0)
+
+GIT
   remote: git://github.com/pat/thinking-sphinx.git
   revision: d3e2ad4a4b8082453c5c6019a39dd0fdf2dba507
   ref: d3e2ad4a4b
@@ -136,8 +144,6 @@ GEM
     foundation-rails (5.4.5.0)
       railties (>= 3.1.0)
       sass (>= 3.2.0)
-    friendly_id (5.0.4)
-      activerecord (>= 4.0.0)
     geocoder (1.2.6)
     globalid (0.3.0)
       activesupport (>= 4.1.0)
@@ -149,7 +155,6 @@ GEM
       haml (>= 3.1, < 5.0)
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
-    has_scope (0.5.1)
     hashie (2.1.2)
     hike (1.2.3)
     hpricot (0.8.6)
@@ -162,9 +167,6 @@ GEM
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
-    inherited_resources (1.0.2)
-      has_scope (>= 0.4)
-      responders (>= 0.4.2)
     innertube (1.1.0)
     jbuilder (1.5.3)
       activesupport (>= 3.0.0)
@@ -315,13 +317,12 @@ DEPENDENCIES
   font-awesome-rails
   formtastic!
   foundation-rails (= 5.4.5.0)
-  friendly_id (~> 5.0.0)
+  friendly_id!
   geocoder
   haml
   haml-rails
   hpricot
   imdb!
-  inherited_resources
   jbuilder (~> 1.2)
   jquery-rails (= 3.1)
   jquery-ui-rails
