@@ -2,7 +2,7 @@
   .row.item.discussion
     .left.large-3.columns.text-right
       - if chat.class == Comment
-        .agent_name= "Agent #{link_to chat.agent.surname, chat.agent}"
+        .agent_name= raw "Agent #{link_to chat.agent.surname, chat.agent}"
         .newsfeed_icon= image_tag chat.agent_icon(:large)
         .newsfeed_delete= remove_from_newsfeed(chat)
 
