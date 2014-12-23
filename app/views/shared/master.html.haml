@@ -16,10 +16,11 @@
       .small-9.columns.text-center
         .main_title{:"data-magellan-destination" => "details"}
           = raw @item.title
+          
+        .secondary_title
+          = raw @item.secondary_title
           - if @item.respond_to?('linkto')
-            %span.link_to= link_to image_tag('/img/icons/external-link.png'), @item.linkto, :target => "_blank"
-        .secondary_title= raw @item.secondary_title
-        
+            %span.link_to= link_to fa_icon('external-link'), @item.linkto, :target => "_blank"
         = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => @item}
         %p= link_to 'Edit master record', edit_master_genericmaster_path(:category => @item.class.to_s, :id => @item.master_id), class: [:button, :tiny, :secondary]
 - unless @json.blank?

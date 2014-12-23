@@ -1,1 +1,1 @@
-ThinkingSphinx::Connection.persistent = false
+# ThinkingSphinx::Connection.persistent = false

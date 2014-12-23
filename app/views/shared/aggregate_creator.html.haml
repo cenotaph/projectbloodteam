@@ -23,7 +23,7 @@
         = raw one_or_slideshow(title)
         = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => title}
     - title.discussion.each do |chat|
-      = render :partial => "shared/discussion_entry", locals => {:chat => chat}
+      = render :partial => "shared/discussion_entry", locals: {:chat => chat}
 
 
 = content_for :jquery do
