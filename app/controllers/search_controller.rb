@@ -31,7 +31,7 @@ class SearchController < ApplicationController
     end
     
     for cat in scope do
-      hits =  cat.search(params[:search])
+      hits =  cat.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 999)
       unless hits.empty?
         hits.each do |hit|
           if params[:search_scope] =~ /^\d+$/
@@ -55,6 +55,7 @@ class SearchController < ApplicationController
 
     @items.compact!
     @searchterm = params[:search]
+    set_meta_tags :title => "Search: #{@searchterm}"
     render :template => 'shared/search_results'
   end
   

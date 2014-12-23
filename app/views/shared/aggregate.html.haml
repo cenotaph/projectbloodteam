@@ -13,3 +13,9 @@
     .small-8.columns.small-offset-2
       - year.last.each do |chat|
         = render :partial => "shared/discussion_entry", :locals => {:chat => chat}
+= content_for :jquery do
+  :plain
+    $('.slick_carousel').slick({autoplay: true});
+    $('.slick_carousel').each(function() {
+      $(this).slickLightbox({slick: {autoplay: true}});
+    });        

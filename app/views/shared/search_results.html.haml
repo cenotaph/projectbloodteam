@@ -1,26 +1,35 @@
-%p
-  = pluralize(@items.size, 'search result')
-  - if !logged_in?
-    - missing = @items.reject{|x| x.agent.security == 0}.size
-    - if missing > 0
-      %em= " (#{pluralize(missing, 'protected entry')} in search results that are only visible to other PBT agents.)"
-    - @items.delete_if{|x| x.agent.security != 0}
-  = "for '#{@searchterm}'"
+.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
+  %dl.sub-nav
+    - @items.group_by(&:class).each_with_index do |item_type, i|
+      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "type_#{item_type.first.to_s}"}= link_to item_type.first.to_s.pluralize + " (#{item_type.last.size.to_s})", "#type_#{item_type.first.to_s}"
+      
+      
+.row.with_title
+  .small-12.columns
+    %h2= "Search results for #{@searchterm}"
+    
+.row
+  .small-12.columns
+    = pluralize(@items.size, 'search result')
+    - if !agent_signed_in?
+      - missing = @items.reject{|x| x.agent.security == 0}.size
+      - if missing > 0
+        %em= " (#{pluralize(missing, 'protected entry')} in search results that are only visible to other PBT agents.)"
+      - @items.delete_if{|x| x.agent.security != 0}
+    = "for '#{@searchterm}'"
 - @items.group_by{|x| x.class}.each do |cl|
-  .search_header
-    = pluralize(cl.last.size, cl.first.to_s)
-  - cl.last.each do |item|
-    = render :partial => 'shared/item', :locals => {:item =>  item, :searchterm => @searchterm}
+  %a{name: "type_#{cl.first.to_s}"}
+  .search_header.row{:"data-magellan-destination" => "type_#{cl.first.to_s}"}
+    .small-8.columns
+      %h4= pluralize(cl.last.size, cl.first.to_s)
+  .row.aggregate
+    .small-8.columns.small-offset-2
+      - cl.last.each do |item|
+        = render :partial => 'shared/item', :locals => {:item =>  item, :searchterm => @searchterm}
 
-:javascript
-  $(document).ready(function() {
-    $('.slideshow').cycle({
-      speed: 300,
-      timeout: 2000,
-    	fx: 'scrollDown' // choose your transition type, ex: fade, scrollUp, shuffle, etc...
+= content_for :jquery do
+  :plain
+    $('.slick_carousel').slick({autoplay: true});
+    $('.slick_carousel').each(function() {
+      $(this).slickLightbox({slick: {autoplay: true}});
     });
-    $("img[rel]").live('click', function() {
-      $(this).overlay({effect: 'apple'}).trigger("click");
-    }); 
-  });
-   
