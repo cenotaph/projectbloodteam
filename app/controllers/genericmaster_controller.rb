@@ -72,27 +72,29 @@ class GenericmasterController < ApplicationController
   
   def authenticate
     session[:my_previous_url] = URI(request.referer).path
-    @discogs = Discogs::Wrapper.new("Project Blood Team", session[:discogs_token])
+    session[:discogs_token] = nil
+    @discogs = Discogs::Wrapper.new("PBT development")
     app_key      = ENV["DISCOGS_KEY"]
     app_secret   = ENV["DISCOGS_SECRET"]
     request_data = @discogs.get_request_token(app_key, app_secret, ENV['DISCOGS_CALLBACK'])
 
     session[:request_token] = request_data[:request_token]
-
+    logger.warn('request token is ' + session[:request_token].inspect)
     redirect_to request_data[:authorize_url]
   end
   
   
   def callback
-    @discogs = Discogs::Wrapper.new("Project Blood Team", session[:discogs_token])
+    @discogs = Discogs::Wrapper.new("PBT development")
     request_token = session[:request_token]
     verifier      = params[:oauth_verifier]
     access_token  = @discogs.authenticate(request_token, verifier)
 
     session[:request_token] = nil
     session[:discogs_token]  = access_token
+    logger.warn('access_token token is ' + session[:discogs_token].inspect)
     @discogs.access_token = access_token
-    
+    logger.warn('@discogs.access_token is ' + @discogs.access_token.inspect)
     if session[:my_previous_url].nil?
       redirect_to '/'
     else
@@ -271,9 +273,29 @@ class GenericmasterController < ApplicationController
       rescue ThinkingSphinx::ConnectionError
         @localhits = []
       end      
-      @choices = @master.classify.constantize.query(params[:query], session[:discogs_token]) #.delete_if{|x| @localhits.map{|y| y.external_index}.include?(x['key'].to_i) }.each 
-      set_meta_tags :title => 'Searching for ' + params[:query]
-      render :template => 'shared/choose'
+      begin
+         if @master == "MasterMusic"\
+           # OK so this fucker won't work as a model method right now.... grrr......
+           @discogs = Discogs::Wrapper.new("PBT development", session[:discogs_token])
+           search =  @discogs.search(params[:query], :type => :release)
+          #  = @discogs.search(params[:query].gsub(/\s/, '%20'), :type => :release)
+          @choices = []
+          search.results.each do |hit|
+            next unless hit.uri =~ /\d+$/
+            @choices << {"title" => hit.title, "label" => hit.label, "format" => hit.format, "summary" => hit.summary, "key" => hit.uri.match(/\d+$/)[0] }
+          end
+          
+          
+        else
+          @choices = @master.classify.constantize.query(params[:query], session[:discogs_token]) #.delete_if{|x|         @localhits.map{|y| y.external_index}.include?(x['key'].to_i) }.each 
+         end
+      rescue Discogs::AuthenticationError
+        die
+      end
+      if @choices && @localhits
+        set_meta_tags :title => 'Searching for ' + params[:query]
+        render :template => 'shared/choose'
+      end
     end
   end
 

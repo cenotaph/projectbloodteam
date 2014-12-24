@@ -24,7 +24,7 @@ class MasterTvseries < ActiveRecord::Base
     image?
   end
   
-  def self.choose(key)
+  def self.choose(key, token = nil)
 
     if key =~ /^local_/
       key.gsub(/^local_/, '')
@@ -133,7 +133,7 @@ class MasterTvseries < ActiveRecord::Base
     out.html_safe
   end
   
-  def self.query(searchterm)
+  def self.query(searchterm, token = nil)
     imdbhits = Imdb::Search.new(searchterm, {:ttype => :tv}).movies
 
   end

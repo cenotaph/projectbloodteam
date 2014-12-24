@@ -7,12 +7,12 @@ class MasterMovie < ActiveRecord::Base
       :styles => {:thumb => "150x150>", :full => "600x450>"},
       :path => ":rails_root/public/images/master_movies/:id/:style/:basename.:extension", 
       :default_style => :full, :url => "/images/master_movies/:id/:style/:basename.:extension"
- 
+
   attr_accessor :followup
   include ItemHelpers
   
   
-  def self.choose(key)
+  def self.choose(key, token = nil)
     if key =~ /^local_/
       key.gsub(/^local_/, '')
     else
@@ -105,7 +105,7 @@ class MasterMovie < ActiveRecord::Base
   
     
   def name
-    out = "<div class='main_title'>#{title.strip}</div> <div class='secondary_title'>#{secondary_title}</div>"
+    out = "<div class='main_title'>#{title.strip}</div><div class='secondary_title'>#{secondary_title}</div>"
     out.html_safe
   end
   
@@ -115,7 +115,7 @@ class MasterMovie < ActiveRecord::Base
     out.html_safe
   end
   
-  def self.query(searchterm)
+  def self.query(searchterm, token = nil)
     imdbhits = Imdb::Search.new(searchterm, {:ttype => :ft}).movies
 
   end

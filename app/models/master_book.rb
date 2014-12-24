@@ -27,7 +27,7 @@ class MasterBook < ActiveRecord::Base
   end
 
   
-  def self.choose(key)
+  def self.choose(key, token = nil)
     if key =~ /^local_/
       key.gsub(/^local_/, '')
     else
@@ -97,19 +97,16 @@ class MasterBook < ActiveRecord::Base
   end
   
   def name
-    if self.author.blank?
-      out = "<div class='main_title'>#{title.strip}</div>"
-    else
-      out = "<div class='main_title'>#{title.strip}</div> <div class='secondary_title'>#{secondary_title}</div>"
-      out.html_safe
-    end
+   
+   "<div class='main_title'>#{title.strip}</div>".html_safe
+
   end
   
   def secondary_title
     " <span class='small_meta'>by</span> " + self.author
   end
   
-  def self.query(searchterm)
+  def self.query(searchterm, token = nil)
     hits = Amazon::Ecs.item_search(searchterm, {:response_group => 'Medium'}).items
     results = []
     hits.each do |hit|

@@ -10,20 +10,21 @@
 
 
 .master_head {
-  margin-top: 2rem;
-
+  margin: 2rem 0rem;
   .main_title {
-    padding: 0rem 0rem 1rem 0rem;
+    padding: 0; margin: 0;
     background-color: white;
     opacity: 0.8;
-
+    
     font-size: 3.375rem;
     line-height: 3.5rem;
   }
   .secondary_title {
-    padding: .9rem;
+    padding: 0;
     font-size: 1.4rem;
     float: none;
+    color: #666;
+    font-weight: 300;
   }
   
 

@@ -95,11 +95,11 @@ class MasterMusic < ActiveRecord::Base
   
   def name
     if artist.nil? && !title.nil?
-      title
+      "<div class=\"main_title\"><em>" + title + "</em></div>"
     elsif title.nil? && !artist.nil?
-      artist
+     "<div class=\"main_title\">" + artist + "</div>"
     else
-      artist + " <span class='small_meta'>-</span> <span class='book_author'>" + title + "</span>"
+      "<div class=\"main_title\">" + artist + " <span class='small_meta'>-</span> <em>" + title + "</em></div>"
     end
   end
   
@@ -108,11 +108,14 @@ class MasterMusic < ActiveRecord::Base
   end
   
   def self.query(searchterm, token =  nil)
+    return if token.nil?
     discogs = []
-    wrapper = Discogs::Wrapper.new("Project Blood Team", token)
-
-    
-    wrapper.search(searchterm.gsub(/\s/, '%20'), :type => :release).results.each do |hit|
+    logger.warn('in model method with ' + token.inspect)
+    @discogs = Discogs::Wrapper.new("PBT development", token)
+    logger.warn('@discogs.access token is ' + @discogs.access_token.inspect)
+    @discogs.access_token = token
+    logger.warn('after manually setting, @discogs.access token is ' + @discogs.access_token.inspect)
+    @discogs.search(searchterm.gsub(/\s/, '%20'), :type => :release).results.each do |hit|
       next unless hit.uri =~ /\d+$/
       discogs << {"title" => hit.title, "label" => hit.label, "format" => hit.format, "summary" => hit.summary, "key" => hit.uri.match(/\d+$/)[0] }
     end
@@ -134,3 +137,4 @@ class MasterMusic < ActiveRecord::Base
 
   
 end
+ 

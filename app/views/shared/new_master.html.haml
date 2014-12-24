@@ -4,17 +4,16 @@
     %a{:name => "#details"}
     .row
       .small-3.columns= image_tag @item.icon
-      .small-9.columns.text-center
-        .main_title{:"data-magellan-destination" => "details"}
-          = raw @item.master.title
+      .small-9.columns.text-left
+        .master_title{:"data-magellan-destination" => "details"}
+          = raw @item.master.name
           - if @item.respond_to?('linkto')
-            %span.link_to= link_to image_tag('/img/icons/external-link.png'), @item.linkto, :target => "_blank"
-        .secondary_title= raw @item.master.secondary_title
+            %span.link_to= link_to fa_icon('external-link'), @item.linkto, :target => "_blank"
+        .secondary_title= raw @item.master.secondary_title unless @item.master.name.include?(@item.master.secondary_title)
 - if @item.others.size > 0
   .across_strip
     This has been added by
-    = @item.others.size
-    others.
+    = pluralize(@item.others.size, 'other agent') + "."
     = link_to 'See >>>', '#', :onclick => "$('.item_others').slideToggle();"
     .item_others.row{:style => 'display: none;'}
       - @item.others.sort_by{|x| x.date}.each do |other|
@@ -25,10 +24,10 @@
           .other_date= other.date.strftime('%b %d, %Y')
         .reveal-modal{:id => "other_" + other.id.to_s, :"data-reveal" => ''}
           .row
-            .small-4.columns
+            .small-5.columns
               .row
-                .small-6.columns= image_tag other.agent_icon
-                .small-6.columns.text-right
+                .small-4.columns= image_tag other.agent_icon
+                .small-8.columns.text-right
                   .metadata
                     .item_metadata
                       %span.item_metadata_category Agent:
@@ -45,7 +44,7 @@
                           .item_metadata{:class => key}
                             %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
                             %span.item_metadata_value= display_metadata(key, value)
-            .small-8.columns
+            .small-6.columns
               - unless display_comment(other).blank?
                 %span.big= raw('&ldquo;')
               = raw display_comment(other)
