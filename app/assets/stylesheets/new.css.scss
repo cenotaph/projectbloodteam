@@ -335,6 +335,9 @@ header { display: none;
           font-size: 0.75rem;
           line-height: 0.85rem;
           padding: 0.3rem;
+          .title {
+            font-size: 0.75rem;
+          }
           p.metadata {
             font-size: 0.65rem;
             padding: 0; margin: 0;
@@ -577,6 +580,14 @@ table#classic {
       &.name {
         font-size: 1.0rem;
         font-weight: 500;
+        
+        a {
+          color: inherit;
+          i {
+            color: $primary-color;
+            font-size: 0.75em;
+          }
+        }
         .secondary_title {
           font-color: #999;
           font-weight: 300;

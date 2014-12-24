@@ -29,8 +29,23 @@ class ProfilesController < ApplicationController
   end
   
   def update
-    update! { '/settings' }  
+    @profile = Profile.find(params[:id])
+    if @profile.agent != current_agent
+      flash[:error] = 'This ain\'t your profile, bro.'
+    else
+      if @profile.update_attributes(profile_params)
+        flash[:notice] = 'Your profile has been edited.'
+      else
+        flash[:error] = 'There was an error saving your profile.'
+      end
+      redirect_to '/settings'
+    end
   end
   
+  private
+  
+  def profile_params
+    params.require(:profile).permit(:surname, :age, :location, :missionname, :dateformat, :freetext, :shortfilms, :theme_settings, :defaultcurrency_id, :theme_id)
+  end
   
 end

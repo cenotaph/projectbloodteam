@@ -13,6 +13,10 @@ class MasterMusic < ActiveRecord::Base
   
   attr_accessor :followup
     
+  def all_versions
+    (other_versions << self).map(&:musics).flatten.compact.sort_by(&:date)
+  end
+  
   def self.choose(key, token = nil)
   
     if key =~ /^local_/
@@ -95,16 +99,25 @@ class MasterMusic < ActiveRecord::Base
   
   def name
     if artist.nil? && !title.nil?
-      "<div class=\"main_title\"><em>" + title + "</em></div>"
+      "<div class=\"main_title\"><em>" + title + "</em></div>".html_safe
     elsif title.nil? && !artist.nil?
-     "<div class=\"main_title\">" + artist + "</div>"
+     "<div class=\"main_title\">" + artist + "</div>".html_safe
     else
-      "<div class=\"main_title\">" + artist + " <span class='small_meta'>-</span> <em>" + title + "</em></div>"
+      "<div class=\"main_title\">" + artist + " <span class='small_meta'>-</span> <em>" + title + "</em></div>".html_safe
     end
   end
   
+  def short_name
+    title.html_safe
+  end
+  
+  
   def master_id
     self.id
+  end
+  
+  def other_versions
+    masterdiscogs_id.nil? ? [] :  MasterMusic.where(:masterdiscogs_id => self.masterdiscogs_id).where.not(id: self.id)
   end
   
   def self.query(searchterm, token =  nil)

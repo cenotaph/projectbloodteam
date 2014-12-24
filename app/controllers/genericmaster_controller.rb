@@ -352,12 +352,6 @@ class GenericmasterController < ApplicationController
         ]).find(item.master_id)
 
     end
-    
-    # item = @category.classify.constantize.includes([ 
-    #   {"master_#{@category.to_s.downcase.gsub(/^master/, '')}".to_sym => 
-    #   {@item.class.to_s.downcase.gsub(/^master/, '').downcase.tableize.to_sym => [:agent, :userimages]} }]
-    # ).find(params[:id])
-    
 
 
     if item.class == Movie || item.class == MasterMovie
@@ -374,7 +368,17 @@ class GenericmasterController < ApplicationController
       @item = @category.classify.constantize.find(params[:id])
       render :template => 'shared/ajaxshow_master', :layout => false
     else
-      render :template => 'shared/master'
+      # this a total mess; clean up later
+
+      if @master == 'master_music' || @master == 'MasterMusic'
+        if !@item.other_versions.empty?
+          render :template => 'shared/different_records'
+        else
+          render :template => 'shared/master'
+        end
+      else
+        render :template => 'shared/master'
+      end
     end
   end
   

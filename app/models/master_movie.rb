@@ -115,6 +115,10 @@ class MasterMovie < ActiveRecord::Base
     out.html_safe
   end
   
+  def short_name
+    title
+  end
+  
   def self.query(searchterm, token = nil)
     imdbhits = Imdb::Search.new(searchterm, {:ttype => :ft}).movies
 

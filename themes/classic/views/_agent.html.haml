@@ -4,31 +4,34 @@
     - next if col == 'venue_address'
     - next unless show_entry?(agent)
     %td{:class => "#{agent.class.table_name} #{col}"}
-      = display_column(agent, col, agent.agent_id)
+      
       - if col == 'name' || col == 'title'
+        = link_to display_column(agent, col, agent.agent_id), agent
         - if agent.respond_to?('linkto')
           - unless agent.linkto.blank?
             = link_to fa_icon('external-link'), agent.linkto, :target => "_blank" 
-      - if col == 'finished' && !display_column(agent, col, agent.agent_id).blank?
-        .small
-          Time taken:
-          = agent.metadata['metadata']['time taken']
-      - if col == 'location'
-        - if agent.respond_to?('geolocation')
-          - unless agent.geolocation.nil?
-            %span.small= link_to fa_icon('globe'), edit_geolocation_path(agent.geolocation)
-      - if index == 0
-        %p
-          - if agent_signed_in?
-            - if current_agent == agent.agent
-              = link_to fa_icon('eye'), agent
-              = link_to fa_icon('pencil'), "/agents/#{current_agent.slug}/#{agent.class.table_name}/#{agent.id.to_s}/edit"
-              = link_to fa_icon('trash'), agent, :method => :delete, data: {confirm: 'Are you sure you wish to delete this entry?'}
-              - if agent.discussion.size > 1
-                %span.small= agent.discussion.size
-                = fa_icon('comment')
-              - if agent.others.size > 0
-                %span.small= agent.others.size
-                = fa_icon('group')
+      - else
+        = display_column(agent, col, agent.agent_id)
+        - if col == 'finished' && !display_column(agent, col, agent.agent_id).blank?
+          .small
+            Time taken:
+            = agent.metadata['metadata']['time taken']
+        - if col == 'location'
+          - if agent.respond_to?('geolocation')
+            - unless agent.geolocation.nil?
+              %span.small= link_to fa_icon('globe'), edit_geolocation_path(agent.geolocation)
+        - if index == 0
+          %p
+            - if agent_signed_in?
+              - if current_agent == agent.agent
+                = link_to fa_icon('eye'), agent
+                = link_to fa_icon('pencil'), "/agents/#{current_agent.slug}/#{agent.class.table_name}/#{agent.id.to_s}/edit"
+                = link_to fa_icon('trash'), agent, :method => :delete, data: {confirm: 'Are you sure you wish to delete this entry?'}
+                - if agent.discussion.size > 1
+                  %span.small= agent.discussion.size
+                  = fa_icon('comment')
+                - if agent.others.size > 0
+                  %span.small= agent.others.size
+                  = fa_icon('group')
 
 

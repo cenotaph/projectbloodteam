@@ -26,8 +26,16 @@
           .large-10.columns= render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => title}
     .row
       .small-8.columns.small-offset-2
-        - title.discussion.each do |chat|
-          = render :partial => "shared/discussion_entry", locals: {:chat => chat}
+        - if title.respond_to?(:other_versions)
+          - unless title.other_versions.empty?
+            - title.all_versions.map(&:discussion).flatten.uniq.sort_by(&:date).each do |chat|
+              .item_listing= render :partial => "shared/discussion_entry", locals: {:chat => chat}
+          - else
+            - title.discussion.each do |chat|
+              .item_listing= render :partial => "shared/discussion_entry", locals: {:chat => chat}
+        - else
+          - title.discussion.each do |chat|
+            .item_listing= render :partial => "shared/discussion_entry", locals: {:chat => chat}
 
 
 = content_for :jquery do

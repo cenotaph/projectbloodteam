@@ -6,8 +6,8 @@
  
   position: relative;    background-repeat: no-repeat; 
 
-  width: 100%; height: 100%; 
-   padding: 1rem; 
+  width: 100%; height: 100%;
+   padding: 1.5rem 0rem; 
   
 }
 
@@ -39,14 +39,19 @@ img#outer-wrap { width: 100%; opacity: 0; z-index: -10; position: absolute; top:
   }
   
   .inner {
-
+    p.very_small {
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+    }
+    
     .main_title {
-      padding: 10px;
+
       clear: both;
       display: inline-block;
       background-color: white;
       opacity: 0.8;
-      margin-bottom: 15px;
+      margin-bottom: 0;
       font-size: 2.375em;
       line-height: 1.5em;
     }
@@ -70,7 +75,7 @@ img#outer-wrap { width: 100%; opacity: 0; z-index: -10; position: absolute; top:
   font-weight: 300;
   font-size: 1.2em;
   line-height: 1.6em;
-  padding: 15px;
+  padding: 1.8rem;
 
   p { font: inherit; }
   span.big {

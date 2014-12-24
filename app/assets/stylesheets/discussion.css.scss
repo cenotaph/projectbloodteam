@@ -3,7 +3,7 @@
 @import "foundation/components/global";
 
 #new_comment {
-  margin: 2.5rem 0px;
+
   clear: both;
 }
 
@@ -163,21 +163,7 @@
   }
 }
 
-.aggregate {
-  padding: 2rem 0px;
-  border-bottom: 1px dotted $primary-color;
-  
-  .master_metadata {
-    .metadata {
-      font-size: 0.8rem;
-      p {
-        font-size: 0.8rem;
-      }
-    }
-    .metadata_small {
-      font-size: 0.65rem;
-    }
-  }
+.search_result, .aggregate {
   .title {
     margin-bottom: 1rem;
     font-size: 1.8rem;
@@ -198,36 +184,62 @@
       font-size: 1rem;
     }
   }
-  .newsfeed_entry_link {
-    font-style: italic;
-    font-weight: 100;
-    margin-left: 50px;
-    font-size: 1.0em;
-    float: right;
-    a {
-      font-weight: 300;
+}
+
+.item_listing {
+  padding: 2rem 0px;
+  border-bottom: 1px dotted $secondary-color;
+}
+  
+
+.aggregate {
+  padding: 2rem 0px;
+  border-bottom: 1px dotted $primary-color;
+  
+}
+.master_metadata {
+  .metadata {
+    font-size: 0.8rem;
+    p {
+      font-size: 0.8rem;
     }
+  }
+  .metadata_small {
+    font-size: 0.65rem;
+  }
+}
+
+.newsfeed_entry_link {
+  font-style: italic;
+  font-weight: 100;
+  margin-left: 50px;
+  font-size: 1.0em;
+  float: right;
+  a {
+    font-weight: 300;
+  }
+}
+
+.discussion {
+  padding-top: 1.5rem;
+  &.item {
+    padding: 2rem 0px;
+    border-bottom: 1px dotted $secondary-color;
   }
   
-  .discussion {
-    padding-top: 1.5rem;
-    &.item {
-      padding: 2rem 0px;
-      border-bottom: 1px dotted $secondary-color;
-    }
+  
+}
+.comment {
+  font-weight: 300;
+  color: #444;
+  font-size: 1.2rem;
+  line-height: 1.9rem;
+  .big {
+    font-size: 2rem;
+    float: left;
+    margin-right: 0.6rem;
   }
-  .comment {
-    font-weight: 300;
-    color: #444;
-    font-size: 1.2rem;
-    line-height: 1.9rem;
-    .big {
-      font-size: 2rem;
-      float: left;
-      margin-right: 0.6rem;
-    }
-    p {
-     font: inherit;
-    }
+  p {
+   font: inherit;
   }
 }

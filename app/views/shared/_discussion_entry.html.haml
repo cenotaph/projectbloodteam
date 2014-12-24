@@ -1,42 +1,53 @@
 - if show_entry?(chat)
-  .row.item.discussion
-    .left.large-3.columns.text-right
-      - if chat.class == Comment
-        .agent_name= raw "Agent #{link_to chat.agent.surname, chat.agent}"
-        .newsfeed_icon= image_tag chat.agent_icon(:large)
-        .newsfeed_delete= remove_from_newsfeed(chat)
 
-      - else
+  .row
+    - if chat.class == Comment
+      .large-7.large-offset-2.columns.comment
+        %span.big= raw('&ldquo;')
+        = raw display_comment(chat)
+        - unless chat.userimages.empty?
+          = raw one_or_slideshow(chat)
+        .newsfeed_entry_link= raw "comment posted " + time_ago_in_words(chat.created_at) + " ago"
+        
+        
+
+
+    - else
+      .left.large-3.columns.text-right  
         .index_image
           = image_tag chat.agent_icon(:large) unless chat.class == Comment
           .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
-    
+  
           - if agent_signed_in? && chat.class != Comment
             = link_to fa_icon('eye'), chat
             - if chat.agent == current_agent
               = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
-    
-      - if chat.respond_to?('metadata')
-        .metadata
-          - if chat.class != Comment
-            .item_title
-          - else
-            Comment
-          = chat.formatted_date
-          - chat.metadata['metadata'].each_pair do |key, value|
-            - next if value.blank?
-            .item_metadata
-              %span.item_metadata_category= key.humanize + ":"
-              %span.item_metadata_value= display_metadata(key, value) 
-        
-    .small-8.small-offset-1.columns.left{:class => (chat.class == Comment ? 'comment' : '')}
-      - if chat.class == Comment
-        .row
-          .small-8.small-offset-2.columns
-            %span.big= raw('&ldquo;')
-            = raw display_comment(chat)
-          .newsfeed_entry_link= raw "comment posted " + time_ago_in_words(chat.created_at) + " ago"
-      - else
+          - if chat.respond_to?('metadata')
+            .metadata
+              - if chat.class != Comment
+                .item_title
+              - else
+                Comment
+              = chat.formatted_date
+              - chat.metadata['metadata'].each_pair do |key, value|
+                - next if value.blank?
+                
+                .item_metadata
+                  %span.item_metadata_category= key.humanize + ":"
+                  %span.item_metadata_value
+                    = display_metadata(key, value)
+                    - if key == 'format'
+                      = link_to fa_icon('external-link'), chat.linkto, :target => "_blank"
+    - if chat.class == Comment
+      .large-2.columns.text-left
+        .agent_name= raw "Agent #{link_to chat.agent.surname, chat.agent}"
+        .newsfeed_icon= image_tag chat.agent_icon(:large)
+        - if agent_signed_in?
+          - if current_agent == chat.agent
+            = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
+
+    - else
+      .large-8.columns.large-offset-1
         - unless display_comment(chat).blank?
           .comment
             %span.big= raw('&ldquo;')
@@ -44,9 +55,4 @@
           - unless chat.userimages.empty?
             .images= raw one_or_slideshow(chat)
           .entered_date= "entered " + time_ago_in_words(chat.created_at) + " ago"
-
-- else
-  - if chat.class != Comment
-    .item_title= (chat.respond_to?('linked_name') ? chat.linked_name : (chat.respond_to?('name') ? chat.name : ''))
-    .item_description= chat.comment
-    = raw one_or_slideshow(chat, '/system/no_image.png', :full, true)
+        

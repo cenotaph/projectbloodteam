@@ -2,102 +2,53 @@
   - searchterm = ''
 
 - if show_entry?(item)
-  .row.item.discussion
+  .discussion.row
     .small-12.columns.title
-      = raw item.name
-    .left.small-3.columns
-      .index_image
-        = image_tag item.agent_icon(:large) unless item.class == Comment
-        .agent_name= raw "Agent #{link_to item.agent_surname, item.agent}"
-    
-        - if agent_signed_in? && item.class != Comment
-          = link_to fa_icon('eye'), item
-          - if item.agent == current_agent
-            = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{item.class.table_name}/#{item.id.to_s}/edit"
-    
-      - if item.respond_to?('metadata')
-        .metadata
-          - if item.class != Comment
-            .item_title
-          - else
-            Comment
-          = item.formatted_date
-          - item.metadata['metadata'].each_pair do |key, value|
-            - next if value.blank?
-            .item_metadata
-              %span.item_metadata_category= key.humanize + ":"
-              %span.item_metadata_value= highlight(raw(display_metadata(key, value)), searchterm)
-        
-    .small-8.small-offset-1.columns.left{:class => (item.class == Comment ? 'comment' : '')}
-      - if item.class == Comment
-        .comment_image
-          = image_tag item.agent_icon(:small)
-          - if agent_signed_in? 
-            .way_small= link_to_if(item.agent == current_agent, 'edit', "/agents/#{current_agent.id.to_s}/#{item.class.table_name}/#{item.id.to_s}/edit") {}
-        .agent_name= raw "Comment by Agent #{link_to item.agent_surname, item.agent}, #{time_ago_in_words(item.date)} ago"
-      - else
-        - unless display_comment(item).blank?
-          .comment
-            %span.big= raw('&ldquo;')
-            = highlight(raw(display_comment(item)), searchterm)
-          - unless item.userimages.empty?
-            .images= raw one_or_slideshow(item)
-          .entered_date= "entered " + time_ago_in_words(item.created_at) + " ago"
-
-- else
-  - if item.class != Comment
-    .item_title= (item.respond_to?('linked_name') ? item.linked_name : (item.respond_to?('name') ? item.name : ''))
-    .item_description= item.comment
-    = raw one_or_slideshow(item, '/system/no_image.png', :full, true)
-    
-/
-/   .item.clearfix{:style => "border-bottom: 1px dotted #999;"}
-/     .left
+      = link_to raw(item.name), item
+      
+  = render :partial => 'shared/discussion_entry', locals: {chat: item }
+/     .left.small-3.columns
 /       .index_image
-/         = raw one_or_slideshow(item)
-/       .item_metadata
-/         - if agent_signed_in?
-/           = link_to_if(item.agent == current_agent, '[edit]', "/agents/#{current_agent.id.to_s}/#{item.class.table_name}/#{item.id.to_s}/edit") {}
-/       - if item.discussion.size > 0
+/         = image_tag item.agent_icon(:large) unless item.class == Comment
+/         .agent_name= raw "Agent #{link_to item.agent_surname, item.agent}"
 /
-/         - c = []
-/         - if item.discussion.size > 1
-/           - c.push pluralize(item.comments.size, 'comment')
-/         - if item.others.size > 0
-/           - c.push pluralize(item.others.size, 'other')
-/         .way_small{:style => 'clear: left;'}= c.join(' <br /> ')
-/     .right.clearfix
-/       .agent_icon= image_tag  item.agent_icon(:small), :width => 45
-/       .item_right
-/         .agent_name
-/           = link_to "Agent #{item.agent_surname}", item.agent
-/           %span.newsfeed_date= "posted #{time_ago_in_words(item.date)} ago"
-/         - if item.respond_to?('metadata')
-/           .item_title
-/             = link_to(highlight(raw(item.name), searchterm), item)
-/             - if item.respond_to?('linkto')
-/               = link_to image_tag('/img/icons/external-link.png'), item.linkto, :target => "_blank"
-/           - unless item.respond_to?('started')
-/             .item_date= item.formatted_date
+/         - if agent_signed_in? && item.class != Comment
+/           = link_to fa_icon('eye'), item
+/           - if item.agent == current_agent
+/             = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{item.class.table_name}/#{item.id.to_s}/edit"
 /
+/       - if item.respond_to?('metadata')
+/         .metadata
+/           - if item.class != Comment
+/             .item_title
+/           - else
+/             Comment
+/           = item.formatted_date
 /           - item.metadata['metadata'].each_pair do |key, value|
 /             - next if value.blank?
-/             - if key == 'cost'
-/               - next if value.last.blank?
-/
 /             .item_metadata
 /               %span.item_metadata_category= key.humanize + ":"
-/               %span.item_metadata_value= highlight(display_metadata(key, value), searchterm)
-/         - else
-/           .item_title
-/             - if item.class == Forum
-/               = link_to highlight(item.name, searchterm), forum_path(item)
-/             - elsif item.class == Comment and item.item.class == Forum
-/               = link_to highlight(item.name, searchterm), forum_path(item.item)
-/             - else
-/               = (item.respond_to?('name') ? highlight(item.name, searchterm) : (item.respond_to?('title') ? highlight(item.title, searchterm) : ''))
-/         - unless item.comment.blank?
-/           .item_description= highlight(item.comment, searchterm)
+/               %span.item_metadata_value= highlight(raw(display_metadata(key, value)), searchterm)
+/
+/     .small-8.small-offset-1.columns.left{:class => (item.class == Comment ? 'comment' : '')}
+/       - if item.class == Comment
+/         .comment_image
+/           = image_tag item.agent_icon(:small)
+/           - if agent_signed_in?
+/             .way_small= link_to_if(item.agent == current_agent, 'edit', "/agents/#{current_agent.id.to_s}/#{item.class.table_name}/#{item.id.to_s}/edit") {}
+/         .agent_name= raw "Comment by Agent #{link_to item.agent_surname, item.agent}, #{time_ago_in_words(item.date)} ago"
+/       - else
+/         - unless display_comment(item).blank?
+/           .comment
+/             %span.big= raw('&ldquo;')
+/             = highlight(raw(display_comment(item)), searchterm)
+/           - unless item.userimages.empty?
+/             .images= raw one_or_slideshow(item)
+/           .entered_date= "entered " + time_ago_in_words(item.created_at) + " ago"
+/
 / - else
-/   %p
-/     %em This item is only visible to other PBT agents.
+/   - if item.class != Comment
+/     .item_title= (item.respond_to?('linked_name') ? item.linked_name : (item.respond_to?('name') ? item.name : ''))
+/     .item_description= item.comment
+/     = raw one_or_slideshow(item, '/system/no_image.png', :full, true)
+    
