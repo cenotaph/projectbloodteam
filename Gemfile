@@ -33,14 +33,14 @@ gem 'capistrano-rails', '~> 1.1.0'
 gem 'capistrano-rvm'
 gem 'capistrano-bundler'
 
-
+gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'dalli'
 # gem 'dalli-store-extensions', :git => "git://github.com/defconomicron/dalli-store-extensions.git", :group => :production
 gem 'date_validator'
 gem 'devise'
 gem 'devise-encryptable'
 # gem 'discogs'
-gem 'discogs-wrapper', '2.0.0'
+gem 'discogs-wrapper'
 gem 'figaro'
 gem 'font-awesome-rails'
 gem 'formtastic' , :git => 'git://github.com/justinfrench/formtastic.git'
@@ -58,6 +58,7 @@ gem 'meta-tags', require: 'meta_tags'
 gem 'mini_magick'
 gem "nested_form"
 gem "non-stupid-digest-assets"
+gem "oauth2"
 gem 'paperclip'
 # gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'

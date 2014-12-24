@@ -69,7 +69,37 @@ class GenericmasterController < ApplicationController
     
     render :template => 'shared/aggregate_creator'
   end
+  
+  def authenticate
+    session[:my_previous_url] = URI(request.referer).path
+    @discogs = Discogs::Wrapper.new("Project Blood Team", session[:discogs_token])
+    app_key      = ENV["DISCOGS_KEY"]
+    app_secret   = ENV["DISCOGS_SECRET"]
+    request_data = @discogs.get_request_token(app_key, app_secret, ENV['DISCOGS_CALLBACK'])
 
+    session[:request_token] = request_data[:request_token]
+
+    redirect_to request_data[:authorize_url]
+  end
+  
+  
+  def callback
+    @discogs = Discogs::Wrapper.new("Project Blood Team", session[:discogs_token])
+    request_token = session[:request_token]
+    verifier      = params[:oauth_verifier]
+    access_token  = @discogs.authenticate(request_token, verifier)
+
+    session[:request_token] = nil
+    session[:discogs_token]  = access_token
+    @discogs.access_token = access_token
+    
+    if session[:my_previous_url].nil?
+      redirect_to '/'
+    else
+      redirect_to session[:my_previous_url]
+    end
+  end
+  
   def create
     @item = @category.classify.constantize.new(params[@category.downcase].permit!)
     if @item.save 
@@ -241,7 +271,7 @@ class GenericmasterController < ApplicationController
       rescue ThinkingSphinx::ConnectionError
         @localhits = []
       end      
-      @choices = @master.classify.constantize.query(params[:query]) #.delete_if{|x| @localhits.map{|y| y.external_index}.include?(x['key'].to_i) }.each 
+      @choices = @master.classify.constantize.query(params[:query], session[:discogs_token]) #.delete_if{|x| @localhits.map{|y| y.external_index}.include?(x['key'].to_i) }.each 
       set_meta_tags :title => 'Searching for ' + params[:query]
       render :template => 'shared/choose'
     end
@@ -249,7 +279,7 @@ class GenericmasterController < ApplicationController
 
     
   def select
-    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id]), :add_to_newsfeed => true)
+    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id], session[:discogs_token]), :add_to_newsfeed => true)
 
     @item.userimages << Userimage.new(:primary => true)
     if @item.respond_to?('currency_id')

@@ -13,30 +13,33 @@ class MasterMusic < ActiveRecord::Base
   
   attr_accessor :followup
     
-  def self.choose(key)
+  def self.choose(key, token = nil)
+  
     if key =~ /^local_/
       key.gsub(/^local_/, '')
     else
       require 'discogs'
       existing = self.where(:discogscode => key)
       if existing.empty?
-        m = Discogs::Wrapper.new('PBT4').get_release(key)
+        m = Discogs::Wrapper.new('Project Blood Team', token).get_release(key)
         unless m.nil?
           mynew = self.new(:title => m.title, :discogscode => key, :artist => m.artists.map(&:name).join(' / '),
-                            :year => m.released, :label => m.labels.map(&:name).join(' / '), :format => m.formats.empty? ? '' : m.formats.map(&:name).join(' /'))
+                            :year => m.released, :label => m.labels.map(&:name).join(' / '), :format => m.formats.empty? ? '' : m.formats.map(&:name).join(' /'), :masterdiscogs_id => m.master_id)
           require 'open-uri'
           require 'cgi'
+          
           if mynew.save
-            # get image
-            # unless m.images.blank?
-            #   mynew.filename_file_name = CGI.escape(mynew.discogscode.to_s + '.jpg')
-            #   system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/thumb")
-            #    system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/full")
-            #   
-            #   open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/thumb/' + mynew.filename_file_name, "wb").write(open(m.images.first.uri150.gsub(/api\.discogs\.com/, 's.pixogs.com')).read) rescue nil
-            #   open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/full/' + mynew.discogscode.to_s + '.jpg', "wb").write(open(m.images.first.uri150.gsub(/\-150\-/, '-').gsub(/api\.discogs\.com/, 's.pixogs.com')).read) rescue nil
-            #   mynew.save!
-            # end
+            
+            unless m.images.blank?
+              mynew.filename_file_name = CGI.escape(mynew.discogscode.to_s + '.jpg')
+              system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/thumb")
+               system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/full")
+
+               
+              open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/full/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri).body) rescue nil
+              open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/thumb/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri150).body) rescue nil
+              mynew.save!
+            end
           end
           mynew.id
         end
@@ -104,13 +107,14 @@ class MasterMusic < ActiveRecord::Base
     self.id
   end
   
-  def self.query(searchterm)
+  def self.query(searchterm, token =  nil)
     discogs = []
-    require 'discogs'
-    wrapper = Discogs::Wrapper.new("f6d728eef1")
-    wrapper.search(searchterm.gsub(/\s/, '%20')).results.each do |hit|
+    wrapper = Discogs::Wrapper.new("Project Blood Team", token)
+
+    
+    wrapper.search(searchterm.gsub(/\s/, '%20'), :type => :release).results.each do |hit|
       next unless hit.uri =~ /\d+$/
-      discogs << {"title" => hit.title, "summary" => hit.summary, "key" => hit.uri.match(/\d+$/)[0] }
+      discogs << {"title" => hit.title, "label" => hit.label, "format" => hit.format, "summary" => hit.summary, "key" => hit.uri.match(/\d+$/)[0] }
     end
     discogs
     

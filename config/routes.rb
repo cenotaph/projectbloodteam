@@ -131,7 +131,13 @@ Pbt4::Application.routes.draw do
   
   resources :movies, :controller => :genericmaster, :category => 'Movie'
   resources :master_movies, :controller => :genericmaster, :category => 'MasterMovie'
-  resources :musics, :controller => :genericmaster, :category => 'Music'
+  resources :musics, :controller => :genericmaster, :category => 'Music' do
+    collection do
+      get :authenticate
+      get :callback
+    end
+  end
+  
   resources :master_musics, :controller => :genericmaster, :category => 'MasterMusic'
   resources :books, :controller => :genericmaster, :category => 'Book'
   resources :master_books, :controller => :genericmaster, :category => 'MasterBook'

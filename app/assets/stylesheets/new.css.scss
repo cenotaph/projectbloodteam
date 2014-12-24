@@ -535,12 +535,17 @@ footer {
 }
 
 .choice_row {
-  margin-bottom: 1rem !important;
+  margin-bottom: 2rem !important;
   .choice_title {
     .secondary_title {
       color: #999;
       font-size: 0.75rem;
     }
+  }
+  .metadata {
+    font-size: 0.75rem;
+    color: #666;
+    margin: 0px;
   }
 }
 
