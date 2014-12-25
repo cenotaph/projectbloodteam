@@ -476,7 +476,7 @@ class GenericmasterController < ApplicationController
       end
     else
       if @item.agent == current_agent
-        if @item.update_attributes(params[@category.downcase])
+        if @item.update_attributes(params[@category.downcase].permit!)
           expire_fragment(/genericmaster\/#{Regexp.escape(@item.master_id.to_s)}\?(.*)category\=master#{Regexp.escape(@item.class.to_s.downcase)}/)
           expire_fragment(/.*newsfeed_front.*/)
           flash[:notice] = 'Entry updated.'
