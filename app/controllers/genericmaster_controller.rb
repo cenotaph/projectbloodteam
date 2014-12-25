@@ -381,7 +381,7 @@ class GenericmasterController < ApplicationController
     end
 
 
-    if item.class == Movie || item.class == MasterMovie
+    if item.class == Movie || item.class == MasterMovie || item.class == Tvseries || item.class == MasterTvseries
       json = @item.discussion.delete_if{|x| x.class == Comment}.compact.delete_if{|x| x.geolocation_id.nil?}.map{|x| x.geolocation }.compact.delete_if{|x| x.latitude.nil? }
       # if !json.blank?
       #   json += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", json.first.latitude - 1, json.first.latitude + 1, json.first.longitude - 1, json.first.longitude + 1])

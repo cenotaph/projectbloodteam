@@ -13,6 +13,7 @@ class Movie < ActiveRecord::Base
 
   belongs_to :geolocation
   geocoded_by :my_address
+  
   after_validation do
     store_geocodes unless self.dont_geocode == '1'
   end
