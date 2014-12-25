@@ -120,7 +120,7 @@ class GenericController < ApplicationController
     @sort = params[:filter][:sort].blank? ? "date " : params[:filter][:sort] 
     @filter_text = params[:filter][:filter_text]
     
-    unless @filter_text.nil?
+    unless @filter_text.blank?
       filter_query = []
       sample =  @category.classify.constantize.first
       %w{name destination comment company ordered location product task games station cuisine}.each do |field|

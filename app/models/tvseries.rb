@@ -8,7 +8,7 @@ class Tvseries < ActiveRecord::Base
   has_many :userimages, :as => :entry, :dependent => :destroy
   accepts_nested_attributes_for :userimages, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank?  && attributes['image_url'].blank?  && attributes['id'].blank?}
   
-  validates_presence_of :master_tvseries_id, :agent_id
+  validates_presence_of :master_tvseries_id, :agent_id, :season
   has_many :comments, -> { where( 'item_type = \'MasterTv\'') }, :foreign_key => 'foreign_id', :primary_key => 'master_tvseries_id'                          
   has_many :entries, :as => :entry, :dependent => :delete_all
 

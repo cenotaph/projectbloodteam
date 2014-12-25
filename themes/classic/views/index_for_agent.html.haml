@@ -1,9 +1,20 @@
+- sample = @category.classify.constantize.new
 .container  
   .row
     .small-12.columns.text-left
       %h2
+        - if agent_signed_in?
+          - if @agent != current_agent
+            = "Agent #{@agent.surname}: "
         = @agent.categories.year(getYear).first.send(@category.tableize).to_s
-        %span.sort= link_to fa_icon('sort-amount-asc'), '#', onclick: '$("#view_options").slideToggle();return false;'
+        %span.sort
+          = link_to fa_icon('sort-amount-asc'), '#', onclick: '$("#view_options").slideToggle();return false;'
+          - if agent_signed_in?
+            - if @agent == current_agent
+              - if sample.has_master?
+                = link_to fa_icon("plus-square-o"), '#', :"data-reveal-id" => "prompt_#{sample.class.table_name.singularize}"
+              - else
+                = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.id.to_s}/#{@category.table_name}/new"
       %p.table_count_stats
         = pluralize(@items.total_count, 'record')
         returned.
@@ -34,7 +45,7 @@
         = f.text_field :end_date, class: 'date_input', value: @end_date
       .small-12.columns.large-2.column_filter
         %label Sort by
-        - sample = @category.classify.constantize.new
+        
         = f.select :sort, @view.columns_for_category(sample.class).map{|x| [@view.agent_column_name(sample, x).humanize, x.to_sym] }, selected: @sort
         .tiny_select= f.select :sort_direction, [['Down', 'desc'], ['Up', 'asc']] , selected: @sort_direction
       .small-8.large-2.columns.text_filter

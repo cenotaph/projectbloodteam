@@ -165,9 +165,9 @@ module ItemHelpers
   def store_geocodes
     if self.geolocation.nil?
       if self.respond_to?('venue_address')
-        self.geolocation = Geolocation.find_or_create_by_address(self.venue_address ) unless self.venue_address.blank?
+        self.geolocation = Geolocation.where(:address => self.venue_address).first_or_create unless self.venue_address.blank?
       else
-        self.geolocation = Geolocation.find_or_create_by_address(self.location) unless self.location.blank?
+        self.geolocation = Geolocation.where(:address => self.location).first_or_create unless self.location.blank?
       end
     end
   end

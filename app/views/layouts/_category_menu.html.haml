@@ -4,32 +4,38 @@
   - else
     = link_to 'Categories', '#'
   %ul.dropdown
-    - othercats = []  
     - if agent_signed_in?
-      - if @agent
-        - agent_category = @agent.categories.year(getYear).first
-      - else
-        - agent_category = current_agent.categories.year(getYear).first
-
-      - unless agent_category.nil?      
-        - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Tvseries, Videogame, Weight].each do |category|
-          - this_cat = agent_category.send(category.to_s.tableize).to_s
-          -  if this_cat == "0"
-            - othercats << category
-            - next
-          %li
-            = link_to this_cat, "/agents/#{current_agent.slug.to_s}/#{category.table_name}"
-            - if @agent
-              - if !current_agent
-                = link_to @agent.surname, "/agents/#{@agent.slug}/#{category.table_name}"
-              - elsif @agent != current_agent
-                = link_to @agent.surname, "/agents/#{@agent.id.to_s}/#{category.table_name}"
+      - agent_category = current_agent.categories.year(getYear).first
+  
+      - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Tvseries, Videogame, Weight].each do |category|
+        
+        - this_cat = (agent_category ? agent_category.send(category.to_s.tableize).to_s : category.table_name )
+        - if this_cat == "0"
+          - next
+        %li
+          = link_to this_cat, "/agents/#{current_agent.slug.to_s}/#{category.table_name}"
       
-            - if category.has_master?
-              = link_to fa_icon("plus-square-o"), '#', :"data-reveal-id" => "prompt_#{category.table_name.singularize}"
-            -else 
-              = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.id.to_s}/#{category.table_name}/new"
+          - if category.has_master?
+            = link_to fa_icon("plus-square-o"), '#', :"data-reveal-id" => "prompt_#{category.table_name.singularize}"
+          -else 
+            = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.slug.to_s}/#{category.table_name}/new"
+
 %li.divider
+- if @agent
+  - if @agent != current_agent
+    %li.has-dropdown
+      = link_to 'Agent ' + @agent.surname, '#'
+      %ul.dropdown
+        - agent_category = @agent.categories.year(getYear).first
+        - unless agent_category.nil?      
+          - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Tvseries, Videogame, Weight].each do |category|
+            - this_cat = agent_category.send(category.to_s.tableize).to_s
+            -  if this_cat == "0"
+              
+              - next
+            %li
+              = link_to this_cat, "/agents/#{@agent.slug.to_s}/#{category.table_name}"
+
 %li.has-dropdown
   = link_to fa_icon('bars'), '#', class: 'show-for-medium-up'
   %ul.dropdown

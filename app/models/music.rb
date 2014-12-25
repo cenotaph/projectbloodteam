@@ -2,6 +2,7 @@
 class Music < ActiveRecord::Base
   include ItemHelpers
   belongs_to :agent
+  belongs_to :currency
   has_many :userimages, :as => :entry, :dependent => :destroy
   accepts_nested_attributes_for :userimages, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank?  && attributes['image_url'].blank?  && attributes['id'].blank?}
   belongs_to :master_music

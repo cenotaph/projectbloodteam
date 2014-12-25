@@ -67,6 +67,10 @@ class MasterTvseries < ActiveRecord::Base
     self.imdbcode
   end
   
+  def short_name
+    title
+  end
+  
   def self.grabimage(key, new_master)
     require 'open-uri'
     if key.class != IMDB

@@ -561,6 +561,7 @@ p.table_count_stats {
   font-size: 0.8rem;
   color: #999;
 }
+
 #view_options {
   display: none;
   input.button {
@@ -580,6 +581,9 @@ p.table_count_stats {
 h2 {
   span.sort {
     font-size: 1.2rem;
+    i {
+      margin: 0 0.7rem;
+    }
   }
 }
 table#classic {
@@ -590,6 +594,9 @@ table#classic {
       font-weight: 300;
       color: #444;
       vertical-align: top;
+      .social {
+        white-space: nowrap;
+      }
       &.comment {
         font-size: 1rem;
         line-height: 1.5rem;

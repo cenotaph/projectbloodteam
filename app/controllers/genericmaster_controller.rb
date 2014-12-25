@@ -204,35 +204,62 @@ class GenericmasterController < ApplicationController
     else
       date = ' date '
     end
+
+    if params[:filter].nil?
+      params[:filter] = ActionController::Parameters.new
+    else
+      @filters = true
+    end
+    @per =  params[:filter][:per].blank? ? 40 : params[:filter][:per]
+    @start_date = params[:filter][:start_date].blank? ? '2002-01-01' : params[:filter][:start_date] 
+    @end_date = params[:filter][:end_date].blank? ?  getYear + '-12-31' : params[:filter][:end_date]
+    @sort_direction = params[:filter][:sort_direction].blank? ? 'DESC' : params[:filter][:sort_direction]
+    @sort = params[:filter][:sort].blank? ? "date " : params[:filter][:sort] 
+    @filter_text = params[:filter][:filter_text]
+    
+    unless @filter_text.blank?
+      filter_query = []
+ 
+      sample =  @category.classify.constantize.first
+      %w{name title destination comment company ordered location product task games station cuisine}.each do |field|
+
+        if !sample[field.to_sym].nil?          
+          filter_query << "lower(#{field.to_s}) like '%#{@filter_text.downcase}%'"
+        end
+        if !sample.master[field.to_sym].nil?
+          filter_query << "lower(master_#{@category.downcase.tableize}.#{field.to_s}) like '%#{@filter_text.downcase}%'"
+        end
+      end
+      filter_query = filter_query.join(" OR ")
    
-    joins = [:agent,  :userimages]
+    end
+    filter_query = 1 if filter_query.blank?
+       
+   
+    joins = [:agent,  :userimages, :comments]
     joins.push(:geolocation) if @category == 'Movie'
+
     if params[:agent_id]
       @agent = Agent.friendly.find(params[:agent_id])
+      
       if @category == 'Book' || @category == 'Videogame' 
-        if getYear == Time.now.strftime('%Y')
-          @items = @category.classify.constantize.includes([:agent, :userimages, :comments,
-            {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
-              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where(:agent => @agent).order('date desc').page(params[:page]).per(50)
-        else
-          @items = @category.classify.constantize.includes([:agent, :userimages, :comments,
-            {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
-              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where(:agent => @agent).where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").order('date desc').page(params[:page]).per(50)
-        end
+
+          @items = @category.classify.constantize.includes([:agent, :userimages, :comments]).joins("master_#{@category.downcase}".to_sym).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where(filter_query).where(:agent => @agent).where("(received >= '#{@start_date}' AND received <= '#{@end_date}') OR (started >= '#{@start_date}' AND started < '#{@end_date}') OR (finished >= '#{@start_date}' AND finished < '#{@end_date}')").order('date desc').page(params[:page]).per(50)
+        
       elsif @category == 'Tvseries' 
-        if getYear == Time.now.strftime('%Y')
-          @items = @category.classify.constantize.includes([:agent, :userimages, :comments,
-            {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
-              ]).select("*, greatest(coalesce(started,finished), coalesce(finished,  started)) as date").where(:agent => @agent).order('date desc').page(params[:page]).per(50)
-        else
-          @items = @category.classify.constantize.includes([:agent, :userimages, :comments,
-            {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
-              ]).select("*, greatest(coalesce(started,finished), coalesce(finished, started)) as date").where(:agent => @agent).where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").order('date desc').page(params[:page]).per(50)
-        end
+
+          @items = @category.classify.constantize.includes([:agent, :userimages, :comments]).joins(        "master_#{@category.downcase}".to_sym).select("*, greatest(coalesce(started,finished), coalesce(finished, started)) as date").where(:agent => @agent).where(filter_query).where("(started >= '#{@start_date}' AND started < '#{@end_date}') OR (finished >= '#{@start_date}' AND finished < '#{@end_date}')").order('date desc').page(params[:page]).per(@per)
+
+        
+        
       else
-        @items = @category.classify.constantize.includes([:agent , :comments,  
-            "master_#{@category.downcase}".to_sym, :userimages]).where(:agent => @agent).where("date <= '#{getYear}-12-31'").order(date + ' DESC').page(params[:page]).per(50)
+        @items = @category.classify.constantize.includes([:agent, :currency, :comments]).joins(  
+            "master_#{@category.downcase}".to_sym).where(:agent => @agent).where(filter_query).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
+       
       end
+      
+      
+      
       if request.xhr?
         render :partial => '/agent', :collection => @items
       else
@@ -244,7 +271,7 @@ class GenericmasterController < ApplicationController
         if getYear == Time.now.strftime('%Y')
           @items = @category.classify.constantize.includes([:agent,
             {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
-              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").order("date desc").paginate(:per_page => 20, :page => params[:page])
+              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").order("date desc").page(params[:page]).per(@per)
         else
           @items = @category.classify.constantize.includes([:agent, 
             {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
