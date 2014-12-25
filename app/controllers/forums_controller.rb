@@ -79,10 +79,21 @@ class ForumsController < ApplicationController
     render :template => 'shared/show'
   end
   
+  
+  def update
+    @forum = Forum.find(params[:id])
+    if @forum.agent == current_agent
+      if @forum.update_attributes(forum_params)
+        flash[:notice] = 'Your post has been edited.'
+      end
+    end
+    redirect_to @forum
+  end
+  
   private
   
   def forum_params
-    params.require(:forum).permit(:subject, :agent_id, :body, :add_to_newsfeed, userimages_attributes: [:id, :image])
+    params.require(:forum).permit(:subject, :agent_id, :body, :add_to_newsfeed, userimages_attributes: [:id, :_destroy, :image])
   end
   
 end

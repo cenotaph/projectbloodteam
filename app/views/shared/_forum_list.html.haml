@@ -3,8 +3,12 @@
     = link_to raw(forum_list.item.name), forum_list.comment_path
     %p.metadata= raw "#{forum_list.discussion.last.agent.surname}, <span class='small_meta'>#{time_ago_in_words(forum_list.discussion.last.created_at)} ago</span>"
     - if agent_signed_in?
-      - if forum_list.item.class == Forum && forum_list.agent == current_agent
-        = link_to '[delete]', forum_list.item, :method => :delete, :confirm => 'Are you sure?'
+      - if forum_list.agent == current_agent
+        
+        - if forum_list.item.class == Forum
+          = link_to fa_icon('pencil'), forum_list.comment_path + "/edit"
+          = link_to fa_icon('trash'), forum_list.item, :method => :delete, :confirm => 'Are you sure?'
+      
   %td.size= forum_list.discussion.size
 
     

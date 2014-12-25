@@ -19,7 +19,7 @@
   %ul.right
     - if controller.controller_name == 'home' && !@json.blank?
       %li= link_to fa_icon('globe lg') + " (#{@json.size})", '#', onclick: "$('.worldmap-bar').slideToggle();google.maps.event.trigger(map, 'resize'); map.setCenter(new google.maps.LatLng(0, 0));return false;"
-    - unless controller.controller_name == 'forums'
+    - unless controller.controller_name == 'forums' && controller.action_name == 'index'
       %li= link_to fa_icon('comment lg') + (session[:forum_unread].blank? ? '' : (session[:forum_unread] > 0 ? " (#{session[:forum_unread]})" : '' )), '#', onclick: "$('.forum-bar').slideToggle(); return false;"
     %li= link_to fa_icon("users lg"), '#', onclick: "$('.agents-bar .agents').slideToggle(); return false;", class: 'show-for-medium-up'
     %li.show-for-small-only.has-dropdown

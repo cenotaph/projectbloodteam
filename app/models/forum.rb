@@ -49,7 +49,11 @@ class Forum < ActiveRecord::Base
     end
   end
   
-
+  
+  def metadata
+    {'name' => self.subject, 'date' => self.date,
+      'metadata' => { } , 'comment' => self.comment}
+  end
   
   def formatted_date
     self.created_at.strftime('%B %d, %Y')

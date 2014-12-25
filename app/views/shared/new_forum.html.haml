@@ -1,7 +1,7 @@
 .container
   .row
     .small-12.columns
-      %h2 New forum post
+      %h2 Forum post
       = semantic_nested_form_for @forum , :html => {:multipart => true } do |f|
         .form_wrapper
           .row
@@ -14,7 +14,11 @@
             .large-8.columns.small-12= f.input :add_to_newsfeed, :as => :boolean, :label => 'Show this forum post in the public newsfeed', :checked => true
           = f.fields_for :userimages do |ff|
             .row
-              .large-8.columns.small-12= ff.input :image
+              .large-8.columns.small-12
+                - if ff.object.image?
+                  = image_tag ff.object.image.url(:thumb)
+                  = ff.link_to_remove 'Remove this image'
+                = ff.input :image
           .row
             .large-8.columns.small-12= f.link_to_add 'Add an image', :userimages, class: [:button, :tiny, :secondary]
           .row
