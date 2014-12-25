@@ -14,7 +14,7 @@
               - if sample.has_master?
                 = link_to fa_icon("plus-square-o"), '#', :"data-reveal-id" => "prompt_#{sample.class.table_name.singularize}"
               - else
-                = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.id.to_s}/#{@category.table_name}/new"
+                = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.id.to_s}/#{@category.tableize}/new"
       %p.table_count_stats
         = pluralize(@items.total_count, 'record')
         returned.
