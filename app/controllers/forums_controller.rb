@@ -1,9 +1,9 @@
 # -*- encoding : utf-8 -*-
 class ForumsController < ApplicationController
-   before_filter :login_required, :only => [:new, :edit, :add, :choose, :create, :update]
+   before_filter :authenticate_agent!, :only => [:new, :edit, :add, :choose, :create, :update]
   
   def create
-    @forum = Forum.new(params[:forum])
+    @forum = Forum.new(forum_params)
     @forum.agent = current_agent
     if @forum.save 
       flash[:notice] = 'Entry created'
@@ -77,6 +77,12 @@ class ForumsController < ApplicationController
     set_meta_tags :title => @item.name
     session.delete(:forum_unread)
     render :template => 'shared/show'
+  end
+  
+  private
+  
+  def forum_params
+    params.require(:forum).permit(:subject, :agent_id, :body, :add_to_newsfeed, userimages_attributes: [:id, :image])
   end
   
 end

@@ -1,22 +1,24 @@
-- content_for :head do
-  = include_puny_mce
-  
-.left
-  .index_image
-    = image_tag current_agent.agent_icon(:small)
-.right
-  .clearfix
-    %h4 New forum post
-  .agent_name= "Agent #{current_agent.surname}"
-  = semantic_form_for @forum , :html => {:multipart => true } do |f|
-    = f.input :subject
-    = f.input :agent_id, :value =>  current_agent.id, :as => :hidden
-    = f.input :body, :label => false, :input_html => {:cols => 80, :rows => 10}
-    = f.input :add_to_newsfeed, :as => :boolean, :label => 'Show this forum post in the public newsfeed', :checked => true
-    #userimages
-      = f.semantic_fields_for :userimages do |ff|
-        = render :partial => 'shared/userimage_fields', :locals => { :ff => ff }      
-    .add_link= link_to_add_fields "+ Attach an image to this post", f, :userimages
-    = f.buttons do
-      = f.submit "post!"
-  = puny_mce "puny_mce", "forum_body", {:min_width => 600, :min_height => 200}
+.container
+  .row
+    .small-12.columns
+      %h2 New forum post
+      = semantic_nested_form_for @forum , :html => {:multipart => true } do |f|
+        .form_wrapper
+          .row
+            .large-8.columns.small-12
+              = f.input :subject
+              = f.input :agent_id, :value =>  current_agent.id, :as => :hidden
+          .row
+            .large-8.columns.small-12= f.input :body, :label => false, :input_html => {:cols => 80, :rows => 10}
+          .row
+            .large-8.columns.small-12= f.input :add_to_newsfeed, :as => :boolean, :label => 'Show this forum post in the public newsfeed', :checked => true
+          = f.fields_for :userimages do |ff|
+            .row
+              .large-8.columns.small-12= ff.input :image
+          .row
+            .large-8.columns.small-12= f.link_to_add 'Add an image', :userimages, class: [:button, :tiny, :secondary]
+          .row
+            .large-6.columns.small-12= f.submit "post!", class: [:button, :small]
+= content_for :jquery do
+  :plain
+    var puny_mce = new punymce.Editor({id : 'forum_body'});
