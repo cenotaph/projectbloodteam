@@ -107,16 +107,47 @@ class GenericController < ApplicationController
   def index
     joins = [:agent, :comments, :userimages]
     joins.push(:geolocation) if @category.classify.constantize.new.respond_to?('geolocation')
+    joins.push(:currency) if @category.classify.constantize.new.respond_to?('currency_id')
+    if params[:filter].nil?
+      params[:filter] = ActionController::Parameters.new
+    else
+      @filters = true
+    end
+    @per =  params[:filter][:per].blank? ? 40 : params[:filter][:per]
+    @start_date = params[:filter][:start_date].blank? ? '2002-01-01' : params[:filter][:start_date] 
+    @end_date = params[:filter][:end_date].blank? ?  getYear + '-12-31' : params[:filter][:end_date]
+    @sort_direction = params[:filter][:sort_direction].blank? ? 'DESC' : params[:filter][:sort_direction]
+    @sort = params[:filter][:sort].blank? ? "date " : params[:filter][:sort] 
+    @filter_text = params[:filter][:filter_text]
+    
+    unless @filter_text.nil?
+      filter_query = []
+      sample =  @category.classify.constantize.first
+      %w{name destination comment company ordered location product task games station cuisine}.each do |field|
+
+        if sample.respond_to?(field.to_sym)
+        
+          filter_query << "lower(#{field.to_s}) like '%#{@filter_text.downcase}%'"
+        end
+      end
+      filter_query = filter_query.join(" OR ")
+
+    end
+    filter_query = 1 if filter_query.blank?
 
     if params[:agent_id]
       @agent = Agent.find(params[:agent_id])
-      @items = @category.classify.constantize.where(:agent => @agent).where("date <= '#{getYear}-12-31'").includes(joins).order('date DESC').page(params[:page]).per(40)
+      @items = @category.classify.constantize.where(:agent => @agent).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").where(filter_query).includes(joins).order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
+
       if request.xhr?
         render :partial => '/agent', :collection => @items
       else
         set_meta_tags :title => "Agent #{@agent.surname}: " + @category.pluralize.humanize
         render :template => 'index_for_agent'
       end
+      
+      
+      
     else
       if agent_signed_in?
         @items = @category.classify.constantize.where("date <= '#{getYear}-12-31'").includes([

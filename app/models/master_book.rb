@@ -98,7 +98,7 @@ class MasterBook < ActiveRecord::Base
   
   def name
    
-   "<div class='main_title'>#{title.strip}</div>".html_safe
+   "<div class='main_title'>#{title.strip}</div> <div class='secondary_title'>#{secondary_title}</div>".html_safe
 
   end
   

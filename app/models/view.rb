@@ -363,4 +363,13 @@ class View < ActiveRecord::Base
   def hasgrocery_coupons
     return true if self.grocery_cost != '0'
   end
+  
+  def hastvseries_rating
+    return true if self.tvseries_rating != '0'
+  end
+  
+  def hastvseries_comment
+    return true if self.tvseries_comment != '0'
+  end
+  
 end

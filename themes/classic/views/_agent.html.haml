@@ -5,7 +5,7 @@
     - next unless show_entry?(agent)
     %td{:class => "#{agent.class.table_name} #{col}"}
       
-      - if col == 'name' || col == 'title'
+      - if col == 'name' || col == 'title' || col == 'artists'
         = link_to display_column(agent, col, agent.agent_id), agent
         - if agent.respond_to?('linkto')
           - unless agent.linkto.blank?
@@ -29,7 +29,7 @@
                 = link_to fa_icon('trash'), agent, :method => :delete, data: {confirm: 'Are you sure you wish to delete this entry?'}
                 - if agent.discussion.size > 1
                   %span.small= agent.discussion.size
-                  = fa_icon('comments')
+                  = link_to fa_icon('comments'), url_for(agent) + "#discussion"
                 - if agent.others.size > 0
                   %span.small= agent.others.size
                   = fa_icon('group')

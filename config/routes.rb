@@ -95,6 +95,7 @@ Pbt4::Application.routes.draw do
   
   resources :generics do
     get :autocomplete
+
     member do
       match  '/aggregate/:category', :to =>  "generic#aggregate", :as => :aggregate, via: :get
     end

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class ViewsController < ApplicationController
   
-  before_filter :login_required
+  before_filter :authenticate_agent!
   
   def edit  # edit view
     @view = View.where(:agent_id => current_agent.id).where(:year => getYear).first
@@ -46,7 +46,7 @@ class ViewsController < ApplicationController
  
    logger.warn('after : ' + params.inspect)
    
-     if @view.update_attributes(params[:view])
+     if @view.update_attributes(params[:view].permit!)
        flash[:notice] = 'Edited ' + @view.year.to_s + ' view.'
        redirect_to '/settings/'
       else

@@ -1,18 +1,21 @@
+.container
+  .row
+    .small-12.columns
+      Editing views for year: 
+      = getYear
 
-Editing views for year: 
-= getYear
-
-%p If you wish to enable a column, you must enter the name for it in the text box.  If you leave it as a zero, it will not be available.
-
-= form_for @view do |a|
-  - View.columns.sort{|x, y| x.name <=> y.name }.each do |c|
-    - next if c.name == 'id' || c.name == 'agent_id' || c.name == 'year'
-    %p
-      = a.check_box "has" + c.name.to_s 
-      = "#{c.name} :"
-      - if @view.send("has#{c.name.to_s}") == "0"
-        = a.text_field c.name, :value => c.human_name.split(' ')[1].capitalize
-      - else
-        = a.text_field c.name
-  = a.hidden_field :year
-  = a.submit "Edit"
+      %p If you wish to enable a column, you must enter the name for it in the text box.  If you leave it as a zero, it will not be available.
+  .row
+    .large-4.columns.large-offset-3
+      = form_for @view do |a|
+        - View.columns.sort{|x, y| x.name <=> y.name }.each do |c|
+          - next if c.name == 'id' || c.name == 'agent_id' || c.name == 'year'
+          %p
+            = a.check_box "has" + c.name.to_s 
+            = "#{c.name} :"
+            - if @view.send("has#{c.name.to_s}") == "0"
+              = a.text_field c.name, :value => c.human_name.split(' ')[1].capitalize
+            - else
+              = a.text_field c.name
+        = a.hidden_field :year
+        = a.submit "Edit"

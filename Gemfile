@@ -10,6 +10,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails', '3.1'
 gem 'jquery-ui-rails'
 gem 'jquery-ui-themes'
+gem 'jquery-validation-rails'
 gem 'jbuilder', '~> 1.2'
 
 gem 'execjs', :group => [:staging, :production]

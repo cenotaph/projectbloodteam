@@ -1,7 +1,12 @@
 .container  
   .row
     .small-12.columns.text-left
-      %h2= @agent.categories.year(getYear).first.send(@category.tableize).to_s
+      %h2
+        = @agent.categories.year(getYear).first.send(@category.tableize).to_s
+        %span.sort= link_to fa_icon('sort-amount-asc'), '#', onclick: '$("#view_options").slideToggle();return false;'
+      %p.table_count_stats
+        = pluralize(@items.total_count, 'record')
+        returned.
   .row
     .small-12.columns
       - if @category == 'Movie' 
@@ -16,6 +21,32 @@
           - if current_agent == @agent
             = link_to_if current_agent == @agent, 'Suggest unreviewed', unreviewed_agent_musics_path, class: [:tiny, :secondary, :button]
 
+  .row#view_options{style: (@items.empty? || @filters == true  ? "display: block" : false) }
+    = form_for :filter, url: "/agents/#{@agent.slug}/#{@category.tableize}/", method: :get do |f|
+      .large-1.small-4.columns
+        %label Per page
+        = f.text_field :per, value: @per, :required => true
+      .large-2.small-4.columns
+        %label Start date
+        = f.text_field :start_date, class: 'date_input', value: @start_date
+      .small-4.large-2.columns
+        %label End date
+        = f.text_field :end_date, class: 'date_input', value: @end_date
+      .small-12.columns.large-2.column_filter
+        %label Sort by
+        - sample = @category.classify.constantize.new
+        = f.select :sort, @view.columns_for_category(sample.class).map{|x| [@view.agent_column_name(sample, x).humanize, x.to_sym] }, selected: @sort
+        .tiny_select= f.select :sort_direction, [['Down', 'desc'], ['Up', 'asc']] , selected: @sort_direction
+      .small-8.large-2.columns.text_filter
+        %label Filter by text
+        = f.text_field :filter_text, value: @filter_text
+      .small-2.columns.end
+        
+        = f.submit 'Filter', class: [:button, :tiny, :secondary]
+  .row
+    .small-12.columns= paginate @items
+  .row
+    .small-12.columns
       - unless @items.blank?
 
         %table.responsive#classic{:border => 0}
@@ -28,6 +59,19 @@
             = render :partial => '/agent', :collection => @items
             
           
-      - unless @items.blank?
+      - if @items.blank?
+        %p Sorry, no entries were found.
+      - else 
         = paginate @items
         -#= pageless(@items.total_pages, url_for(@items.first.class.table_name))
+
+= content_for :jquery do
+  :plain
+    $('.date_input').datepicker({dateFormat: 'yy-mm-dd'});
+
+    $('#filter_start_date').change( function() {
+      if ($('#filter_start_date').val() > $('#filter_end_date').val()) {
+        alert('Start date has to be before end date!');
+        $('#filter_start_date').val($('#filter_end_date').val());
+      }
+    });
