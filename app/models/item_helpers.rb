@@ -99,10 +99,10 @@ module ItemHelpers
   end
   
   def icon
-    if self.userimage.blank?
+    if self.userimages.empty?
        ""
     else
-       "/images/#{self.class.to_s.tableize}/" + self.id.to_s + '/thumb/' + self[:userimage]
+       self.userimages.first.image.url
     end
   end
   
