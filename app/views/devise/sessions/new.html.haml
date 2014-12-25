@@ -1,24 +1,25 @@
-.row
-  .small-12.columns
-    %h2 Sign in to Project Blood Team
-
-= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+.container
   .row
-    .small-6.columns
-      = f.label :login
-      = f.text_field :login
-  .row
-    .small-6.columns
-      = f.label :password
-      = f.password_field :password, autocomplete: "off"
+    .small-12.columns
+      %h2 Sign in to Project Blood Team
 
-  - if devise_mapping.rememberable?
+  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     .row
-      .small-4.coluns
-        = f.check_box :remember_me
-        = f.label :remember_me 
-  .row
-    .small-4.columns
-      = f.submit "Sign in", class: [:button, :radius, :tiny]
-  .row
-    .small-12.columns= render "devise/shared/links"
+      .large-3.columns.small-10
+        = f.label :login
+        = f.text_field :login
+    .row
+      .large-3.columns.small-10
+        = f.label :password
+        = f.password_field :password, autocomplete: "off"
+
+    - if devise_mapping.rememberable?
+      .row
+        .large-3.columns.small-1
+          = f.check_box :remember_me
+          = f.label :remember_me 
+    .row
+      .large-3.columns
+        = f.submit "Sign in", class: [:button, :radius, :tiny]
+    .row
+      .small-12.columns= render "devise/shared/links"

@@ -25,7 +25,7 @@
 
   %body
     .sticky
-      %nav.top-bar{:"data-topbar" => '', :role => :navigation}
+      %nav.top-bar{:"data-topbar" => '', :"data-options" => "mobile_show_parent_link: true", role: :navigation}
         = render :partial => 'layouts/top_bar'
         
         .agents-bar
@@ -51,12 +51,12 @@
             = render :partial => 'front_map', locals: {json: @json , target: 'front_map', center: nil}
             
     - if flash[:notice]
-      .notice
+      .flash_notice
         .row
           .small-12.columns.text-center= flash[:notice]
   
     - if flash[:error]
-      .error
+      .flash_error
         .row
           .small-12.columns.text-center= flash[:error]          
     = yield.force_encoding('utf-8')

@@ -24,9 +24,18 @@ header { display: none;
   padding-top: 75px;
 }
 .newsfeed_entry {
-  margin: 35px 0px !important;
-  border-bottom: 1px solid #888;
-  padding-bottom: 15px;
+
+  border-bottom: 1px dotted $secondary-color;
+  padding: 1.5rem 0rem;
+  
+  
+  .slick-slider {
+    margin-bottom: 1rem;
+  }
+  
+  &.even {
+    background-color: #ececec;
+  }
   .metadata {
     padding-top: 1.5em;
     font-weight: 100;
@@ -38,9 +47,7 @@ header { display: none;
       color: #666;
       font-size: 0.9em;
     }
-    .newsfeed_date {
-      font-size: 0.7em;
-    }
+
     .item_metadata {
       font-size: 0.9rem;
       line-height: 1.3rem;
@@ -53,7 +60,7 @@ header { display: none;
       }
       &.date {
         font-weight: 300;
-        margin-bottom: 15px;
+        margin-bottom: 0px;
       }
       span.item_metadata_category {
         color: #444;
@@ -65,20 +72,58 @@ header { display: none;
   }
   
   .expanded {
-    margin-top: 40px;
     .comment {
-      border-bottom: 1px dotted $primary-color;
-      padding-bottom: 25px;
+      border-bottom: 1px dotted $secondary-color;
+      padding: 1.5rem 0;
+      .comment_data {
+        margin: 0px;
+        padding: 0px;
+        font-size: 1.0rem;
+        line-height: 1.45rem;
+        color: #333;
+        font-weight: 300;
+        
+      }
       &.last {
         border-bottom: none;
+      }
+      
+      .agent_name {
+        font-size: 0.9rem;
+        line-height: 1.2rem;
+      }
+      
+      .entered_date {
+        margin-top: 0;
       }
     }
   }
 
   .discussion {
     padding-top: 1.5rem;
-    .comment {
-      font-size: 0.8em;
+    .newsfeed_entry_date {
+      font-size: 0.7em;
+      font-weight: 300;
+      a {
+        color: $primary-color;
+      }
+      margin-bottom: 2.5rem;
+    }
+    .side_comment {
+      font-size: 0.8rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      
+      .comment_icon {
+        margin-right: 5px;
+      }
+      .time_when {
+        font-weight: 400;
+        color: #222;
+      }
+      .newsfeed_date {
+        color: #999;
+      }
       
     }
   }
@@ -88,25 +133,22 @@ header { display: none;
     .comment {
    
       clear: both;
-      margin-bottom: 35px;
+
       &.selected {
         border: 1px solid red;
         padding: 8px;
         border-radius: 10px;
       }
       
-      .comment_icon {
-        margin: 5px;
-      }
       .newsfeed_date {
-        font-size: 0.8em;
+        font-size: 0.8rem;
       }
       .comment_comment {
         margin-top: 5px;
         font-weight: 300;
 
         .big {
-          font-size: 2em;
+          font-size: 2rem;
           float: left;
         }
         p {
@@ -166,9 +208,7 @@ header { display: none;
     }
   }
   
-  .newsfeed_main {
-    margin-left: 20px;
-  }
+
   .newsfeed_comment {
     margin-top: 25px;
     span.big {
@@ -186,10 +226,13 @@ header { display: none;
     p.wrapper {
       margin: 0px;
       padding: 0px;
-      font-size: 1.0em;
-      line-height: 1.45em;
+      font-size: 1.0rem;
+      line-height: 1.45rem;
       color: #333;
       font-weight: 300;
+    }
+    .comment_form {
+      display: none;
     }
   }
 }
@@ -350,61 +393,6 @@ header { display: none;
     }
   }
   
-  
-  .top-bar-section {
-
-    ul {
-      li > a {
-        width: initial;
-        &:hover {
-          color: $primary-color;
-
-        }
-      }
-      li.has-dropdown {
-        color: #FEFEFE;
-        margin-right: 2rem;
-        padding-top: 0.35rem;
-        
-        ul.dropdown {
-          padding-top: 0.5rem;
-          li > a {
-            &:hover {
- 
-            }
-            
-          }
-          li { 
-            &:hover {
-
-            }
-            
-            padding: 0.2rem;
-            a {
-              font-size: 0.9rem;
-              line-height: 1.4rem;
-              &:hover {
-                color: $primary-color !important;
- 
-              }
-              float: left;
-              padding: 0px;
-              margin-right: 0.4rem;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-#searchform {
-  input[type=text] {
-    float: left;
-    color: #999;
-    width: 8vW;
-    margin-right: 0.1rem;
-  }
 }
 
 table#classic {
@@ -421,7 +409,7 @@ table#classic {
   }
 }
 
-.notice {
+.flash_notice {
   background-color: crimson;
   color: white;
   padding: 0.7rem 0rem;;
@@ -429,7 +417,7 @@ table#classic {
   margin-top: 1.8rem;
 }
 
-.error {
+.flash_error {
   background-color: red;
   color: white;
   padding: 0.7rem 0rem;;
@@ -561,6 +549,7 @@ span.small_meta {
 }
 span.big {
   font-size: 2.2em;
+  line-height: 1em;
   font-weight: 600;
 }
 
@@ -606,5 +595,35 @@ table#classic {
         color: #999;
       }
     }
+  }
+}
+
+// stats
+
+.stats {
+  ol {
+    li {
+      font-weight: 300;
+      a {
+
+        span.secondary_title {
+          font-size: 0.75rem;
+          color: #999;
+          margin-right: 0.6rem;
+        }
+      }
+    }
+  }
+}
+
+// agent profile
+
+.newsfeed_profile {
+  //   hide discussion columns
+  .discussion {
+    display: none;
+  }
+  h2.item_title {
+    float: none;
   }
 }

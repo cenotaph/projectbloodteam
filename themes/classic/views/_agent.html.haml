@@ -29,7 +29,7 @@
                 = link_to fa_icon('trash'), agent, :method => :delete, data: {confirm: 'Are you sure you wish to delete this entry?'}
                 - if agent.discussion.size > 1
                   %span.small= agent.discussion.size
-                  = fa_icon('comment')
+                  = fa_icon('comments')
                 - if agent.others.size > 0
                   %span.small= agent.others.size
                   = fa_icon('group')

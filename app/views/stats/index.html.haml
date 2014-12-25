@@ -1,89 +1,95 @@
-.stats
-  .left
-    %h3 Most frequently seen films
-    %ul
-      - @top_movies.each do |movie|
-        %li
-          = link_to raw(movie.first.linked_name), movie.first
-          %span.small_text= "(#{movie.last})"
+.stats.container
+  .row
+    .large-6.small-12.columns
+      %fieldset
+        %legend Most frequently seen films
+        %ol
+          - @top_movies.each do |movie|
+            %li
+              = link_to raw(movie.first.linked_name.gsub(/\<div /, '<span ').gsub(/\<\/div\>/, '</span>')), movie.first
+              %span.small_text= "(#{movie.last})"
+      %fieldset
+        %legend Most frequently acquired records
+        %ol
+          - @top_music.each do |music|
+            %li
+              = link_to raw(music.first.linked_name.gsub(/\<div /, '<span ').gsub(/\<\/div\>/, '</span>')), music.first
+              %span.small_text= "(#{music.last})"
 
-    %h3 Most frequently acquired records
-    %ul
-      - @top_music.each do |music|
-        %li
-          = link_to raw(music.first.linked_name), music.first
-          %span.small_text= "(#{music.last})"
+      %fieldset
+        %legend Most frequently acquired books
+        %ol
+          - @top_books.each do |book|
+            %li
+              = link_to raw(book.first.linked_name.gsub(/\<div /, '<span ').gsub(/\<\/div\>/, '</span>')), book.first
+              %span.small_text= "(#{book.last})"
 
-    %h3 Most frequently acquired books
-    %ul
-      - @top_books.each do |book|
-        %li
-          = link_to raw(book.first.linked_name), book.first
-          %span.small_text= "(#{book.last})"
-
-    %h3 Most commented-on discussions
-    %ul
-      - @top_comments.each do |comment|
-        %li
-          = link_to raw(comment.first.name), comment.first
-          %spam.small_text= "(#{comment.last})"
-    %h3 Most frequent restaurant names
-    %ul
-      - @top_restaurants.each do |r|
-        %li
-          = r.first
-          %span.small_text= "(#{r.last})"
-  .right          
-    %h3 The PBT economy (by category and currency)
-    .money_stats
-      %ul
-        %li.category 
-          Films
+      %fieldset
+        %legend Most commented-on discussions
+        %ol
+          - @top_comments.each do |comment|
+            %li
+              = link_to raw(comment.first.name.gsub(/\<div /, '<span ').gsub(/\<\/div\>/, '</span>')), comment.first
+              %spam.small_text= "(#{comment.last})"
+      %fieldset
+        %legend Most frequent restaurant names
+        %ul
+          - @top_restaurants.each do |r|
+            %li
+              = r.first
+              %span.small_text= "(#{r.last})"
+    .large-6.columns.small-12
+      %fieldset
+        %legend The PBT economy (by category and currency)
+        .money_stats
           %ul
-            - @movie_cost.each do |cost|
-              - next if cost.last.blank?
-              %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
-        %li.category 
-          Music
-          %ul
-            - @music_cost.each do |cost|
-              - next if cost.last.blank?
-              %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
-        %li.category
-          Books
-          %ul
-            - @book_cost.each do |cost|
-              - next if cost.last.blank?
-              %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n") 
-        %li.category
-          Concerts
-          %ul
-            - @concert_cost.each do |cost|
-              - next if cost.last.blank?
-              %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
-        %li.category
-          Restaurants
-          %ul
-            - @restaurant_cost.each do |cost|
-              - next if cost.last.blank?
-              %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")             
-        %li.category
-          Bars
-          %ul
-            - @bar_cost.each do |cost|
-              - next if cost.last.blank?
-              %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
-        %li.category
-          Activities
-          %ul
-            - @activity_cost.each do |cost|
-              - next if cost.last.blank?
-              %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
-        %li.category
-          Events
-          %ul
-            - @event_cost.each do |cost|
-              - next if cost.last.blank?
-              %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")                  
-    .new{:style => 'clear: left;'}
-      %h2= link_to 'GBP: Gross Bloodteam Product!', gbp_stats_path
+            %li.category 
+              Films
+              %ul
+                - @movie_cost.each do |cost|
+                  - next if cost.last.blank?
+                  %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol.html_safe, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
+            %li.category 
+              Music
+              %ul
+                - @music_cost.each do |cost|
+                  - next if cost.last.blank?
+                  %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol.html_safe, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
+            %li.category
+              Books
+              %ul
+                - @book_cost.each do |cost|
+                  - next if cost.last.blank?
+                  %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol.html_safe, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n") 
+            %li.category
+              Concerts
+              %ul
+                - @concert_cost.each do |cost|
+                  - next if cost.last.blank?
+                  %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol.html_safe, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
+            %li.category
+              Restaurants
+              %ul
+                - @restaurant_cost.each do |cost|
+                  - next if cost.last.blank?
+                  %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol.html_safe, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")             
+            %li.category
+              Bars
+              %ul
+                - @bar_cost.each do |cost|
+                  - next if cost.last.blank?
+                  %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol.html_safe, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
+            %li.category
+              Activities
+              %ul
+                - @activity_cost.each do |cost|
+                  - next if cost.last.blank?
+                  %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol.html_safe, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")
+            %li.category
+              Events
+              %ul
+                - @event_cost.each do |cost|
+                  - next if cost.last.blank?
+                  %li= number_to_currency cost.last, :unit => Currency.find(cost.first).symbol.html_safe, :format => (Currency.find(cost.first).unitafter == true ? "%n%u" : "%u%n")                  
+        .new{:style => 'clear: left;'}
+          %h2= link_to 'GBP: Gross Bloodteam Product!', gbp_stats_path

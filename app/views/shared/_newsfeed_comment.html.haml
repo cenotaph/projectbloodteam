@@ -1,20 +1,22 @@
--content_for :head do
-  = include_puny_mce
-- style = (entry.entry_type == 'Forum' ? 'reply' : 'comment')
-.add_comment= link_to image_tag('/img/icons/plus.png'), "$('#comment_new_#{entry.id.to_s}').fadeIn(); $(this).fadeOut()", :remote => :true
-%div{:id => "comment_new_#{entry.id.to_s}", :style => "margin-left: 100px; display: none;"}
-  = semantic_form_for(@comment = Comment.new(:add_to_newsfeed => true), :remote => true,  :html => {:multipart => true}) do |f|
-    = f.input :foreign_id, :value =>  (entry.entry.has_master? ? entry.entry.master_id : (entry.entry_type == "Comment" ? entry.entry.child.id.to_s : entry.entry_id)), :as => :hidden
-    = f.input :item_type, :value => (entry.entry.has_master? ? "Master#{entry.entry_type}" : (entry.entry_type == "Comment" ? entry.entry.child.class.to_s : entry.entry_type)), :as => :hidden
-    = f.input :agent_id, :value =>  current_agent.id, :as => :hidden
-    = f.input :content, :label => style, :input_html => {:cols => 30, :rows => 5, :id => "comment_content_#{entry.id.to_s}"}
-    - if entry.entry.class == Comment
-      .image_attach= link_to "Attach an image to this post", url_for(entry.entry.child) + '#comment_new'
-    - else
-      .image_attach= link_to "Attach an image to this post", url_for(entry.entry) + '#comment_new'
-    = f.input :add_to_newsfeed, :as => :boolean, :label => 'Show this comment in the public newsfeed', :checked => true     
-    = f.submit "add #{style}"
-= raw puny_mce "puny_mce", "comment_content_#{entry.id.to_s}",  {:min_width => 360, :min_height => 100 }
+
+- style = (entry.entry_type == 'Forum' ? 'reply' : 'comment:')
+
+%div{:id => "comment_new_#{entry.id.to_s}"}
+  = semantic_nested_form_for(@comment = Comment.new(:foreign_id =>  (entry.entry.has_master? ? entry.entry.master.id : entry.entry.id ), :item_type =>  (entry.entry.has_master? ? "Master#{entry.entry_type}" : (entry.entry_type == "Comment" ? entry.entry.child.class.to_s : entry.entry_type)), agent: current_agent, :add_to_newsfeed => true),  :html => {:multipart => true, :"data-abide" => ""}) do |f|
+    .form_wrapper
+      = f.input :foreign_id, :value =>  (entry.entry.has_master? ? entry.entry.master_id : (entry.entry_type == "Comment" ? entry.entry.child.id.to_s : entry.entry_id)), :as => :hidden, :input_html => {:required => '' }
+      = f.input :item_type,  :as => :hidden, :input_html => {:required => '' }
+      = f.input :agent_id, :as => :hidden, :input_html => {:required => '' }
+      = f.input :content, :label => "Your #{style}:", :input_html => {:cols => 30, :rows => 7, :id => "comment_content_#{entry.id.to_s}"}
+      = f.fields_for :userimages do |ff|
+        = ff.input :image
+      - if entry.entry.class == Comment
+        .image_attach= f.link_to_add "Attach an image to this comment",  :userimages, class: "button tiny secondary"
+      - else
+        .image_attach= f.link_to_add "Attach an image to this post",  :userimages, class: "button tiny secondary" 
+      = f.input :add_to_newsfeed, :as => :boolean, :label => 'Show this comment in the public newsfeed', :checked => true     
+      = f.submit "add #{style}", class: [:button, :tiny]
+
 
 :javascript
   $("#comment_new_#{entry.id.to_s} form").on("ajax:beforeSend", function() {

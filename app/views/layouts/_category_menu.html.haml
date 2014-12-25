@@ -1,8 +1,8 @@
 %li.has-dropdown
   - if agent_signed_in?
-    = "Agent #{current_agent.surname}"
+    = link_to "Agent #{current_agent.surname}", '#'
   - else
-    Categories
+    = link_to 'Categories', '#'
   %ul.dropdown
     - othercats = []  
     - if agent_signed_in?
@@ -31,7 +31,12 @@
               = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.id.to_s}/#{category.table_name}/new"
 %li.divider
 %li.has-dropdown
-  = fa_icon 'bars'
+  = link_to fa_icon('bars'), '#', class: 'show-for-medium-up'
+  %ul.dropdown
+    - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|
+      %li{:class => cycle('odd', 'even')}= link_to category.to_s.pluralize, "/#{category.table_name}"
+%li.has-dropdown.show-for-small-only
+  = link_to 'All categories', '#'
   %ul.dropdown
 
     - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|

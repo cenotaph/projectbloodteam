@@ -92,12 +92,14 @@ class Videogame < ActiveRecord::Base
     self.master_videogame
   end
   
+
+  
   def master_id
     self.master_videogame_id
   end
   
   def others
-    self.master_videogame.videogames.delete_if{|x| x == self}
+    self.master_videogame.videogames.to_a.delete_if{|x| x == self}
   end
   
   include ItemHelpers

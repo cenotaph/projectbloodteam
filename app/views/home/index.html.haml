@@ -12,7 +12,7 @@
     - if @newsfeed.length == 0
       The newsfeed begins in 2010, sorry.
     - else
-.row#newsfeed
+#newsfeed
   = render :partial => 'shared/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => false}  
 .row
   .small-12.columns

@@ -6,8 +6,6 @@ class View < ActiveRecord::Base
     if self.respond_to?(item.class.to_s.downcase + "_" + column)
       if self.method(item.class.to_s.downcase + "_" + column).call == "0"
         return nil
-      elsif column == 'first'
-        return "First?"
       else
         if self.method(item.class.to_s.downcase + "_" + column).call == ""
           return column
@@ -16,7 +14,7 @@ class View < ActiveRecord::Base
         end
       end
     else
-      return column
+      return (column == 'first' ? 'First?' : column)
     end
 
   end

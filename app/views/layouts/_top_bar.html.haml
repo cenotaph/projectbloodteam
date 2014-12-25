@@ -2,26 +2,34 @@
 %ul.title-area
   %li.name
     %h1= link_to 'PBT 5', '/'
-  %section.top-bar-section
-    %ul.left
-      %li.has-form
-        .row.collapse
-          .large-8.small-9.columns#searchform
-            = form_tag "/search/simple", :method => "post" do |f|
-              = text_field_tag :search, 'Search?'
-  %section.top-bar-section
-    %ul.left= render :partial => 'layouts/category_menu'
+  %li.toggle-topbar.menu-icon
+    %a{:href => '#'}
+      %span Menu
+%section.top-bar-section
+  %ul.left
+    %li.has-form
+      .row.collapse
+        .large-8.small-9.columns#searchform
+          = form_tag "/search/simple", :method => "post" do |f|
+            = text_field_tag :search, 'Search?'
+%section.top-bar-section
+  %ul.left= render :partial => 'layouts/category_menu'
 
-  %section.top-bar-section
-    %ul.right
-      - if controller.controller_name == 'home' && !@json.blank?
-        %li= link_to fa_icon('globe lg') + " (#{@json.size})", '#', onclick: "$('.worldmap-bar').slideToggle(); return false;"
-      - unless controller.controller_name == 'forums'
-        %li= link_to fa_icon('comment lg') + (session[:forum_unread].blank? ? '' : (session[:forum_unread] > 0 ? " (#{session[:forum_unread]})" : '' )), '#', onclick: "$('.forum-bar').slideToggle(); return false;"
-      %li= link_to fa_icon("users lg"), '#', onclick: "$('.agents-bar .agents').slideToggle(); return false;"
-      %li= link_to fa_icon('line-chart lg'), '/stats'
-      %li= link_to fa_icon('gear lg'), '/settings'
-      - if agent_signed_in?
-        %li= link_to fa_icon('sign-out lg'), destroy_agent_session_path, :method => :delete
-      - else
-        %li= link_to fa_icon('sign-in lg'), new_agent_session_path
+%section.top-bar-section
+  %ul.right
+    - if controller.controller_name == 'home' && !@json.blank?
+      %li= link_to fa_icon('globe lg') + " (#{@json.size})", '#', onclick: "$('.worldmap-bar').slideToggle();google.maps.event.trigger(map, 'resize'); map.setCenter(new google.maps.LatLng(0, 0));return false;"
+    - unless controller.controller_name == 'forums'
+      %li= link_to fa_icon('comment lg') + (session[:forum_unread].blank? ? '' : (session[:forum_unread] > 0 ? " (#{session[:forum_unread]})" : '' )), '#', onclick: "$('.forum-bar').slideToggle(); return false;"
+    %li= link_to fa_icon("users lg"), '#', onclick: "$('.agents-bar .agents').slideToggle(); return false;", class: 'show-for-medium-up'
+    %li.show-for-small-only.has-dropdown
+      = link_to 'All agents', '#'
+      %ul.dropdown
+        - @active_agents.each do |agent|
+          %li= link_to agent.surname, agent.agent
+    %li= link_to fa_icon('line-chart lg'), '/stats'
+    %li= link_to fa_icon('gear lg'), '/settings'
+    - if agent_signed_in?
+      %li= link_to fa_icon('sign-out lg'), destroy_agent_session_path, :method => :delete
+    - else
+      %li= link_to fa_icon('sign-in lg'), new_agent_session_path

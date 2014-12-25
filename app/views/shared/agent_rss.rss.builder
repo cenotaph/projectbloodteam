@@ -7,6 +7,7 @@ xml.rss :version => "2.0" do
     xml.link 'http://bloodteam.com' + agent_path(@agent, :format => :rss)
 
     for article in @feed do
+      next if article.id.nil?
       mydesc = ''
       xml.item do
         if article.respond_to?('metadata') 

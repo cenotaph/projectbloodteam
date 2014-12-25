@@ -1,37 +1,39 @@
-.profile
-  .left.six.columns.alpha
-    .agent_image= image_tag @agent.agent_icon(:large)
-    %div
-      %u agent details 
-      .profile_details= "Mission name: #{@profile.missionname}"
-      .profile_details= "Name: #{@profile.surname}"
-      .profile_details= "Location: #{@profile.location}"
-      .profile_details= @profile.freetext
-      .profile_details
-        = "Agent Since: #{@agent.agent_since}"
-        = link_to '[history]', history_agent_path(@agent)
-      .profile_details
-        RSS:
-        = link_to 'public', "/agents/rss/#{@agent.id.to_s}.rss"
-        - if @agent.security > 0
-          - if current_agent
-            = " / "
-            = link_to 'private', "/agents/rss/#{@agent.id.to_s}/#{@agent.public_password}.rss"
-    - unless @json.blank?
-      #master_map
-        .profile_details Recent locations:
-        = render :partial => 'home/front_map', locals: {json: @json, center: nil, target: "master_map" }
-  .right.ten.columns.omega
-    - if @agent.security > 0
-      - if !agent_signed_in?
-        %p This user protects their information only for other PBT agents.
+.profile.container
+  .row
+    .large-6.columns.small-12
+      .agent_image= image_tag @agent.agent_icon(:large)
+      %div
+        %u agent details 
+        .profile_details= "Mission name: #{@profile.missionname}"
+        .profile_details= "Name: #{@profile.surname}"
+        .profile_details= "Location: #{@profile.location}"
+        .profile_details
+          %blockquote= @profile.freetext
+        .profile_details
+          = "Agent Since: #{@agent.agent_since}"
+          = link_to '[history]', history_agent_path(@agent)
+        .profile_details
+          RSS:
+          = link_to 'public', "/agents/rss/#{@agent.id.to_s}.rss"
+          - if @agent.security > 0
+            - if current_agent
+              = " / "
+              = link_to 'private', "/agents/rss/#{@agent.id.to_s}/#{@agent.public_password}.rss"
+      - unless @json.blank?
+        #master_map
+          .profile_details Recent locations:
+          = render :partial => 'home/front_map', locals: {json: @json, center: nil, target: "master_map" }
+    .large-6.columns.small-12
+      - if @agent.security > 0
+        - if !agent_signed_in?
+          %p This user protects their information only for other PBT agents.
+        - else
+          - pass = true
       - else
         - pass = true
-    - else
-      - pass = true
-    - if pass == true
-      %h3 Latest activity
-      .newsfeed
-        #results= render :partial => 'shared/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => true}
-      = paginate @newsfeed
-      = pageless(@newsfeed.total_pages, '/agents/' + @agent.id.to_s)
+      - if pass == true
+        %h3 Latest activity
+        .newsfeed_profile
+          #results= render :partial => 'agents/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => true}
+        = paginate @newsfeed
+        = pageless(@newsfeed.total_pages, '/agents/' + @agent.id.to_s)

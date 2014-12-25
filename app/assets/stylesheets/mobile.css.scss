@@ -1,0 +1,76 @@
+@import "foundation/functions";
+@include exports("global") {}
+@import "foundation/components/global";
+@import 'foundation_and_overrides';
+
+@media #{$medium-down} { 
+  #newsfeed {
+    .discussion {
+      .side_comment {
+        float: left;
+      }
+    }
+  }
+  
+}
+
+@media #{$medium-up} {
+
+  
+  .top-bar-section {
+
+    ul {
+      li > a {
+        width: initial;
+        &:hover {
+          color: $primary-color;
+
+        }
+      }
+      li.has-dropdown {
+        color: #FEFEFE;
+        margin-right: 2rem;
+   
+        
+        ul.dropdown {
+
+          li > a {
+            &:hover {
+ 
+            }
+            
+          }
+          li { 
+            &:hover {
+
+            }
+            
+            padding: 0.2rem;
+            a {
+              font-size: 0.9rem;
+              line-height: 1.4rem;
+              &:hover {
+                color: $primary-color !important;
+ 
+              }
+              float: left;
+              padding: 0px;
+              margin-right: 0.4rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  #searchform {
+    input[type=text] {
+      float: left;
+      color: #999;
+      width: 8vW;
+      margin-right: 0.1rem;
+    }
+  }
+  
+}

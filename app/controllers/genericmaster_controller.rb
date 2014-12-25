@@ -254,7 +254,7 @@ class GenericmasterController < ApplicationController
       else
         @items = @category.classify.constantize.includes([:agent,
             {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => [:agent, :userimages]}
-              }]).where("date <= '#{getYear}-12-31'").paginate(:per_page => 20, :page => params[:page], :order => date + ' DESC')
+              }]).where("date <= '#{getYear}-12-31'").page(params[:page]).per(50).order('date DESC')
       end
       if request.xhr?
         render :partial => 'shared/item', :collection => @items, :locals => {:searchterm => nil}

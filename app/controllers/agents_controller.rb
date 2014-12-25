@@ -93,9 +93,9 @@ class AgentsController < ApplicationController
 
     @feed = []
     for cat in [Movie, Music, Concert, Event, Restaurant, Bar, Takeaway, Activity, Gambling, Mile, Eating, Weight, Brewing, Grocery, Exercise] do
-      @feed += cat.find_all_by_agent_id(params[:id], :limit => 55, :order => 'date DESC')
+      @feed += cat.where(:agent => @agent).limit(55).order("date DESC")
     end
-    vg = Videogame.find_all_by_agent_id(params[:id], :select => "*, updated_at AS date", :limit => 55, :order => 'finished DESC, started DESC, received DESC')
+    vg = Videogame.where(:agent => @agent).select("*, updated_at AS date").limit(55).order('finished DESC, started DESC, received DESC')
     vg.each_index do |i|
       begin
         vg[i].date = Date.parse(vg[i]['date'].to_s)
@@ -104,21 +104,23 @@ class AgentsController < ApplicationController
       end
       @feed.push(vg[i])
     end
-    books = Book.find_all_by_agent_id(params[:id], :select => "*, updated_at AS date", :limit => 55, :order => 'date DESC, finished DESC, started DESC, received dESC')
+    books = Book.where(:agent => @agent).select("updated_at AS date, created_at, updated_at AS updated_at").limit(55).order('date DESC, finished DESC, started DESC, received dESC')
     books.each_index do |i|
       # begin
       #   books[i].date = Date.parse(books[i]['date'])
       # rescue
       #   nil
       # end
+      next if i.nil?
       @feed.push(books[i])
     end
-    
     @feed = @feed.compact.sort{|x, y|  y.updated_at  <=>  x.updated_at  }[0..54]
+
+    
     if @logged_in == true
-      render :rss => @feed, :template => 'shared/agent_rss'
+      render :template => 'shared/agent_rss'
     else
-      render :rss => @feed, :template => 'shared/agent_protected_rss'
+      render  :template => 'shared/agent_protected_rss'
     end
   end
 

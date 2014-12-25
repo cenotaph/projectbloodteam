@@ -12,14 +12,14 @@ class MasterVideogame < ActiveRecord::Base
   include ItemHelpers
   attr_accessor :followup
   
-  def self.choose(key)
+  def self.choose(key, token = nil)
     if key =~ /^local_/
       key.gsub(/^local_/, '')
     else
       existing = self.where(:amazoncode => key)
       if existing.empty?
         videogame = Amazon::Ecs.item_search(key, :search_index => 'VideoGames', :response_group => 'Medium').items[0]
-        new_master = MasterVideogame.new(:amazoncode => key, :title => videogame.get('title'), :creator => videogame.get('author'))
+        new_master = MasterVideogame.new(:amazoncode => key, :title => videogame.get('ItemAttributes/Title'), :creator => videogame.get('ItemAttributes/Author'))
         require 'open-uri'
         if new_master.save
           unless videogame.get_hash('mediumimage').blank?
@@ -89,17 +89,26 @@ class MasterVideogame < ActiveRecord::Base
       end
   end
   
-  def self.query(searchterm)
+  def short_name
+    title
+  end
+  
+  def secondary_title
+    ''
+  end
+  
+  def self.query(searchterm, token = nil)
     hits = Amazon::Ecs.item_search(searchterm, :response_group => 'Medium', :search_index => 'VideoGames').items
     results = []
     hits.each do |hit|
-      results << {"title" => hit.get('title').to_s + ' by ' + hit.get('author').to_s, "key" => hit.get('asin'), 'image' => hit.get('smallimage').nil? ? nil : hit.get('smallimage').gsub(/\<\/url\>.*/, '').sub(/\<url\>/, '') }
+      results << {"title" => hit.get('ItemAttributes/Title').to_s, "key" => hit.get('ASIN'), 'image' => hit.get('SmallImage').nil? ? nil : hit.get('SmallImage').gsub(/\<\/url\>.*/i, '').sub(/\<url\>/i, '') }
     end
-    results
+    results.delete_if{|x| x['key'].nil? }
+
   end
 
   def similars
-    MasterVideogame.find_all_by_creator(self.creator).delete_if{|x| x == self}
+    MasterVideogame.where(:creator => self.creator).where.not(id: self.id)
   end
 
   

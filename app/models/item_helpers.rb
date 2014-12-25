@@ -69,8 +69,8 @@ module ItemHelpers
   
   def formatted_date
     if self[:date]
-      #### change to reflect user's date format
-      self.date.strftime('%B %d, %Y')
+      df = Profile.find_by(:agent_id => self.agent_id, :year => self.date.year)
+      df.nil? ? self.date.strftime('%B %d, %Y') : self.date.strftime(df.dateformat)
     elsif self.respond_to?('created_at')
       self.created_at.strftime('%B %d, %Y')
     else

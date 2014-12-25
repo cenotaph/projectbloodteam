@@ -22,7 +22,7 @@
           %thead
             - @view.columns_for_category(@items[0].class).each do |col|
               - next if col == 'venue_address'
-              %th= @view.agent_column_name(@items[0], col)
+              %th= @view.agent_column_name(@items[0], col).humanize
 
           %tbody#results
             = render :partial => '/agent', :collection => @items

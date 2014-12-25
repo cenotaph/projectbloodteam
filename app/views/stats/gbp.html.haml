@@ -1,58 +1,61 @@
-%h3 Gross Bloodteam Product
+.container
+  .row
+    .large-12.columns
+      %h3 Gross Bloodteam Product
 
 
 
-Total money shown:
-= number_to_currency(@gbp.sum{|x| x.last['Total'] }, :unit => Currency.find(@base).symbol, :format => (Currency.find(@base).unitafter == true ? "%n%u" : "%u%n"))
+    Total money shown:
+    = number_to_currency(@gbp.sum{|x| x.last['Total'] }, :unit => Currency.find(@base).symbol, :format => (Currency.find(@base).unitafter == true ? "%n%u" : "%u%n"))
 
-.graph
-  .chart
-    #holder
-    .x-axis
-      %ul
-        - raphdata = []
-        - years = []
+    .graph
+      .chart
+        #holder
+        .x-axis
+          %ul
+            - raphdata = []
+            - years = []
 
-        - @gbp.each do |key, value|
-          - years.push(key)
-          %li
-            = key
-            %br/
-            - value.each do |c, value|
-              - if c == 'Total'
-                - raphdata.push(value)
-                %span.small_text= number_to_currency(value, :unit => Currency.find(@base).symbol, :format => (Currency.find(@base).unitafter == true ? "%n%u" : "%u%n"))
-  .legend
-    %h5
-      = form_tag gbp_stats_path do
-        Converting to:
-        = select_tag :base_currency, options_from_collection_for_select(Currency.all, :id, :long_name, @base)
-        Hide data from categories:
-        - [Activity, Bar, Book, Brewing, Concert, Event, Gambling, Grocery, Mile, Movie, Music, Restaurant, Takeaway, Videogame].each do |category|
-          %p
-            = check_box_tag category.to_s, "1", params[category.to_s]
-            = category.to_s.pluralize
-        .new
-          Hide data from agents:
-          - Agent.all.each do |agent|
-            %p
-              = check_box_tag agent.id, "1", @agent_blacklist.include?(agent.id.to_s)
-              = agent.surname
-          = submit_tag "filter"    
+            - @gbp.each do |key, value|
+              - years.push(key)
+              %li
+                = key
+                %br/
+                - value.each do |c, value|
+                  - if c == 'Total'
+                    - raphdata.push(value)
+                    %span.small_text= number_to_currency(value, :unit => Currency.find(@base).symbol, :format => (Currency.find(@base).unitafter == true ? "%n%u" : "%u%n"))
+      .legend
+        %h5
+          = form_tag gbp_stats_path do
+            Converting to:
+            = select_tag :base_currency, options_from_collection_for_select(Currency.all, :id, :long_name, @base)
+            Hide data from categories:
+            - [Activity, Bar, Book, Brewing, Concert, Event, Gambling, Grocery, Mile, Movie, Music, Restaurant, Takeaway, Videogame].each do |category|
+              %p
+                = check_box_tag category.to_s, "1", params[category.to_s]
+                = category.to_s.pluralize
+            .new
+              Hide data from agents:
+              - Agent.all.each do |agent|
+                %p
+                  = check_box_tag agent.id, "1", @agent_blacklist.include?(agent.id.to_s)
+                  = agent.surname
+              = submit_tag "filter"    
 
+= content_for :jquery do
+  :javascript
+    window.onload = function () {
 
-:javascript
-  window.onload = function () {
-
-    var r = Raphael("holder", 750, 600);
-    var fin = function () {
-        this.flag = r.popup(this.bar.x, this.bar.y, this.bar.value || "0").insertBefore(this);
-      };
-    var fout = function () {
-        this.flag.animate({opacity: 0}, 300, function () {this.remove();});
-      };
-      
-      r.barchart(0, 0, 750, 600, [[#{raphdata.map{|x| sprintf("%.2f", x)}.join(',')}]], {type: "sharp", stacked: false}).hover(fin, fout);
-      Raphael.g.axis(0,0,750,null,null,4,2,#{years.inspect}, "|", 0);
-      axis.text.attr({font:"12px Arial", "font-weight": "regular", "fill": "#333333"});
-  };            
+      var r = Raphael("holder", 750, 600);
+      var fin = function () {
+          this.flag = r.popup(this.bar.x, this.bar.y, this.bar.value || "0").insertBefore(this);
+        };
+      var fout = function () {
+          this.flag.animate({opacity: 0}, 300, function () {this.remove();});
+        };
+    
+        r.barchart(0, 0, 750, 600, [[#{raphdata.map{|x| sprintf("%.2f", x)}.join(',')}]], {type: "sharp", stacked: false}).hover(fin, fout);
+        Raphael.g.axis(0,0,750,null,null,4,2,#{years.inspect}, "|", 0);
+        axis.text.attr({font:"12px Arial", "font-weight": "regular", "fill": "#333333"});
+    };            

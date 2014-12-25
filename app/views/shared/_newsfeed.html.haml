@@ -1,27 +1,21 @@
 
 - entry = newsfeed
 
-.newsfeed_entry.columns{:class => cycle('odd', 'even', :name => "outer_cycle")}[entry]
+.newsfeed_entry{:class => cycle('odd', 'even', :name => "outer_cycle")}[entry]
   - if entry.entry.class == Comment
     = render :partial => 'comment', :locals => {:entry => entry}
   - else 
     .row
-      .large-8.large-offset-2.small-12.columns.newsfeed_main
-        %h2.item_title.small-text-center
-          = link_to raw(entry.entry.name), entry.entry
-        - if entry.entry.respond_to?('linkto')
-          .link_to= link_to image_tag('/img/icons/external-link.png'), entry.entry.linkto, :target => "_blank"
-    .row
-      .large-2.small-12.columns.metadata.large-text-right
+      .large-2.small-12.columns.metadata.large-text-right.medium-3
         .row
-          .small-6.columns.large-12.small-text-right
+          .small-6.columns.large-12.small-text-right.medium-text-left
 
             - unless no_agent_icon
               .newsfeed_icon= entry_agent_icon(entry)
             .agent_name= link_to "Agent #{entry.agent.surname}", entry.agent
             - if entry.entry.respond_to?('metadata')
               .item_metadata.date= entry.entry.formatted_date
-              .newsfeed_date= "entered " + time_ago_in_words(entry.created_at) + " ago"
+              
               - if agent_signed_in? 
                 - if entry.agent == current_agent
                   .newsfeed_delete  
@@ -29,8 +23,7 @@
                     = link_to fa_icon('pencil'), '#'
                     = link_to fa_icon('microphone-slash'), entry, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }
                     
-          .small-6.columns.large-12.small-text-left.large-text-right
-            %br/
+          .small-6.columns.text-left.medium-12
             %br/
             - entry.entry.metadata['metadata'].each_pair do |key, value|
               - next if value.blank?
@@ -41,45 +34,91 @@
                 %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
                 %span.item_metadata_value= display_metadata(key, value)
 
-      .small-12.large-10.columns
+      .small-10.small-offset-1.large-offset-0.large-8.columns.medium-9.medium-offset-0
         .row
-          .large-7.small-10.small-offset-1.columns.large-offset-0
-            .newsfeed_comment
-              %div{:id => "original_entry_" + entry.id.to_s}
-                - unless entry.entry.comment.blank?
-                  %span.big= raw('&ldquo;')
-                %p.wrapper= entry.entry.comment.blank? ? raw('<i>No comment yet.</i>'): raw(entry.entry.comment)
-          
-              - if entry.entry.discussion.size > 1
-                .expanded{:id => "expanded_comments_#{entry.id.to_s}", :style => 'display: none'}
-                  - entry.entry.discussion.delete_if{|k| !show_entry?(k)}.sort{|x, y| x.created_at <=> y.created_at }.each_with_index do |comment, index|
-                    .comment{:class => cycle('innereven ', 'innerodd ') + (comment == entry.entry && index != 0 ? ' selected' : '') + ( (index+1 ==  entry.entry.discussion.delete_if{|k| !show_entry?(k)}.sort{|x, y| x.created_at <=> y.created_at }.size) ? ' last' : '' )}
-                      %div{:class => "comment_icon " + (comment.class == Comment ? "right" : "left")}= image_tag comment.agent_icon(:small), :width => 40
-                      .comment_data
-                        .newsfeed_agent_title= raw link_to("Agent #{comment.agent.surname} ", comment.agent) +  time_ago_in_words(comment.created_at) + " ago "
-                        .newsfeed_date= raw "(#{comment.formatted_date})"
-                        .comment_comment
-                          - unless comment.comment.blank?
-                            .big= raw('&ldquo;')
-                          = raw display_comment(comment)
+
+          - unless entry.entry.userimages.empty? && entry.entry.icon.blank?
+            
+            .large-4.small-10.small-offset-1.columns.large-offset-0
+              = raw one_or_slideshow(entry.entry)
+          .columns.newsfeed_main{class: (entry.entry.userimages.empty? && entry.entry.icon.blank?) ? "large-12" : "large-8"}
+            %h2.item_title.small-text-center.large-text-left
+              = link_to raw(entry.entry.name), entry.entry
+            - if entry.entry.respond_to?('linkto')
+              .link_to= link_to fa_icon('external-link'), entry.entry.linkto, :target => "_blank"
+        .row
+          .newsfeed_comment.small-11.columns.small-offset-0
+            %div{:id => "original_entry_" + entry.id.to_s}
+              - unless entry.entry.comment.blank?
+                %span.big= raw('&ldquo;')
+                .agent_by
+                  = link_to "Agent #{entry.entry.agent.surname}", entry.entry.agent
+                  %span.entered_date= "(#{display_column(entry.entry, :created_at, entry.entry.agent)})"
+              %p.wrapper= entry.entry.comment.blank? ? raw('<i>No comment yet.</i>'): raw(entry.entry.comment)
+              - if agent_signed_in?
+                .comment_link= link_to fa_icon('comment-o'), '#', onclick: "$('#commententry_#{entry.id.to_s}').slideToggle();var puny_mce = new punymce.Editor({id : 'comment_content_#{entry.id.to_s}'}); return false;"
+                .row.comment_form{:id => "commententry_#{entry.id.to_s}"}
+                  .small-11.columns.small-offset-0
+                    = render :partial => 'shared/newsfeed_comment', locals: {entry: entry}
+                
+            - if entry.entry.discussion.size > 1
+              .expanded{:id => "expanded_comments_#{entry.id.to_s}", :style => 'display: none'}
+                - entry.entry.discussion.delete_if{|k| !show_entry?(k)}.sort{|x, y| x.created_at <=> y.created_at }.each_with_index do |comment, index|
+                  .comment.row{:class => cycle('innereven ', 'innerodd ') + (comment == entry.entry && index != 0 ? ' selected' : '') + ( (index+1 ==  entry.entry.discussion.delete_if{|k| !show_entry?(k)}.sort{|x, y| x.created_at <=> y.created_at }.size) ? ' last' : '' )}
+                  
+                    - if comment.class == Comment
                     
-          .large-3.columns.newsfeed_data.small-6.small-offset-3.large-offset-0
-            = raw one_or_slideshow(entry.entry)
-        
-          .large-2.columns.discussion.small-12
-            - if entry.entry.discussion.size > 1 || entry.entry.class == Comment
-              %div{:id => "comment_preview_#{entry.id.to_s}", :style => (entry.entry.class == Comment ? 'display: none;' : '')}
-                - entry.entry.discussion.delete_if{|z| z == entry.entry}.delete_if{|k| !show_entry?(k)}.sort{|x, y| y.created_at <=> x.created_at }[0..2].reverse.each do |comment|
-                  - next unless show_entry?(comment)
-                  .comment{:class => cycle('innereven', 'innerodd')}
-                    %div{:class => "comment_icon " + (comment.class == Comment ? "right" : "left")}= image_tag comment.agent_icon(:small), :width => 40
-                    .comment_data
-                      .newsfeed_agent_title= raw link_to("Agent #{comment.agent.surname} ", comment.agent) + time_ago_in_words(comment.created_at) + " ago "
-                      .newsfeed_date= raw " (#{comment.formatted_date})"
-                      .comment_comment
-                        - unless comment.comment.blank?
-                          %span.big= raw('&ldquo;')
+                      .comment_data.small-8.small-offset-2.columns
+                        %span.big= raw('&ldquo;')
                         = raw display_comment(comment)
-              - if entry.entry.discussion.size > 2
-                .expand{:class => cycle('innereven', 'innerodd')}[entry.entry]= link_to image_tag('/img/icons/arrow-closed.png') +  '(' + entry.entry.discussion.size.to_s + ')', "javascript:$('#expanded_comments_#{entry.id.to_s}').fadeIn();$('#expanded_comments_#{entry.id.to_s}').css('margin-top', '0px'); $('#comment_preview_#{entry.id.to_s}').fadeOut(); $('#original_entry_#{entry.id.to_s}').fadeOut(); $('#expand_link_#{entry.id.to_s}').fadeOut();", :id => "expand_link_#{entry.id.to_s}"
+                        - unless comment.userimages.empty?
+                          = raw one_or_slideshow(comment)
+
+                      
+                      .comment_icon.small-2.columns.text-right
+                        
+                        .newsfeed_icon= image_tag comment.agent_icon(:small)
+                        .agent_name= "Agent #{comment.agent.surname}"
+                        = link_to fa_icon('pencil'), edit_comment_path(comment)
+                        = link_to fa_icon('microphone-slash'), comment, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }
+                        .entered_date= "posted " + time_ago_in_words(comment.created_at) + " ago"
+                        
+                    - else
+                      .comment_icon.small-2.columns= image_tag comment.agent_icon(:small)
+                      .comment_data.small-10.columns
+                        %span.big= raw('&ldquo;')
+                        .agent_by
+                          = link_to "Agent #{comment.agent.surname}", entry.entry.agent
+                          %span.entered_date= "(#{display_column(comment, :created_at, entry.entry.agent)})"
+                        %p.wrapper= comment.comment.blank? ? raw('<i>No comment yet.</i>'): raw(display_comment(comment))
+                      
+                      / .newsfeed_agent_title= raw link_to("Agent #{comment.agent.surname} ", comment.agent) +  time_ago_in_words(comment.created_at) + " ago "
+                      / .newsfeed_date= raw "(#{comment.formatted_date})"
+                      / .comment_comment
+                      /   - unless comment.comment.blank?
+                      /     .big= raw('&ldquo;')
+                      /   = raw display_comment(comment)
+
+                    
+            
+        
+      .large-2.columns.discussion.small-12
+        .newsfeed_entry_date
+          = "entered " + time_ago_in_words(entry.created_at) + " ago in "
+          = link_to entry.entry_type.pluralize, "/#{entry.entry_type.tableize}"
+        - if entry.entry.discussion.size > 1 || entry.entry.class == Comment
+          %div{:id => "comment_preview_#{entry.id.to_s}", :style => (entry.entry.class == Comment ? 'display: none;' : '')}
+            .row
+              - sidecomments = entry.entry.discussion.delete_if{|z| z == entry.entry}.delete_if{|k| !show_entry?(k)}.sort{|x, y| y.created_at <=> x.created_at }[0..2].reverse
+              -sidecomments.each_with_index do |comment, i|
+                - next unless show_entry?(comment)
+                .side_comment.column.small-3.large-12{:class => sidecomments[i+1].nil? ? :end : false}
+                  .comment_icon.column= image_tag comment.agent_icon(:small), :width => 40
+                  .comment_data.column
+                    .newsfeed_agent_title= raw link_to("Agent #{comment.agent.surname} ", comment.agent)
+                    .time_when= time_ago_in_words(comment.created_at) + " ago "
+                    .newsfeed_date= raw " (#{comment.formatted_date})"
+
+          .row
+            .expand.columns.medium-12{:class => cycle('innereven', 'innerodd')}[entry.entry]= link_to image_tag('/img/icons/arrow-closed.png') +  ' (' + entry.entry.discussion.size.to_s + ' total)', "javascript:$('#expanded_comments_#{entry.id.to_s}').fadeIn();$('#expanded_comments_#{entry.id.to_s}').css('margin-top', '0px'); $('#comment_preview_#{entry.id.to_s}').fadeOut(); $('#original_entry_#{entry.id.to_s}').fadeOut(); $('#expand_link_#{entry.id.to_s}').fadeOut();", :id => "expand_link_#{entry.id.to_s}"
       

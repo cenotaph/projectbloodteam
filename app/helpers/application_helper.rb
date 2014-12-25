@@ -14,7 +14,7 @@ module ApplicationHelper
   def display_column(item, column, agent = nil)
     unless ['id', 'created_at', 'updated_at', 'agent_id', 'venue_address'].include?(column)
       # date
-      if item[column.to_sym].class == Date
+      if item[column.to_sym].class == Date || column == :created_at
         if agent.nil?
           item[column.to_sym].strftime('%D')
         else

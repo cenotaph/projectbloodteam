@@ -176,7 +176,7 @@ class GenericController < ApplicationController
   def update
     @item = @category.classify.constantize.find(params[:id])
     if @item.agent == current_agent
-      if @item.update_attributes(params[@category.downcase])
+      if @item.update_attributes(params[@category.downcase].permit!)
         unless @item.entries.empty?
           expire_fragment(/.*newsfeed_front.*/)
         end        

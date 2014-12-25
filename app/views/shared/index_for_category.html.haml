@@ -1,10 +1,13 @@
-#results
-  = render :partial => 'shared/item', :collection => @items, :locals => {:searchterm => ''}
+.container
+  .row
+    .small-12.columns
+      %h2
+        All
+        = @category.pluralize.downcase
+  .row.search_result
+    .small-12.columns#results
+      .item_listing= render :partial => 'shared/item', :collection => @items, :locals => {:searchterm => ''}
   
 - unless @items.blank?
   = paginate @items
   = pageless(@items.total_pages, url_for(@items.first.class.table_name))
-:javascript
-  $("img[rel]").live('click', function() {
-    $(this).overlay({effect: 'apple'}).trigger("click");
-  });

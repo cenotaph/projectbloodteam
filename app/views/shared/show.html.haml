@@ -24,7 +24,7 @@
         %a{:name => "details"}
         .inner.text-center
           %span.big= raw('&ldquo;') if @item.class == Forum
-          .main_title= @item.title
+          .main_title= @item.name
           - if @item.respond_to?('secondary_title')
             - unless @item.secondary_title.blank?
               %p.very_small &nbsp;

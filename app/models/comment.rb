@@ -14,7 +14,7 @@ class Comment < ActiveRecord::Base
   #    end
   
   validate :not_empty
-  
+  validates_presence_of :foreign_id, :item_type, :agent_id
   alias_attribute :category, :item_type
   
  include ItemHelpers 
