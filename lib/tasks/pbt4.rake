@@ -11,7 +11,12 @@ namespace :pbt do
   task :get_discogs_masters => [:environment] do
     wrapper = Discogs::Wrapper.new('f6d728eef1')
     allmusic = MasterMusic.where(:converted => false)
+    
     allmusic.each do |am|
+      if am.musics.empty?
+        am.destroy!
+        next
+      end
       next if am.discogscode.blank?
       begin
         r = wrapper.get_release(am.discogscode)
