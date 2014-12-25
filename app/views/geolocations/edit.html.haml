@@ -30,10 +30,12 @@
     .small-12.columns
       %p The following entries use this location, and editing this will alter the relation for ALL. Do this with care, especially if it is not yours!
 
-  - @geolocation.pbt_entries.each do |e|
-    .row
-      .small-12.columns
-        = "#{e.class.to_s}: "
-        = e.name
-        %span.small= " [#{e.agent.surname}]"
-        = link_to fa_icon('external-link'), e, target: :_blank
+  .row
+    .small-12.columns
+      %ol
+        - @geolocation.pbt_entries.each do |e|
+          %li
+            = "#{e.class.to_s}: "
+            = link_to raw(e.name.gsub(/\<div /i, '<span ').gsub(/\<\/div/i, '</span' )), e, target: :_blank
+            %span.small= " [#{e.agent.surname}]"
+            = link_to fa_icon('external-link'), e, target: :_blank

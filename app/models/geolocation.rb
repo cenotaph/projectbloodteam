@@ -11,6 +11,7 @@ class Geolocation < ActiveRecord::Base
   has_many :activities
   has_many :movies
   has_many :brewing
+  has_many :tvseries
   has_many :events
   has_many :restaurants
     
@@ -77,6 +78,7 @@ class Geolocation < ActiveRecord::Base
     out += movies
     out += events
     out += restaurants
+    out += tvseries
     out
   end
   

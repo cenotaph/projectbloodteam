@@ -1,2 +1,4 @@
-All locations in PBT:
-#big_map= gmaps4rails(@json)
+All locations in PBT!
+#big_map
+- unless @json.blank?
+  = render :partial => 'home/front_map', locals: {json: @json, target: 'big_map', center: nil}

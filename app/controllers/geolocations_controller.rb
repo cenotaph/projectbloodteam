@@ -15,6 +15,7 @@ class GeolocationsController < ApplicationController
   end
   
   def edit
+    set_meta_tags :title => 'Edit geolocation data'
     @geolocation = Geolocation.find(params[:id])
   end
   
@@ -22,7 +23,7 @@ class GeolocationsController < ApplicationController
     # if FileTest.exists?("#{Rails.root}/tmp/cache/pbt_world.json")
     #   @json = File.read("#{Rails.root}/tmp/cache/pbt_world.json")
     # else
-      @json = Geolocation.all.to_gmaps4rails
+      @json = Geolocation.all
       # File.open("#{Rails.root}/tmp/cache/pbt_world.json", 'w') do |f|
         # f.puts @json
       # end

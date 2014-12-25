@@ -32,7 +32,7 @@ class HomeController < ApplicationController
                                                           {:bars => :agent}, {:concerts => :agent},
                                                           {:movies => [:master_movie, :agent]},
                                                            {:takeaways => :agent}, {:restaurants => :agent},
-                                                           {:events => :agent}, {:activities => :agent}
+                                                           {:events => :agent}, {:activities => :agent}, {:tvseries => :agent}
                                                         ]
                                         }
                               } ]
