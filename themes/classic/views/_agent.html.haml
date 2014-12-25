@@ -6,7 +6,7 @@
     %td{:class => "#{agent.class.table_name} #{col}"}
       
       - if col == 'name' || col == 'title' || col == 'artists'
-        = link_to highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text]), agent
+        = link_to highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text]), url_for(agent.has_master? ? agent.master : agent)
         - if agent.respond_to?('linkto')
           - unless agent.linkto.blank?
             = link_to fa_icon('external-link'), agent.linkto, :target => "_blank" 
@@ -25,14 +25,15 @@
             - if agent_signed_in?
               - if current_agent == agent.agent
                 = link_to fa_icon('eye'), agent
-                = link_to fa_icon('pencil'), "/agents/#{current_agent.slug}/#{agent.class.table_name}/#{agent.id.to_s}/edit"
+                
+                = link_to fa_icon('pencil'), "/agents/#{current_agent.slug}/#{agent.class.table_name}/#{agent.id}/edit"
                 = link_to fa_icon('trash'), agent, :method => :delete, data: {confirm: 'Are you sure you wish to delete this entry?'}
                 .social
                   - if agent.discussion.size > 1
                     %span.small= agent.discussion.size
-                    = link_to fa_icon('comments'), url_for(agent) + "#discussion"
+                    = link_to fa_icon('comments'), url_for(agent.has_master? ? agent.master : agent) + "#discussion"
                   - if agent.others.size > 0
                     %span.small= agent.others.size
-                    = link_to fa_icon('group'), url_for(agent) + "#discussion"
+                    = link_to fa_icon('group'), url_for(agent.has_master? ? agent.master : agent) + "#discussion"
 
 

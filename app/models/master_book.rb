@@ -86,6 +86,14 @@ class MasterBook < ActiveRecord::Base
     self.id
   end
   
+  def short_name
+    title
+  end
+  
+  def icon_name
+    'book'
+  end
+  
   def linked_name
     if amazoncode.blank?
       "#{self.title} by #{self.author}"

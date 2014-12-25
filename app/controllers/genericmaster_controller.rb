@@ -224,7 +224,7 @@ class GenericmasterController < ApplicationController
       %w{name title destination comment company ordered location product task games station cuisine}.each do |field|
 
         if !sample[field.to_sym].nil?          
-          filter_query << "lower(#{field.to_s}) like '%#{@filter_text.downcase}%'"
+          filter_query << "lower(#{@category.downcase.tableize}.#{field.to_s}) like '%#{@filter_text.downcase}%'"
         end
         if !sample.master[field.to_sym].nil?
           filter_query << "lower(master_#{@category.downcase.tableize}.#{field.to_s}) like '%#{@filter_text.downcase}%'"
@@ -244,17 +244,17 @@ class GenericmasterController < ApplicationController
       
       if @category == 'Book' || @category == 'Videogame' 
 
-          @items = @category.classify.constantize.includes([:agent, :userimages, :comments]).joins("master_#{@category.downcase}".to_sym).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where(filter_query).where(:agent => @agent).where("(received >= '#{@start_date}' AND received <= '#{@end_date}') OR (started >= '#{@start_date}' AND started < '#{@end_date}') OR (finished >= '#{@start_date}' AND finished < '#{@end_date}')").order('date desc').page(params[:page]).per(50)
+          @items = @category.classify.constantize.select("*, greatest(coalesce(#{@category.downcase.tableize}.started,#{@category.downcase.tableize}.finished,#{@category.downcase.tableize}.received), coalesce(#{@category.downcase.tableize}.finished, #{@category.downcase.tableize}.received, #{@category.downcase.tableize}.started), coalesce(#{@category.downcase.tableize}.received, #{@category.downcase.tableize}.started, #{@category.downcase.tableize}.finished)) as date").includes([:agent, :userimages, :comments]).joins("master_#{@category.downcase}".to_sym =>  @category.downcase.tableize).where(filter_query).where(:agent => @agent).where("(#{@category.downcase.tableize}.received >= '#{@start_date}' AND #{@category.downcase.tableize}.received <= '#{@end_date}') OR (#{@category.downcase.tableize}.started >= '#{@start_date}' AND #{@category.downcase.tableize}.started < '#{@end_date}') OR (#{@category.downcase.tableize}.finished >= '#{@start_date}' AND #{@category.downcase.tableize}.finished < '#{@end_date}')").order(["#{@category.downcase.tableize}.#{@sort}", @sort_direction].join(' ') + ", #{@category.downcase.tableize}.finished #{@sort_direction}, #{@category.downcase.tableize}.started #{@sort_direction}, #{@category.downcase.tableize}.received #{@sort_direction}, #{@category.downcase.tableize}.id #{@sort_direction}").page(params[:page]).per(50)
         
       elsif @category == 'Tvseries' 
 
-          @items = @category.classify.constantize.includes([:agent, :userimages, :comments]).joins(        "master_#{@category.downcase}".to_sym).select("*, greatest(coalesce(started,finished), coalesce(finished, started)) as date").where(:agent => @agent).where(filter_query).where("(started >= '#{@start_date}' AND started < '#{@end_date}') OR (finished >= '#{@start_date}' AND finished < '#{@end_date}')").order('date desc').page(params[:page]).per(@per)
+          @items = @category.classify.constantize.includes([:agent, :userimages, :comments,     "master_#{@category.downcase}".to_sym]).select("*, greatest(coalesce(started,finished), coalesce(finished, started)) as date").where(:agent => @agent).where(filter_query).where("(started >= '#{@start_date}' AND started < '#{@end_date}') OR (finished >= '#{@start_date}' AND finished < '#{@end_date}')").order([@sort, @sort_direction].join(' ') + ", finished #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
 
         
         
       else
-        @items = @category.classify.constantize.includes([:agent, :currency, :comments]).joins(  
-            "master_#{@category.downcase}".to_sym).where(:agent => @agent).where(filter_query).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
+        @items = @category.classify.constantize.includes([:agent, :currency, :comments,
+            "master_#{@category.downcase}".to_sym]).where(:agent => @agent).where(filter_query).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
        
       end
       
@@ -436,7 +436,7 @@ class GenericmasterController < ApplicationController
   def update
     @item = @category.classify.constantize.find(params[:id])
     if @category =~ /^Master/
-      if @item.update_attributes(params[@category.tableize.singularize])
+      if @item.update_attributes(params[@category.tableize.singularize].permit!)
  
         if @category == 'MasterMovie'
           if @item.filename_file_name.blank? && !@item.imdbcode.blank?

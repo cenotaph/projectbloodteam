@@ -6,7 +6,7 @@
       
       %h2
         Editing master entry for
-        = @item.name
+        = raw @item.name
       
       - if @category == 'MasterMovie'
   
@@ -22,6 +22,19 @@
               = f.input :followup, :as => :hidden, :value => @followup
             = f.submit 'Save', class: [:button, :small]
       
+      
+      - if @category == 'MasterTvseries'
+  
+        = semantic_form_for(@item, :html => {:multipart => true}) do |f|
+          .form_wrapper
+            = f.input :title, :as => :string
+            = f.input :year, :as => :string
+            = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
+            = f.input :image    
+            - if @followup == 'new'
+              = f.input :followup, :as => :hidden, :value => @followup
+            = f.submit 'Save', class: [:button, :small]
+                  
       - if @category == 'MasterMusic'
         = semantic_form_for(@item, :html => {:multipart => true}) do |f|
           .form_wrapper

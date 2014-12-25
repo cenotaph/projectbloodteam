@@ -16,14 +16,18 @@
       .small-3.columns= image_tag @item.icon(:full)
       .small-9.columns.text-center
         .main_title{:"data-magellan-destination" => "details"}
-          = raw @item.title
-          
+          = raw @item.name
+        
         .secondary_title
-          = raw @item.secondary_title
+          - unless @item.class.to_s.downcase =~ /music/
+            = raw @item.secondary_title
           - if @item.respond_to?('linkto')
-            %span.link_to= link_to fa_icon('external-link'), @item.linkto, :target => "_blank"
+            %span.link_to
+              = link_to fa_icon('external-link'), @item.linkto, :target => "_blank"
+              = link_to  edit_master_genericmaster_path(:category => @item.class.to_s, :id => @item.master_id) do
+                %span.has-tip{"aria-haspopup" => "true", "data-tooltip" => "", :title => "Edit the master record for #{@item.name}!"}= fa_icon(@item.icon_name)
         = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => @item}
-        %p= link_to 'Edit master record', edit_master_genericmaster_path(:category => @item.class.to_s, :id => @item.master_id), class: [:button, :tiny, :secondary]
+        
 - unless @json.blank?
   %a{:name => "#map"}
   #map_container{:"data-magellan-destination" => "map"}
@@ -83,47 +87,3 @@
                 = "Agents: #{similar.items.map{|x| x.agent.surname }.uniq.join(', ')}"
 
 
-/ = content_for :more do
-/   :javascript
-/     Gmaps.map.callback = function() {
-/       var marker = Gmaps.map.markers[0];
-/       var infowindow = marker.infowindow;
-/       infowindow.open(Gmaps.map.map, marker.serviceObject);
-/     }
-/
-/ - if agent_signed_in?
-/   -content_for :head do
-/     = include_puny_mce
-/
-/ .standalone#target.twelve.columns.alpha
-/   .standalone_title.generic_heading
-/     - if @item.respond_to?('agent')
-/       - agent_category = @item.agent.categories.year(getYear).first.send(@item.class.to_s.tableize).singularize + ": "
-/     - else
-/       - agent_category = @item.class.to_s.gsub(/Master/, '') + ": "
-/     %b= agent_category
-/     = @item.name
-/     - if @item.respond_to?('linkto')
-/       - unless @item.linkto.blank?
-/         = link_to image_tag('/img/icons/external-link.png'), @item.linkto, :target => "_blank"
-/   .standalone_date= @item.formatted_date
-/   
-/   %div{:style => "clear:left; margin-bottom: 25px;"}
-/     %span.system_small= link_to 'edit master record', edit_master_genericmaster_path(:category => @item.class.to_s, :id => @item.master_id)
-/   - unless @json.blank?
-/     #master_map
-/       = gmaps4rails(@json)
-/       .resize_link
-/         .system= link_to 'expand map', 'javascript:$("#target .gmaps4rails_map").css("width", "100%");$("#target .gmaps4rails_map").css("height", "400px");$("#target .map_container").css("width", "100%");$("#target .map_container").css("height", "400px");google.maps.event.trigger(map, "resize"); $(".resize_link").fadeOut();'
-/   - cache(:action_suffix => 'discussion', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id, :agent => (agent_signed_in? ? current_agent.id : 'null')) do
-/
-/     .generic_heading Entries and discussion:
-/     #discussion= render :partial => 'shared/discussion', :locals => {:discussion => @item.discussion, :master => true, :json => @json}
-/     = render :partial => 'shared/new_comment', :locals => {:entry => @item, :@comment => Comment.new(:add_to_newsfeed => true)} if agent_signed_in?
-/ .right_master.four.columns.omega
-/
-
-/
-
-/
-/

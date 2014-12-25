@@ -111,6 +111,9 @@ class MasterMusic < ActiveRecord::Base
     title.html_safe
   end
   
+  def icon_name
+    'music'
+  end
   
   def master_id
     self.id

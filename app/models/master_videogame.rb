@@ -88,7 +88,9 @@ class MasterVideogame < ActiveRecord::Base
         self.title + " by " + self.creator
       end
   end
-  
+  def icon_name
+    'gamepad'
+  end
   def short_name
     title
   end

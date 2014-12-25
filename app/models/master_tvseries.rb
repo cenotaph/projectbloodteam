@@ -70,6 +70,9 @@ class MasterTvseries < ActiveRecord::Base
   def short_name
     title
   end
+  def icon_name
+    'image'
+  end
   
   def self.grabimage(key, new_master)
     require 'open-uri'
