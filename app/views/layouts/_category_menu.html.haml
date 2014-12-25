@@ -1,28 +1,26 @@
-%li.has-dropdown
-  - if agent_signed_in?
+- if agent_signed_in?
+  %li.has-dropdown
     = link_to "Agent #{current_agent.surname}", '#'
-  - else
-    = link_to 'Categories', '#'
-  %ul.dropdown
-    - if agent_signed_in?
-      - agent_category = current_agent.categories.year(getYear).first
+    %ul.dropdown
+      - if agent_signed_in?
+        - agent_category = current_agent.categories.year(getYear).first
   
-      - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Tvseries, Videogame, Weight].each do |category|
+        - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Tvseries, Videogame, Weight].each do |category|
         
-        - this_cat = (agent_category ? agent_category.send(category.to_s.tableize).to_s : category.table_name )
-        - if this_cat == "0"
-          - next
-        %li
-          = link_to this_cat, "/agents/#{current_agent.slug.to_s}/#{category.table_name}"
+          - this_cat = (agent_category ? agent_category.send(category.to_s.tableize).to_s : category.table_name )
+          - if this_cat == "0"
+            - next
+          %li
+            = link_to this_cat, "/agents/#{current_agent.slug.to_s}/#{category.table_name}"
       
-          - if category.has_master?
-            = link_to fa_icon("plus-square-o"), '#', :"data-reveal-id" => "prompt_#{category.table_name.singularize}"
-          -else 
-            = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.slug.to_s}/#{category.table_name}/new"
+            - if category.has_master?
+              = link_to fa_icon("plus-square-o"), '#', :"data-reveal-id" => "prompt_#{category.table_name.singularize}"
+            -else 
+              = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.slug.to_s}/#{category.table_name}/new"
 
 %li.divider
 - if @agent
-  - if @agent != current_agent
+  - if @agent != current_agent && !@agent.new_record?
     %li.has-dropdown
       = link_to 'Agent ' + @agent.surname, '#'
       %ul.dropdown
@@ -37,7 +35,7 @@
               = link_to this_cat, "/agents/#{@agent.slug.to_s}/#{category.table_name}"
 
 %li.has-dropdown
-  = link_to fa_icon('bars'), '#', class: 'show-for-medium-up'
+  = link_to agent_signed_in? ?  fa_icon('bars') : 'Categories', '#', class: 'show-for-medium-up'
   %ul.dropdown
     - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|
       %li{:class => cycle('odd', 'even')}= link_to category.to_s.pluralize, "/#{category.table_name}"
