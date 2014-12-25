@@ -1,4 +1,4 @@
 staging:
   mysql41: 9444
 production:
-  mysql41: 9312
+  mysql41: 9444
