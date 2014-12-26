@@ -2,7 +2,7 @@
 class Forum < ActiveRecord::Base
   has_many :entries, :as => :entry, :dependent => :destroy
   belongs_to :agent
-  has_many :comments, ->  { where(:item_type => 'Forum')}, :foreign_key => :foreign_id, :dependent => :delete_all
+  has_many :comments, ->  { where(:item_type => 'Forum')}, :foreign_key => :foreign_id, :dependent => :destroy
   has_many :userimages, :as => :entry, :dependent => :destroy
   accepts_nested_attributes_for :userimages, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_url'].blank? && attributes['id'].blank?}
   extend FriendlyId

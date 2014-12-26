@@ -21,7 +21,9 @@ class ForumsController < ApplicationController
   def destroy
     expire_fragment(/.*newsfeed_front.*/)
     expire_fragment(/.*forum_front.*/)
-    destroy! { '/forums' }
+    @forum = Forum.find(params[:id])
+    @forum.destroy!
+    redirect_to  '/forums'
   end
 
   
@@ -37,23 +39,7 @@ class ForumsController < ApplicationController
   
   
   def index
-    # forums = Forum.find(:all, :order => 'created_at DESC')
-    #  comments = Comment.find(:all, :conditions => 'category <> \'Forum\'',  :order => 'created_at DESC').group_by{|x| [x.category, x.foreign_id] }
-    #  c = comments.collect{|x| x.last.first}
-    #  @forum = forums.map{|f| f.discussion.sort{|x,y| y.created_at <=> x.created_at}.first} + c
-    #  @forum.sort!{|x, y| y.created_at <=> x.created_at }
-    #  @forum = @forum.paginate :per_page => 25, :page => params[:forum_page], :order => 'created_at DESC'
-    # 
-    # 
-    # 
-    # respond_to do |format|
-    #   format.html{  render :layout => getTheme(current_agent ? current_agent.id : params[:id], getYear), :template => 'common/forum/forum' }
-    #   format.js { 
-    #      render :update do |page|
-    #         page.replace 'theforum', :partial => "common/forum/forum" 
-    #       end
-    #     }
-    #  end
+
     @forums = Comment.paginate_with_items(params[:page], 50)
 
     if request.xhr?

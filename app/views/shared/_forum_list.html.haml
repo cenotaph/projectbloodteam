@@ -9,7 +9,7 @@
 
         - if forum_list.item.class == Forum
           = link_to fa_icon('pencil'), forum_list.comment_path + "/edit"
-          = link_to fa_icon('trash'), forum_list.item, :method => :delete, :confirm => 'Are you sure?'
+          = link_to fa_icon('trash'), forum_list.item, :method => :delete, data: {:confirm => 'Are you sure?'}
       
   %td.size= forum_list.discussion.size
 
