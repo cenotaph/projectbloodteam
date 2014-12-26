@@ -297,7 +297,7 @@ class GenericmasterController < ApplicationController
       redirect_to :action => :directid, id: params[:directid]
     else
       begin
-        @localhits = @master.classify.gsub(/^Master/, '').constantize.search(ThinkingSphinx::Query.escape(params[:query])).map{|x| x.master}.uniq
+        @localhits = @master.classify.gsub(/^Master/, '').constantize.search(ThinkingSphinx::Query.escape(params[:query]), :per_page => 999).map{|x| x.master}.uniq
       rescue ThinkingSphinx::ConnectionError
         @localhits = []
       end      

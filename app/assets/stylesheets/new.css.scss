@@ -212,7 +212,7 @@ header { display: none;
   
 
   .newsfeed_comment {
-    margin-top: 25px;
+   
     span.big {
       font-size: 2.7em;
       margin-left: -22px;
@@ -220,10 +220,11 @@ header { display: none;
       color: #777;
       float: left;
     }
-    font-size: 1.0em;
-    line-height: 1.4em;
-    color: #333;
+    margin: 0px;
     padding: 0px;
+    font-size: 1.0rem;
+    line-height: 1.45rem;
+    color: #333;
     font-weight: 300;
     p.wrapper {
       margin: 0px;

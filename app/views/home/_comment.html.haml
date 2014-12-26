@@ -1,12 +1,12 @@
 .row
-  .small-10.large-6.small-offset-1.large-offset-2.only_comment.columns.left
+  .small-10.large-5.small-offset-1.large-offset-3.only_comment.columns.left
     .newsfeed_comment
       %span.big= raw('&ldquo;')
       = raw display_comment(entry.entry)
       - unless entry.entry.userimages.empty?
         = raw one_or_slideshow(entry.entry)
     .newsfeed_entry_link= raw "commenting on #{entry.entry.item.class.to_s.downcase.gsub(/^master/, '')} #{link_to raw(entry.entry.item.name), entry.entry.item}"
-  .small-12.large-2.comment_metadata.columns.text-right.end
+  .small-12.large-2.comment_metadata.columns.text-left.end
     .agent_name= "Agent #{entry.agent.surname}"
     .newsfeed_icon= entry_agent_icon(entry)
     = link_to fa_icon('pencil'), edit_comment_path(entry.entry)

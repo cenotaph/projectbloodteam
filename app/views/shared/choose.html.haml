@@ -24,7 +24,7 @@
                 .row
                   .small-3.columns
                     - if hit.filename?
-                      = link_to image_tag(hit.filename.url(:small)), select_genericmaster_path(:agent_id => current_agent.id, :id => "local_#{hit.id}", :category => @category)
+                      = link_to image_tag(hit.filename.url(:thumb)), select_genericmaster_path(:agent_id => current_agent.id, :id => "local_#{hit.id}", :category => @category)
                   .small-9.columns
                     = link_to raw(hit.name), select_genericmaster_path(:agent_id => current_agent.id, :id => "local_#{hit.id}", :category => @category)
                     .metadata
