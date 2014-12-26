@@ -19,7 +19,7 @@
           = raw @item.name
         
         .secondary_title
-          - unless @item.class.to_s.downcase =~ /music/
+          - unless @item.class.to_s.downcase =~ /music/ || @item.name.include?(@item.secondary_title)
             = raw @item.secondary_title
           - if @item.respond_to?('linkto')
             %span.link_to
@@ -52,7 +52,7 @@
         .row
           .small-12.columns
             
-            = link_to "There are multiple entries by this author. See all aggregated for #{@item.author} ...", aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
+            = link_to raw("There are multiple entries by this author. See all aggregated for #{ @item.author} ..."), aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
 
   - if @item.respond_to?('director')
     - if @item.similars.map{|x| x.director}.include?(@item.director)
@@ -60,7 +60,7 @@
         .row
           .small-12.columns
             
-            = link_to "There are multiple entries by this director. See all aggregated for #{@item.director} ...", aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
+            = link_to raw("There are multiple entries by this director. See all aggregated for #{ @item.director} ..."), aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
 
   - if @item.respond_to?('artist')
     - if @item.similars.map{|x| x.artist}.include?(@item.artist)
@@ -68,7 +68,7 @@
         .row
           .small-12.columns
             
-            = link_to "There are multiple entries by this artist. See all aggregated for #{@item.artist} ...", aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
+            = link_to raw("There are multiple entries by this artist. See all aggregated for #{@item.artist} ..."), aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
   - unless @item.similars.empty?
     #similars
       %a{:name => "similars", :"data-magellan-destination" => "similars"}
