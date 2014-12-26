@@ -9,15 +9,15 @@ class ApplicationController < ActionController::Base
 
     
   def getTheme
-    if params[:agent_id]
-      if Profile.where(:agent_id => params[:agent_id]).where(:year => getYear).first.nil?
-        return 'classic'
-      else
-        return Profile.where(:agent_id => params[:agent_id]).where(:year => getYear).first.theme.name
-      end
-    else
+    # if params[:agent_id]
+    #   if Profile.where(:agent_id => params[:agent_id]).where(:year => getYear).first.nil?
+    #     return 'classic'
+    #   else
+    #     return Profile.where(:agent_id => params[:agent_id]).where(:year => getYear).first.theme.name
+    #   end
+    # else
       return 'classic'
-    end
+    # end
   end
   
   def getView

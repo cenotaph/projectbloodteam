@@ -12,7 +12,7 @@
         = link_to '[history]', history_agent_path(@agent)
   .right.ten.columns.omega
     - if @agent.security > 0
-      - if !logged_in?
+      - if !agent_signed_in?
         %p This user protects their information only for other PBT agents.
       - else
         - pass = true

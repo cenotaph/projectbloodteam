@@ -23,7 +23,7 @@
       - if @category == 'Movie' 
         - if controller.action_name != 'shorts'
           - if @agent.profile(getYear).shortfilms
-            - @items = @items.delete_if{|x| x.is_short}
+            - @items = @items.where.not(is_short: true)
             = link_to 'See short films', shorts_agent_movies_path(:agent_id => @agent.id), class: [:tiny, :secondary, :button]
         - else
           = link_to 'See feature-length films', agent_movies_path(:agent_id => @agent.id), class: [:tiny, :secondary, :button]
@@ -46,7 +46,7 @@
       .small-12.columns.large-2.column_filter
         %label Sort by
         
-        = f.select :sort, @view.columns_for_category(sample.class).map{|x| [@view.agent_column_name(sample, x).humanize, x.to_sym] }, selected: @sort
+        = f.select :sort, @view.columns_for_category(sample.class).map{|x| [@view.agent_column_name(sample, x).to_s.humanize, x.to_sym] }, selected: @sort
         .tiny_select= f.select :sort_direction, [['Down', 'desc'], ['Up', 'asc']] , selected: @sort_direction
       .small-8.large-2.columns.text_filter
         %label Filter by text
@@ -64,7 +64,7 @@
           %thead
             - @view.columns_for_category(@items[0].class).each do |col|
               - next if col == 'venue_address'
-              %th= @view.agent_column_name(@items[0], col).humanize
+              %th= @view.agent_column_name(@items[0], col).to_s.humanize
 
           %tbody#results
             = render :partial => '/agent', :collection => @items

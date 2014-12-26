@@ -127,17 +127,18 @@ class AgentsController < ApplicationController
 
 
   def show
-    @profile = Profile.where(:agent => Agent.find(params[:id])).where(:year => getYear).first
+    @agent = Agent.find(params[:id])
+    @profile = Profile.find_by(:agent => @agent, :year => getYear)
     if @profile.nil?
-      @profile = Profile.where(:agent => Agent.find(params[:id])).sort_by{|x| x.year }.last
+      @profile = Profile.where(:agent => @agent).sort_by{|x| x.year }.last
       # theme @profile.theme.name
       redirect_to("http://#{@profile.year}.bloodteam.com/agents/#{params[:id]}")
     else  
-      theme @profile.theme.name
-      @agent = Agent.find(params[:id])
+      theme 'classic'
 
       @newsfeed = Entry.where(:agent => @agent).joins(:agent).group([:entry_type, :entry_id]).order('created_at DESC').page(params[:page]).per(10)
       @json = Entry.where(:agent => @agent).order('created_at DESC').limit(150).to_a.delete_if{|x| !x.entry.respond_to?('geolocation_id')}.delete_if{|x| x.entry.geolocation_id.nil? }.map{|x| x.entry.geolocation }
+
       if request.xhr?
         render :partial => 'shared/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => false }
       else
@@ -145,7 +146,6 @@ class AgentsController < ApplicationController
         render :template => 'agent_profile'
       end
 
-      # respond_with(@agent)
     end
   end
   
