@@ -12,7 +12,7 @@ Pbt4::Application.configure do
   config.action_controller.perform_caching = true
   config.assets.precompile += %w( .svg .eot .woff .ttf)
   # See everything in the log (default is :info)
-  # config.log_level = :debug
+  config.log_level = :debug
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
@@ -22,7 +22,7 @@ Pbt4::Application.configure do
 
   # Disable Rails's static asset server
   # In production, Apache or nginx will already do this
-  config.serve_static_assets = true
+  config.serve_static_files = true
   config.static_cache_control = "public, max-age=2592000"
   # config.assets.digest = true
   
