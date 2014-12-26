@@ -36,18 +36,18 @@
 
       .small-10.small-offset-1.large-offset-0.large-8.columns.medium-9.medium-offset-0
         .row
-
           - unless entry.entry.userimages.empty? && entry.entry.icon.blank?
             
-            .large-4.small-10.small-offset-1.columns.large-offset-0
+            .large-4.small-10.small-offset-1.columns.large-offset-0.medium-offset-0
               = raw one_or_slideshow(entry.entry)
           .columns.newsfeed_main{class: (entry.entry.userimages.empty? && entry.entry.icon.blank?) ? "large-12" : "large-8"}
-            %h2.item_title.small-text-center.large-text-left
+            %h2.item_title.small-text-center.large-text-left.medium-text-left
               = link_to raw(entry.entry.name), entry.entry
             - if entry.entry.respond_to?('linkto')
               .link_to= link_to fa_icon('external-link'), entry.entry.linkto, :target => "_blank"
         .row
           .newsfeed_comment.small-11.columns.small-offset-0
+
             %div{:id => "original_entry_" + entry.id.to_s}
               - unless entry.entry.comment.blank?
                 %span.big= raw('&ldquo;')
@@ -60,29 +60,29 @@
                 .row.comment_form{:id => "commententry_#{entry.id.to_s}"}
                   .small-11.columns.small-offset-0
                     = render :partial => 'shared/newsfeed_comment', locals: {entry: entry}
-                
+            
             - if entry.entry.discussion.size > 1
               .expanded{:id => "expanded_comments_#{entry.id.to_s}", :style => 'display: none'}
                 - entry.entry.discussion.delete_if{|k| !show_entry?(k)}.sort{|x, y| x.created_at <=> y.created_at }.each_with_index do |comment, index|
                   .comment.row{:class => cycle('innereven ', 'innerodd ') + (comment == entry.entry && index != 0 ? ' selected' : '') + ( (index+1 ==  entry.entry.discussion.delete_if{|k| !show_entry?(k)}.sort{|x, y| x.created_at <=> y.created_at }.size) ? ' last' : '' )}
-                  
+              
                     - if comment.class == Comment
-                    
+                
                       .comment_data.small-8.small-offset-2.columns
                         %span.big= raw('&ldquo;')
                         = raw display_comment(comment)
                         - unless comment.userimages.empty?
                           = raw one_or_slideshow(comment)
 
-                      
+                  
                       .comment_icon.small-2.columns.text-right
-                        
+                    
                         .newsfeed_icon= image_tag comment.agent_icon(:small)
                         .agent_name= "Agent #{comment.agent.surname}"
                         = link_to fa_icon('pencil'), edit_comment_path(comment)
                         = link_to fa_icon('microphone-slash'), comment, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }
                         .entered_date= "posted " + time_ago_in_words(comment.created_at) + " ago"
-                        
+                    
                     - else
                       .comment_icon.small-2.columns= image_tag comment.agent_icon(:small)
                       .comment_data.small-10.columns
@@ -91,13 +91,8 @@
                           = link_to "Agent #{comment.agent.surname}", entry.entry.agent
                           %span.entered_date= "(#{display_column(comment, :created_at, entry.entry.agent)})"
                         %p.wrapper= comment.comment.blank? ? raw('<i>No comment yet.</i>'): raw(display_comment(comment))
-                      
-                      / .newsfeed_agent_title= raw link_to("Agent #{comment.agent.surname} ", comment.agent) +  time_ago_in_words(comment.created_at) + " ago "
-                      / .newsfeed_date= raw "(#{comment.formatted_date})"
-                      / .comment_comment
-                      /   - unless comment.comment.blank?
-                      /     .big= raw('&ldquo;')
-                      /   = raw display_comment(comment)
+                  
+ 
 
                     
             

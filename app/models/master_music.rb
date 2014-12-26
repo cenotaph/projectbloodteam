@@ -11,8 +11,16 @@ class MasterMusic < ActiveRecord::Base
  
   include ItemHelpers
   
-  attr_accessor :followup
-    
+  attr_accessor :followup 
+  
+  def artist
+    if self[:artist] =~ /,\s*The\s*$/
+      "The " + self[:artist].gsub(/,\s*The\s*$/, '')
+    else
+      self[:artist]
+    end
+  end
+  
   def all_versions
     (other_versions << self).map(&:musics).flatten.compact.sort_by(&:date)
   end
