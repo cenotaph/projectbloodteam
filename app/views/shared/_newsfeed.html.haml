@@ -48,13 +48,25 @@
         .row
           .newsfeed_comment.small-11.columns.small-offset-0
 
-            %div{:id => "original_entry_" + entry.id.to_s}
-              - unless entry.entry.comment.blank?
-                %span.big= raw('&ldquo;')
-                .agent_by
-                  = link_to "Agent #{entry.entry.agent.surname}", entry.entry.agent
-                  %span.entered_date= "(#{display_column(entry.entry, :created_at, entry.entry.agent)})"
-              %p.wrapper= entry.entry.comment.blank? ? raw('<i>No comment yet.</i>'): raw(entry.entry.comment)
+            .row{:id => "original_entry_" + entry.id.to_s}
+
+              .columns{class: entry.entry.references.empty? ? "small-12" : "small-10"}
+                - unless entry.entry.comment.blank?
+                  %span.big= raw('&ldquo;')
+                  .agent_by
+                    = link_to "Agent #{entry.entry.agent.surname}", entry.entry.agent
+                    %span.entered_date= "(#{display_column(entry.entry, :created_at, entry.entry.agent)})"
+                  %p.wrapper= entry.entry.comment.blank? ? raw('<i>No comment yet.</i>'): raw(entry.entry.comment)
+              - unless entry.entry.references.empty?
+                .references.small-2.columns
+                  .heading References:
+                  %ul
+                    - entry.entry.references.each do |ref|
+                      %li
+                        = link_to raw(ref.reference.name), ref.reference, target: :_blank
+                        - unless ref.comment.blank?
+                          %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
+              
               - if agent_signed_in?
                 .comment_link= link_to fa_icon('comment-o'), '#', onclick: "$('#commententry_#{entry.id.to_s}').slideToggle();var puny_mce = new punymce.Editor({id : 'comment_content_#{entry.id.to_s}'}); return false;"
                 .row.comment_form{:id => "commententry_#{entry.id.to_s}"}
