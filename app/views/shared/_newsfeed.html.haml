@@ -20,7 +20,7 @@
                 - if entry.agent == current_agent
                   .newsfeed_delete  
                     = link_to fa_icon('eye'), entry
-                    = link_to fa_icon('pencil'),  "/agents/#{current_agent.slug}/#{entry.class.table_name}/#{entry.id}/edit"
+                    = link_to fa_icon('pencil'),  "/agents/#{current_agent.slug}/#{entry.entry.class.table_name}/#{entry.entry.id}/edit"
                     = link_to fa_icon('microphone-slash'), entry, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }
                     
           .small-6.columns.text-left.medium-12
