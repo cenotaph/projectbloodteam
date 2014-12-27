@@ -212,7 +212,10 @@ header { display: none;
   
 
   .newsfeed_comment {
-   
+    .comment_link {
+      clear: left;
+      margin-left: 15px;
+    }
     span.big {
       font-size: 2.7em;
       margin-left: -22px;
