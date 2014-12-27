@@ -124,6 +124,7 @@
 = content_for :jquery do
   :plain
     var puny_mce = new punymce.Editor({id : '#{@category.downcase}_comment'});
+    $('label[for=#{@category.downcase}_comment]').html('Comment - titles entered in italics can be linked to as references');
     $('.date_input').datepicker({dateFormat: 'yy-mm-dd'});
 
     $('input.no_geocode').change(function () { 
