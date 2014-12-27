@@ -9,7 +9,8 @@
         %p
           Entering for Agent
           = current_agent.surname
-    = semantic_nested_form_for([:agent, @item], :html => {:multipart => true, :"data-abide" => ''} ) do |form|
+
+    = semantic_nested_form_for([@item.agent, @item], :html => {:multipart => true, :"data-abide" => ''} ) do |form|
       = form.input :agent_id, :as => :hidden
       - @view.columns_for_category(@item.class, true).each do |col|
         .row

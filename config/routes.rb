@@ -92,6 +92,7 @@ Pbt4::Application.routes.draw do
     resources :comments, :controller => :generic, :category => 'Comment'
   end
   
+  post '/create_references', to: "generic#create_references"
   
   resources :generics do
     get :autocomplete
@@ -158,5 +159,5 @@ Pbt4::Application.routes.draw do
 
   root :to => "home#index"
 
-
+  #match '/agents/:agent_id/:category/:id/edit', via: :get, to: "generic#edit"
 end

@@ -1,11 +1,7 @@
 # -*- encoding : utf-8 -*-
 class Comment < ActiveRecord::Base
+  include Item
 
-  belongs_to :agent
-  # after_create :email_notify
-  has_many :userimages, :as => :entry, :dependent => :destroy
-  accepts_nested_attributes_for :userimages, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank?  && attributes['image_url'].blank?   && attributes['id'].blank?}
-  has_many :entries, :as => :entry, :dependent => :destroy
   belongs_to :item, :polymorphic => true, :foreign_key => :foreign_id
   # define_index do
   #      indexes content
@@ -17,16 +13,10 @@ class Comment < ActiveRecord::Base
   validates_presence_of :foreign_id, :item_type, :agent_id
   alias_attribute :category, :item_type
   
- include ItemHelpers 
- 
- after_save do
-   if transaction_include_any_action?([:create])
-     self.add_newsfeed('created') if self.add_to_newsfeed == '1'
-   elsif transaction_include_any_action?([:update])
-     self.add_newsfeed('updated') if self.add_to_newsfeed == '1'
-   end
- end
-
+  def check_currency_id 
+    return true
+  end
+ attr_accessor :currency_id
       
   include ItemHelpers
   

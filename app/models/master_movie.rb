@@ -2,6 +2,7 @@
 class MasterMovie < ActiveRecord::Base
   has_many :comments, -> { where('item_type = \'MasterMovie\'')}, :foreign_key => 'foreign_id', :dependent => :delete_all
   has_many :movies
+  has_many :references, as: :reference
   has_many :agents, :through => :movies
   has_attached_file :filename, :default_url => '/img/no_image.png', 
       :styles => {:thumb => "150x150>", :full => "600x450>"},

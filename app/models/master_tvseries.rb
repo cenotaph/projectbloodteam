@@ -1,6 +1,7 @@
 class MasterTvseries < ActiveRecord::Base
   has_many :comments, -> { where('item_type = \'MasterTvseries\'')}, :foreign_key => 'foreign_id', :dependent => :delete_all
   has_many :tvseries
+   has_many :references, as: :reference
   has_many :agents, :through => :tvseries
   has_attached_file :image, :default_url => '/img/no_image.png', 
       :styles => {:thumb => "150x150>", :full => "600x450>"},

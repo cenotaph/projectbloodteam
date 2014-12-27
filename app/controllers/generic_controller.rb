@@ -2,7 +2,7 @@
 class GenericController < ApplicationController
   respond_to :html, :xml
   before_filter :getView, :getCategory
-  before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]
+  before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :create_references, :destroy]
   theme :getTheme 
   
   autocomplete :bar, :name
@@ -17,7 +17,8 @@ class GenericController < ApplicationController
    end
   end
    
-   
+
+  
   def aggregate
     @item = @category.classify.constantize.where(:id => params[:id]).first
     discussion = @item.discussion
@@ -28,7 +29,18 @@ class GenericController < ApplicationController
     set_meta_tags :title => "Aggregate entries for " + @item.name
     render :template => 'shared/aggregate'
   end
-   
+  
+  def create_references
+    @item = params[:references][:source_type].classify.constantize.find(params[:references][:source_id])
+    @item.references = []
+    params[:pr].delete_if{|x| x["activated"] == "0" }.each do |reference|
+      @item.references << Reference.new(reference_id: reference['reference_id'], reference_type: reference['reference_type'], comment: reference['comment'])
+    end
+    flash[:notice] = 'The entry has been saved.'
+    @item.save!
+    redirect_to url_for(@item)
+  end
+  
   def create
     @item = @category.classify.constantize.new(params[@category.downcase].permit!)
     if @item.save 
@@ -50,8 +62,22 @@ class GenericController < ApplicationController
       else
         unless @item.entries.empty?
           expire_fragment(/.*newsfeed_front.*/)
-        end  
-        redirect_to url_for(@item)
+        end
+        
+        # new references code
+        if @item.comment.blank?
+          redirect_to url_for(@item)
+        else
+          @potential_references = @item.check_references
+          
+          if @potential_references.empty?
+            redirect_to url_for(@item)
+          else
+            flash[:notice] = 'Did you mention these other items in your comment?'
+            render :template => 'shared/add_references'
+          end
+        end
+        
       end
     else
       flash[:error] = 'Error creating entry: ' + @item.errors.full_messages.join('; ')
@@ -91,7 +117,7 @@ class GenericController < ApplicationController
   end
 
   def edit
-    find_agent
+
     @item = @category.classify.constantize.find(params[:id])
     if @item.agent == current_agent
       if @category == 'Comment'
@@ -99,7 +125,7 @@ class GenericController < ApplicationController
         render :template => 'shared/_new_comment'
       else
         set_meta_tags :title => "Edit #{@category.downcase}: #{@item.name}"
-        render :template => 'new'
+        render :template => 'shared/new'
       end
     end
   end
@@ -198,7 +224,7 @@ class GenericController < ApplicationController
         @next = params[:next_id] unless params[:next_id].blank?
         render :template => 'shared/ajaxshow', :layout => false
       else
-        set_meta_tags :title => @category.humanize + ": " + @item.name
+        set_meta_tags :title => @category.humanize + ": " + @item.name.to_s
         render :template => 'shared/show'
       end      
     end
@@ -213,7 +239,18 @@ class GenericController < ApplicationController
         end        
         flash[:notice] = 'Entry updated.'
       end
+      if @item.comment.blank?
+        redirect_to url_for(@item)
+      else
+        @potential_references = @item.check_references
+        
+        if @potential_references.empty? || @potential_references == @item.references
+          redirect_to url_for(@item)
+        else
+          flash[:notice] = 'Did you mention these other items in your comment?'
+          render :template => 'shared/add_references'
+        end
+      end
     end
-    redirect_to url_for(@item)
   end
 end

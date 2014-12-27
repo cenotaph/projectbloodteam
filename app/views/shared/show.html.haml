@@ -33,14 +33,17 @@
         .agent_metadata{:class => @item.userimages.empty? ? false : 'text-center', :style => @item.userimages.empty? ? 'float: left' : false}
           .agent_name= link_to "Agent #{@item.agent.surname}", @item.agent
           .standalone_date= @item.formatted_date
-
-
+          - if agent_signed_in?
+            - if @item.agent == current_agent
+              = link_to fa_icon('pencil'), "/agents/#{current_agent.slug}/#{@item.class.table_name}/#{@item.id}/edit"
+              = link_to fa_icon('trash'), @item, method: :delete, data: {confirm: 'Are you sure you want to delete this item?'}
 
     .row
       .small-8.columns.small-offset-2.first_comment{:style => @item.userimages.blank? ? false : "background-color: white; opacity: 0.87"}
         - if show_entry?(@item)
           - if @item.respond_to?('metadata')
             .metadata
+
               - @item.metadata['metadata'].each_pair do |key, value|
                 - next if key == 'date' || key == 'location'
                 - next if value.blank?
@@ -52,12 +55,21 @@
                   %span.item_metadata_value= display_metadata(key, value)
             
           - unless display_comment(@item).blank?
-            .comment
-              %span.big= raw('&ldquo;')
-              = raw display_comment(@item)
-              .entered_date= "entered " + time_ago_in_words(@item.created_at) + " ago"
-
-  
+            .row
+              .columns.comment{class: @item.references.empty? ? "small-12" : "small-10" }
+                %span.big= raw('&ldquo;')
+                = raw display_comment(@item)
+                .entered_date= "entered " + time_ago_in_words(@item.created_at) + " ago"
+              - unless @item.references.empty?
+                .references.small-2.columns
+                  .heading References:
+                  %ul
+                    - @item.references.each do |ref|
+                      %li
+                        = link_to raw(ref.reference.name), ref.reference, target: :_blank
+                        - unless ref.comment.blank?
+                          %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
+                    
     .row#slideshow{:"data-magellan-destination" => "images"}
       .small-8.columns.small-offset-2
         %a{:name => "images"}        

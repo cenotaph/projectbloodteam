@@ -18,6 +18,9 @@ class Eating < ActiveRecord::Base
   end
   
 
+  def references
+    []
+  end
   
   include ItemHelpers
   

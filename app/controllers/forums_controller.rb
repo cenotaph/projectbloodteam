@@ -11,7 +11,20 @@ class ForumsController < ApplicationController
       unless @forum.entries.empty?
         expire_fragment(/.*newsfeed_front.*/)
       end
-      redirect_to url_for(@forum)
+      # new references code
+      if @forum.body.blank?
+        redirect_to url_for(@forum)
+      else
+        @potential_references = @forum.check_references
+        
+        if @potential_references.empty?
+          redirect_to url_for(@forum)
+        else
+          flash[:notice] = 'Did you mention these other items in your comment?'
+          @item = @forum
+          render :template => 'shared/add_references'
+        end
+      end
     else
       flash[:error] = 'Error creating entry: '  + @forum.errors.full_messages.join('; ')
       render :template => 'shared/new_forum'

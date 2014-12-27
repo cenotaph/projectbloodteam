@@ -555,6 +555,8 @@ span.big {
   font-size: 2.2em;
   line-height: 1em;
   font-weight: 600;
+  color: #444;
+  margin-left: -22px;
 }
 
 // new css here for classic entries
@@ -740,3 +742,17 @@ table#classic {
   text-align: right;
 }
 
+
+
+// add reference page
+.references {
+  .choice_row {
+    .main_title {
+      font-size: 0.9rem;
+    }
+    .secondary_title {
+      font-size: 0.7rem;
+      color: #999;
+    }
+  }
+}

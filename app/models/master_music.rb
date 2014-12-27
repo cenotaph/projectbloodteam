@@ -2,6 +2,7 @@
 class MasterMusic < ActiveRecord::Base
   has_many :comments, -> { where('item_type = \'MasterMusic\'')}, :foreign_key => 'foreign_id', :dependent => :delete_all
   has_many :musics
+  has_many :references, as: :reference
   has_many :agents, :through => :musics
   has_attached_file :filename, :default_url => '/img/no_image.png', 
       :path => ":rails_root/public/images/master_musics/:id/:style/:basename.:extension", 

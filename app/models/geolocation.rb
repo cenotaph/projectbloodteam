@@ -11,6 +11,8 @@ class Geolocation < ActiveRecord::Base
   has_many :activities
   has_many :movies
   has_many :brewing
+  has_many :groceries
+  has_many :musicplayed
   has_many :tvseries
   has_many :events
   has_many :restaurants

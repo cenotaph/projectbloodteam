@@ -108,7 +108,23 @@ class GenericmasterController < ApplicationController
       flash[:notice] = 'Entry created'
       expire_fragment(/genericmaster\/#{Regexp.escape(@item.master.id.to_s)}\?(.*)category\=#{Regexp.escape(@item.master.class.to_s.downcase)}/)
       expire_fragment(/.*newsfeed_front.*/)
-      redirect_to url_for(@item)
+      
+      # new references code
+      if @item.comment.blank?
+        redirect_to url_for(@item)
+      else
+        @potential_references = @item.check_references.delete_if{|x| x == @item.master}
+      
+        if @potential_references.empty?
+          redirect_to url_for(@item)
+        else
+          flash[:notice] = 'Did you mention these other items in your comment?'
+          render :template => 'shared/add_references'
+        end
+      end
+      flash[:notice] = 'Entry updated.'
+
+    
     else
       flash[:error] = 'Error creating entry: '  + @item.errors.full_messages.join('; ')
       render :template => 'shared/new_master'
@@ -475,16 +491,31 @@ class GenericmasterController < ApplicationController
       else
         flash[:error] = 'ERror'
       end
+      redirect_to url_for(@item)
     else
       if @item.agent == current_agent
         if @item.update_attributes(params[@category.downcase].permit!)
           expire_fragment(/genericmaster\/#{Regexp.escape(@item.master_id.to_s)}\?(.*)category\=master#{Regexp.escape(@item.class.to_s.downcase)}/)
           expire_fragment(/.*newsfeed_front.*/)
+          # new references code
+          if @item.comment.blank?
+            redirect_to url_for(@item)
+          else
+            @potential_references = @item.check_references.delete_if{|x| x == @item.master}
+          
+            if @potential_references.empty?
+              redirect_to url_for(@item)
+            else
+              flash[:notice] = 'Did you mention these other items in your comment?'
+              render :template => 'shared/add_references'
+            end
+          end
           flash[:notice] = 'Entry updated.'
         end
+        
       end
     end
-    redirect_to url_for(@item)
+    
   end
 
   protected

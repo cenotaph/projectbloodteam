@@ -229,17 +229,38 @@
   
   
 }
-.comment {
-  font-weight: 300;
-  color: #444;
-  font-size: 1.2rem;
-  line-height: 1.9rem;
-  .big {
-    font-size: 2rem;
-    float: left;
-    margin-right: 0.6rem;
+
+.first_comment {
+  .comment {
+    padding-left: 30px;
+    font-weight: 300;
+    color: #444;
+    font-size: 1.2rem;
+    line-height: 1.9rem;
+    .big {
+      font-size: 2rem;
+      float: left;
+      margin-right: 0.6rem;
+    }
+    p {
+     font: inherit;
+    }
   }
-  p {
-   font: inherit;
+}
+
+.references {
+  .heading {
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-decoration: underline;
+  }
+  ul {
+    margin: 0px;
+    padding: 0;
+    li {
+      list-style-type: none;
+      font-size: 0.7rem;
+      margin-bottom: 1rem;
+    }
   }
 }

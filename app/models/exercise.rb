@@ -17,7 +17,9 @@ class Exercise < ActiveRecord::Base
     end
   end
 
- 
+  def references
+    []
+  end
     
   include ItemHelpers
   

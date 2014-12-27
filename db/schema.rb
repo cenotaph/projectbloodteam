@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141224121524) do
+ActiveRecord::Schema.define(version: 20141226231247) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "agent_id",       limit: 4
@@ -707,6 +707,19 @@ ActiveRecord::Schema.define(version: 20141224121524) do
     t.datetime "updated_at"
     t.boolean  "delta",         limit: 1
   end
+
+  create_table "references", force: :cascade do |t|
+    t.integer  "source_id",      limit: 4
+    t.string   "source_type",    limit: 255
+    t.integer  "reference_id",   limit: 4
+    t.string   "reference_type", limit: 255
+    t.text     "comment",        limit: 65535
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "references", ["reference_type", "reference_id"], name: "index_references_on_reference_type_and_reference_id", using: :btree
+  add_index "references", ["source_type", "source_id"], name: "index_references_on_source_type_and_source_id", using: :btree
 
   create_table "restaurants", force: :cascade do |t|
     t.integer  "agent_id",       limit: 4

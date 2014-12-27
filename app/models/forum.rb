@@ -1,23 +1,16 @@
 # -*- encoding : utf-8 -*-
 class Forum < ActiveRecord::Base
-  has_many :entries, :as => :entry, :dependent => :destroy
-  belongs_to :agent
+
+
   has_many :comments, ->  { where(:item_type => 'Forum')}, :foreign_key => :foreign_id, :dependent => :destroy
-  has_many :userimages, :as => :entry, :dependent => :destroy
-  accepts_nested_attributes_for :userimages, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_url'].blank? && attributes['id'].blank?}
+
   extend FriendlyId
   friendly_id :subject, use: [:finders, :slugged]
   validates_presence_of :subject
   
-  after_save do
-    if transaction_include_any_action?([:create])
-      self.add_newsfeed('created') if self.add_to_newsfeed == '1'
-    elsif transaction_include_any_action?([:update])
-      self.add_newsfeed('updated') if self.add_to_newsfeed == '1'
-    end
-  end
+  include Item
   
-
+  attr_accessor :currency_id
   
   include ItemHelpers
   

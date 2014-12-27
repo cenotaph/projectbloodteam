@@ -49,9 +49,19 @@
     - else
       .large-8.columns.large-offset-1
         - unless display_comment(chat).blank?
-          .comment
-            %span.big= raw('&ldquo;')
-            = raw display_comment(chat)
+          .row
+            .comment.columns{class: chat.references.empty? ? "small-12" : "small-10" }
+              %span.big= raw('&ldquo;')
+              = raw display_comment(chat)
+            - unless chat.references.empty?
+              .references.small-2.columns
+                .heading References:
+                %ul
+                  - chat.references.each do |ref|
+                    %li
+                      = link_to raw(ref.reference.name), ref.reference, target: :_blank
+                      - unless ref.comment.blank?
+                        %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
           - unless chat.userimages.empty?
             .images= raw one_or_slideshow(chat)
           .entered_date= "entered " + time_ago_in_words(chat.created_at) + " ago"

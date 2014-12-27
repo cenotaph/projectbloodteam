@@ -1,10 +1,8 @@
 # -*- encoding : utf-8 -*-
 class Videogame < ActiveRecord::Base
-  belongs_to :agent
+
   belongs_to :master_videogame
-  has_many :userimages, :as => :entry, :dependent => :destroy
-  accepts_nested_attributes_for :userimages, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank?  && attributes['image_url'].blank?  && attributes['id'].blank?}
-  has_many :entries, :as => :entry, :dependent => :delete_all
+  include Item
   validate :at_least_one_date
   validates_presence_of :agent_id
   has_many :comments, -> { where('item_type = \'MasterVideogame\'')}, :foreign_key => 'foreign_id', :primary_key => :master_videogame_id
