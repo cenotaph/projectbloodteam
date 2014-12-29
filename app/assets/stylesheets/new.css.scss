@@ -402,19 +402,6 @@ header { display: none;
 }
 
 
-table#classic {
-  
-  td.label {
-    background: none;
-    color: initial;
-    font: inherit;
-    width: initial;
-    display: initial;
-    position: initial;
-    text-align: initial;
-    white-space: initial;
-  }
-}
 
 .flash_notice {
   background-color: crimson;
@@ -626,10 +613,7 @@ table#classic {
           font-size: 0.8rem;
         }
       }
-      &.label {
-        font-size: 0.875rem !important;
-        white-space: pre-line;
-      }
+
       span.small, .small {
         font-size: 0.7rem;
       }

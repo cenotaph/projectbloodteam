@@ -20,7 +20,7 @@
             = ff.input :image
             -#= render :partial => 'shared/userimage_fields', :locals => { :ff => ff }      
           = f.link_to_add "+ Add an image", :userimages, class: "button tiny secondary"
-        = f.input :add_to_newsfeed, :as => :boolean, :label => 'Show this comment in the public newsfeed', :checked => true    
+        = f.input :add_to_newsfeed, :as => :boolean, :label => 'Show this comment in the public newsfeed', input_html: {checked: true}
         = f.submit "add comment", class: [:button, :tiny]
       
 = content_for :jquery do

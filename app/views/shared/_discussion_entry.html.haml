@@ -22,6 +22,7 @@
             = link_to fa_icon('eye'), chat
             - if chat.agent == current_agent
               = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
+              = link_to fa_icon('trash'), chat, method: :delete, data: {:confirm => 'Are you sure you wish to delete this item?' }
           - if chat.respond_to?('metadata')
             .metadata
               - if chat.class != Comment
@@ -40,7 +41,7 @@
                       = link_to fa_icon('external-link'), chat.linkto, :target => "_blank"
     - if chat.class == Comment
       .large-2.columns.text-left
-        .agent_name= raw "Agent #{link_to chat.agent.surname, chat.agent}"
+        .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
         .newsfeed_icon= image_tag chat.agent_icon(:large)
         - if agent_signed_in?
           - if current_agent == chat.agent

@@ -12,14 +12,14 @@
 
             - unless no_agent_icon
               .newsfeed_icon= entry_agent_icon(entry)
-            .agent_name= link_to "Agent #{entry.agent.surname}", entry.agent
+            .agent_name= link_to "Agent #{entry.entry.agent_surname}", entry.agent
             - if entry.entry.respond_to?('metadata')
               .item_metadata.date= entry.entry.formatted_date
               
               - if agent_signed_in? 
                 - if entry.agent == current_agent
                   .newsfeed_delete  
-                    = link_to fa_icon('eye'), entry
+                    = link_to fa_icon('eye'), entry.entry
                     = link_to fa_icon('pencil'),  "/agents/#{current_agent.slug}/#{entry.entry.class.table_name}/#{entry.entry.id}/edit"
                     = link_to fa_icon('microphone-slash'), entry, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }
                     
@@ -54,7 +54,7 @@
                 - unless entry.entry.comment.blank?
                   %span.big= raw('&ldquo;')
                   .agent_by
-                    = link_to "Agent #{entry.entry.agent.surname}", entry.entry.agent
+                    = link_to "Agent #{entry.entry.agent_surname}", entry.entry.agent
                     %span.entered_date= "(#{display_column(entry.entry, :created_at, entry.entry.agent)})"
                   %p.wrapper= entry.entry.comment.blank? ? raw('<i>No comment yet.</i>'): raw(entry.entry.comment)
               - unless entry.entry.references.empty?
@@ -112,7 +112,7 @@
       .large-2.columns.discussion.small-12
         .newsfeed_entry_date
           = "entered " + time_ago_in_words(entry.created_at) + " ago in "
-          = link_to entry.entry_type.pluralize, "/#{entry.entry_type.tableize}"
+          = link_to entry.entry.agent_category, "/#{entry.entry_type.tableize}"
         - if entry.entry.discussion.size > 1 || entry.entry.class == Comment
           %div{:id => "comment_preview_#{entry.id.to_s}", :style => (entry.entry.class == Comment ? 'display: none;' : '')}
             .row

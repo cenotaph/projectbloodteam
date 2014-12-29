@@ -19,8 +19,8 @@
         - @localhits.in_groups_of(3).each do |group|
           .choice_title.row.choice_row
             - group.each_with_index do |hit, i|
-              .small-4.columns{class: i == 2 ? :end : false }
-                - next if hit.nil?
+              - next if hit.nil?
+              .small-4.columns{class: hit[i+1].nil? ? :end : false }
                 .row
                   .small-3.columns
                     - if hit.filename?
@@ -45,8 +45,9 @@
           - @choices.in_groups_of(4).each do |group|
             .row.choice_row
               - group.each_with_index do |choice, i|
-                .small-3.columns{class: i == 3 ? :end : false }
-                  - next if choice.nil?
+                - next if choice.nil?
+                .small-3.columns{class: choice[i+1].nil? ? :end : false }
+
                   .row
                     .small-3.columns
                       - if choice['image']

@@ -3,7 +3,7 @@
   - @view.columns_for_category(agent.class).each_with_index do |col, index|
     - next if col == 'venue_address'
     - next unless show_entry?(agent)
-    %td{:class => "#{agent.class.table_name} #{col}"}
+    %td{:class => (col == 'label' ? "recordlabel" : col ) + " #{agent.class.table_name}"}
       
       - if col == 'name' || col == 'title' || col == 'artists' || col == 'station'
         = link_to highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text]), url_for(agent.has_master? ? agent.master : agent)
@@ -12,7 +12,7 @@
             = link_to fa_icon('external-link'), agent.linkto, :target => "_blank" 
         = raw one_or_slideshow(agent, nil, :thumb)
       - else
-        = highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text])
+        = highlight(display_column(agent, col, agent.agent_id).strip, params[:filter][:filter_text])
         - if col == 'finished' && !display_column(agent, col, agent.agent_id).blank?
           .small
             Time taken:

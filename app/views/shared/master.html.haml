@@ -41,7 +41,7 @@
     
   - if agent_signed_in?
     .row
-      .large-8.columns.large-offset-2= render :partial  => 'shared/new_comment', :locals => {comment: Comment.new(:item => @item, agent: current_agent), item: @item}
+      .large-8.columns.large-offset-2= render :partial  => 'shared/new_comment', :locals => {comment: Comment.new(:item => @item, agent: current_agent, add_to_newsfeed: false), item: @item}
       
       
 - cache(:action_suffix => 'similars', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id) do
