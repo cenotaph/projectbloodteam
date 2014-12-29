@@ -189,6 +189,25 @@
 .item_listing {
   padding: 2rem 0px;
   border-bottom: 1px dotted $secondary-color;
+  
+
+  .comment {
+    
+    padding: 0px;
+    font-size: 1.0rem;
+    line-height: 1.45rem;
+    color: #333;
+    font-weight: 300;
+    p.wrapper {
+      margin: 0px;
+      padding: 0px;
+      font-size: 1.0rem;
+      line-height: 1.45rem;
+      color: #333;
+      font-weight: 300;
+    }
+  }
+
 }
   
 
@@ -249,6 +268,7 @@
 }
 
 .references {
+  margin-top: 1rem;
   .heading {
     font-size: 0.7rem;
     font-weight: 400;

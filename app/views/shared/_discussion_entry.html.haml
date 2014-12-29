@@ -13,34 +13,35 @@
 
 
     - else
-      .left.large-3.columns.text-right  
-        .index_image
-          = image_tag chat.agent_icon(:large) unless chat.class == Comment
-          .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
-  
-          - if agent_signed_in? && chat.class != Comment
-            = link_to fa_icon('eye'), chat
-            - if chat.agent == current_agent
-              = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
-              = link_to fa_icon('trash'), chat, method: :delete, data: {:confirm => 'Are you sure you wish to delete this item?' }
-          - if chat.respond_to?('metadata')
-            .metadata
-              - if chat.class != Comment
-                .item_title
-              - else
-                Comment
-              = chat.formatted_date
-              - chat.metadata['metadata'].each_pair do |key, value|
-                - next if value.blank?
+      .left.large-2.medium-2.small-12.columns.text-right
+        .row
+          .small-6.medium-12.columns.index_image= image_tag chat.agent_icon(:large) unless chat.class == Comment
+          .medium-12.columns.small-6.small-text-left.medium-text-right
+            .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
+
+            - if agent_signed_in? && chat.class != Comment
+              = link_to fa_icon('eye'), chat
+              - if chat.agent == current_agent
+                = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
+                = link_to fa_icon('trash'), chat, method: :delete, data: {:confirm => 'Are you sure you wish to delete this item?' }
+            - if chat.respond_to?('metadata')
+              .metadata
+                - if chat.class != Comment
+                  .item_title
+                - else
+                  Comment
+                = chat.formatted_date
+                - chat.metadata['metadata'].each_pair do |key, value|
+                  - next if value.blank?
                 
-                .item_metadata
-                  %span.item_metadata_category= key.humanize + ":"
-                  %span.item_metadata_value
-                    = display_metadata(key, value)
-                    - if key == 'format'
-                      = link_to fa_icon('external-link'), chat.linkto, :target => "_blank"
+                  .item_metadata
+                    %span.item_metadata_category= key.humanize + ":"
+                    %span.item_metadata_value
+                      = display_metadata(key, value)
+                      - if key == 'format'
+                        = link_to fa_icon('external-link'), chat.linkto, :target => "_blank"
     - if chat.class == Comment
-      .large-2.columns.text-left
+      .large-2.columns.text-lef
         .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
         .newsfeed_icon= image_tag chat.agent_icon(:large)
         - if agent_signed_in?
@@ -48,14 +49,14 @@
             = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
 
     - else
-      .large-8.columns.large-offset-1
+      .large-9.medium-10.columns
         - unless display_comment(chat).blank?
           .row
-            .comment.columns{class: chat.references.empty? ? "small-12" : "small-10" }
+            .comment.columns.large-offset-0{class: chat.references.empty? ? "small-12" : "small-10 small-offset-1" }
               %span.big= raw('&ldquo;')
               = raw display_comment(chat)
             - unless chat.references.empty?
-              .references.small-2.columns
+              .references.small-12.columns.large-2
                 .heading References:
                 %ul
                   - chat.references.each do |ref|
@@ -65,5 +66,7 @@
                         %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
           - unless chat.userimages.empty?
             .images= raw one_or_slideshow(chat)
-          .entered_date= "entered " + time_ago_in_words(chat.created_at) + " ago"
+          .entered_date
+            = "entered " + time_ago_in_words(chat.created_at) + " ago in "
+            = link_to chat.agent_category, "/agents/#{chat.agent.slug}/#{chat.class.table_name}"
         
