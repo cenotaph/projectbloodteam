@@ -191,7 +191,7 @@ class GenericmasterController < ApplicationController
   end
   
   def directid
-    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id].gsub(/^tt/, '')), :add_to_newsfeed => true)
+    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:directid].gsub(/^tt/, '')), :add_to_newsfeed => true)
     @item.userimages << Userimage.new(:primary => true)
     if @item.respond_to?('currency_id')
       @item.currency_id = current_agent.default_currency
