@@ -27,7 +27,7 @@ class Music < ActiveRecord::Base
     if self.userimage.blank?
       self.master_music.icon
     else
-      '/images/musics/' + self.id.to_s + '/thumb/' + self[:userimage]
+      '/images/musics/' + self.id.to_s + '/full/' + self[:userimage]
     end
   end
   

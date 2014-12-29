@@ -67,6 +67,11 @@ class View < ActiveRecord::Base
   return true if self.movie_cost != '0'
   end
 
+  def hasmiles_cost
+    return true if self.miles_cost != '0'
+  end
+
+
 
   def hasmovie_rating
   return true if self.movie_rating != '0'
@@ -256,9 +261,12 @@ class View < ActiveRecord::Base
 
 
   def hasmovie_location
-  return true if self.movie_location != '0'
+    return true if self.movie_location != '0'
   end
 
+  def hasmiles_location
+    return true if self.miles_location != '0'
+  end
 
   def hasmusic_isnew
   return true if self.music_isnew != '0'
@@ -371,5 +379,18 @@ class View < ActiveRecord::Base
   def hastvseries_comment
     return true if self.tvseries_comment != '0'
   end
-  
+
+  def hasmiles_gasamount
+    return true if self.miles_gasamount != '0'
+  end
+  def hasmiles_miles
+    return true if self.miles_miles != '0'
+  end
+  def hasmiles_ppg
+    return true if self.miles_ppg != '0'
+  end
+  def hasmiles_station
+    return true if self.miles_station != '0'
+  end
+    
 end

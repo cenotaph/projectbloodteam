@@ -75,7 +75,7 @@ class MasterMusic < ActiveRecord::Base
     self.discogscode
   end
 
-  def icon(style = :thumb)
+  def icon(style = :full)
     if self.filename_file_name.blank?
         ""
     else

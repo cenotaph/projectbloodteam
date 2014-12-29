@@ -5,7 +5,7 @@
     - next unless show_entry?(agent)
     %td{:class => "#{agent.class.table_name} #{col}"}
       
-      - if col == 'name' || col == 'title' || col == 'artists'
+      - if col == 'name' || col == 'title' || col == 'artists' || col == 'station'
         = link_to highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text]), url_for(agent.has_master? ? agent.master : agent)
         - if agent.respond_to?('linkto')
           - unless agent.linkto.blank?

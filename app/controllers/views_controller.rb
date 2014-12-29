@@ -14,6 +14,7 @@ class ViewsController < ApplicationController
       flash[:notice] = 'You cannot edit another agent\'s views.'
       redirect_to '/settings/'
     end
+    set_meta_tags :title => 'Editing column names'
   end
   
   

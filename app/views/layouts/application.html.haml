@@ -142,6 +142,33 @@
           = text_field_tag :query
           = submit_tag "Search", :class => [:button, :small]
         = link_to 'create custom entry', '/genericmaster/custom/Videogame/new', class: [:button, :tiny, :secondary]  
+    - else
+      .reveal-modal#prompt_login{:"data-reveal" => true}
+        .row
+          .small-8.columns
+            %h2 Sign in to Project Blood Team
+
+        = form_for(:agent, as: :agent, url: session_path(:agent)) do |f|
+          .row
+            .large-3.columns.small-10
+              = f.label :login
+              = f.text_field :login
+          .row
+            .large-3.columns.small-10
+              = f.label :password
+              = f.password_field :password, autocomplete: "off"
+
+          - if Devise.mappings[:agent].rememberable?
+            .row
+              .large-3.columns.small-1
+                = f.check_box :remember_me
+                = f.label :remember_me 
+          .row
+            .large-3.columns
+              = f.submit "Sign in", class: [:button, :radius, :tiny]
+          .row
+            .small-12.columns= render :partial =>  "devise/shared/links", locals: {:resource_name => :agent}
+            
     = javascript_include_tag "application" 
   #login_overlay
     .login_content

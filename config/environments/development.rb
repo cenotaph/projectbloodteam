@@ -14,14 +14,14 @@ Pbt4::Application.configure do
   # config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
   config.active_support.deprecation = :log 
-  config.asset_host = Proc.new { |source| 
-    if source.starts_with?('/images')
-      "http://bloodteam.com"
-    else
-      "http://localhost:3000"
-    end
-    }
-  
+  # config.asset_host = Proc.new { |source|
+  #   if source.starts_with?('/images')
+  #     "http://bloodteam.com"
+  #   else
+  #     "http://localhost:3000"
+  #   end
+  #   }
+  #
   # config.after_initialize do
   #   Bullet.enable = true
   #   Bullet.alert = true
@@ -36,11 +36,11 @@ Pbt4::Application.configure do
   config.active_record.raise_in_transactional_callbacks = true
   config.action_mailer.raise_delivery_errors = false
 end
-ActionController::Base.asset_host = Proc.new { |source| 
-    if source.starts_with?('/images')
-      "http://bloodteam.com"
-    else
-      "http://localhost:3000"
-    end
-}
+# ActionController::Base.asset_host = Proc.new { |source|
+#     if source.starts_with?('/images')
+#       "http://bloodteam.com"
+#     else
+#       "http://localhost:3000"
+#     end
+# }
 # ActiveSupport::Dependencies.explicitly_unloadable_constants.concat(Dir.glob("#{Rails.root}/app/helpers/**/*.rb").map {|file| File.basename(file, '.rb').camelize})

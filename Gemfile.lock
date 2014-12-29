@@ -30,11 +30,11 @@ GIT
 
 GIT
   remote: git://github.com/pat/thinking-sphinx.git
-  revision: d3e2ad4a4b8082453c5c6019a39dd0fdf2dba507
-  ref: d3e2ad4a4b
+  revision: 87928c9298111818c9dd42e8c7faebfc8ae41c0b
+  ref: 87928c9298
   branch: develop
   specs:
-    thinking-sphinx (3.1.1)
+    thinking-sphinx (3.1.2)
       activerecord (>= 3.1.0)
       builder (>= 2.1.2)
       innertube (>= 1.0.2)
@@ -369,5 +369,5 @@ DEPENDENCIES
   spring
   themes_for_rails!
   therubyracer
-  thinking-sphinx (~> 3.1.1)!
+  thinking-sphinx (~> 3.1.2)!
   uglifier (>= 1.3.0)
