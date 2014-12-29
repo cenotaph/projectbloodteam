@@ -117,7 +117,7 @@
             .small-4.columns
               %p or enter the discogs.com id number
               = form_tag directid_agent_musics_path(:agent_id => current_agent.id), :method => :get do
-                = text_field_tag :id
+                = text_field_tag :directid
                 = submit_tag 'Create', :class => [:button, :small]
             .small-4.columns
               %p or
