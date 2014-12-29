@@ -48,9 +48,16 @@ class MasterMusic < ActiveRecord::Base
               system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/thumb")
                system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/full")
 
-               
-              open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/full/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri).body) rescue nil
-              open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/thumb/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri150).body) rescue nil
+               begin
+                 open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/full/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri).body) 
+               rescue
+                 mynew.filename_file_name = nil
+                end
+              begin
+                open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/thumb/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri150).body) 
+              rescue
+                mynew.filename_file_name = nil
+              end
               mynew.save!
             end
           end
