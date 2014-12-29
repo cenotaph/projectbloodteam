@@ -19,7 +19,7 @@
     .item_others.row{:style => 'display: none;'}
       - @item.others.sort_by{|x| x.date}.each do |other|
         .other.small-4.columns
-          = link_to image_tag(other.agent_icon(:small)), '#', :"data-reveal-id" => "other_" + other.id.to_s
+          = link_to image_tag(other.agent_icon(:thumb)), '#', :"data-reveal-id" => "other_" + other.id.to_s
           %br/
           = link_to other.agent.surname, '#', :"data-reveal-id" => "other_" + other.id.to_s
           .other_date= other.date.strftime('%b %d, %Y')
@@ -27,7 +27,7 @@
           .row
             .small-5.columns
               .row
-                .small-4.columns= image_tag other.agent_icon
+                .small-4.columns= image_tag other.agent_icon(:thumb)
                 .small-8.columns.text-right
                   .metadata
                     .item_metadata
