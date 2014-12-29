@@ -12,7 +12,7 @@ class MasterMusic < ActiveRecord::Base
  
   include ItemHelpers
   
-  attr_accessor :followup 
+  attr_accessor :followup, :resync_image
   
   def artist
     if self[:artist] =~ /,\s*The\s*$/
@@ -25,9 +25,32 @@ class MasterMusic < ActiveRecord::Base
   def all_versions
     (other_versions << self).map(&:musics).flatten.compact.sort_by(&:date)
   end
-  
-  def self.choose(key, token = nil)
-  
+
+  def resync_discogs_image(token = nil)
+    if token.nil?
+      return false
+    else
+      m = Discogs::Wrapper.new('Project Blood Team', token).get_release(discogscode)
+      unless m.images.blank?
+        system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/thumb")
+        system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/full")
+        begin
+          open("#{Rails.root.to_s}/public/images/master_musics/#{id.to_s}/full/#{CGI.escape(discogscode.to_s + '.jpg') }", "wb").write(token.get(m.images.first.uri).body) 
+        rescue
+          filename_file_name = nil
+         end
+        begin
+          open("#{Rails.root.to_s}/public/images/master_musics/#{id.to_s}/thumb/#{CGI.escape(discogscode.to_s + '.jpg') }", "wb").write(token.get(m.images.first.uri150).body) 
+        rescue
+          filename_file_name = nil
+        end
+        save!
+      end
+    end
+  end
+      
+
+  def self.choose(key, token = nil)  
     if key =~ /^local_/
       key.gsub(/^local_/, '')
     else
@@ -106,6 +129,10 @@ class MasterMusic < ActiveRecord::Base
   
   def linkto
     "http://www.discogs.com/release/#{discogscode.to_s}"
+  end
+  
+  def master
+    self
   end
   
   def master_id

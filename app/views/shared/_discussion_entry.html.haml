@@ -40,6 +40,9 @@
                       = display_metadata(key, value)
                       - if key == 'format'
                         = link_to fa_icon('external-link'), chat.linkto, :target => "_blank"
+                      - if key == 'label' && master == true
+                        = link_to  edit_master_genericmaster_path(:category => chat.master.class.to_s, :id => chat.master_id) do
+                          %span.has-tip{"aria-haspopup" => "true", "data-tooltip" => "", :title => "Edit the master record for #{chat.name}!"}= fa_icon(chat.master.icon_name)
     - if chat.class == Comment
       .large-2.columns.text-lef
         .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"

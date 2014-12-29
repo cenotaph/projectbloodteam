@@ -21,11 +21,7 @@
         .secondary_title
           multiple versions of this exist!
           = link_to fa_icon('external-link'), "http://www.discogs.com/master/view/#{@item.masterdiscogs_id}", target: :_blank
-        /   = raw @item.secondary_title
-        /   - if @item.respond_to?('linkto')
-        /     %span.link_to= link_to fa_icon('external-link'), @item.linkto, :target => "_blank"
-        / = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => @item}
-        / %p= link_to 'Edit master record', edit_master_genericmaster_path(:category => @item.class.to_s, :id => @item.master_id), class: [:button, :tiny, :secondary]
+
 - unless @json.blank?
   %a{:name => "#map"}
   #map_container{:"data-magellan-destination" => "map"}

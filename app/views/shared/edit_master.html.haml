@@ -49,9 +49,21 @@
             .row
               .large-6.columns= f.input :format, :as => :string
             .row
-              .large-6.columns= f.input :discogscode, :as => :string, :input_html => {:maxlength => 16 }
+              .large-6.columns= f.input :discogscode, :as => :string, :input_html => {:maxlength => 16 }, label: 'Discogs.com ID'
+            .row
+              .large-6.columns= f.input :masterdiscogs_id, :as => :string, :input_html => {:maxlength => 16 }, label: 'Discogs.com master release ID#'
             .row
               .large-6.columns= f.input :filename
+            - if session[:discogs_token]
+              .row
+                .large-6.columns= f.input :resync_image, label: 'Attempt to re-sync the image from discogs.com', hint: 'If there is an image for this object it will be overwritten', as: :boolean
+            - else
+              .row
+                .large-6.columns
+                  %li 
+                    You must get a discogs.com 
+                    = link_to 'access token ', '/musics/authenticate'
+                    to be able to re-sync images.
             - if @followup == 'new'
               .row
                 .large-6.columns= f.input :followup, :as => :hidden, :value => @followup

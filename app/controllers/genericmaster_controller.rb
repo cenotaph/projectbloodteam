@@ -453,13 +453,14 @@ class GenericmasterController < ApplicationController
   def update
     @item = @category.classify.constantize.find(params[:id])
     if @category =~ /^Master/
-      if @item.update_attributes(params[@category.tableize.singularize].permit!)
  
+      if @item.update_attributes(params[@category.tableize.singularize].permit!)
+
         if @category == 'MasterMovie'
           if @item.filename_file_name.blank? && !@item.imdbcode.blank?
-          i = IMDB.new(@item.imdbcode)
-          big_poster = i.poster_link
-          unless big_poster.blank?
+            i = IMDB.new(@item.imdbcode)
+            big_poster = i.poster_link
+            unless big_poster.blank?
               @item.filename_file_name = @item.imdbcode.to_s  + '.jpg'
               @item.filename_content_type = 'image/jpeg'
               system("mkdir -p " + Rails.root.to_s  + '/public/images/master_movies/' + @item.id.to_s + '/thumb')
@@ -467,24 +468,18 @@ class GenericmasterController < ApplicationController
               open(Rails.root.to_s + '/public/images/master_movies/' + @item.id.to_s + '/thumb/' +   @item.imdbcode.to_s + '.jpg', "wb").write(open(i.poster_small).read) rescue nil
               open(Rails.root.to_s  + '/public/images/master_movies/' + @item.id.to_s + '/full/' +   @item.imdbcode.to_s + '.jpg', "wb").write(open(big_poster).read) rescue nil
               @item.save!
+            end
           end
-        elsif @category == 'MasterMusic'
-          if @item.filename_file_name.blank? && !@item.discogscode.blank?
-            m = Discogs::Wrapper.new('f6d728eef1').get_release(@item.discogscode.to_s)
-            unless m.nil?
-              unless m.images.blank?
-
-                @item.filename_file_name = CGI.escape(@item.discogscode.to_s + '.jpg')
-                system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + @item.id.to_s + "/thumb")
-                 system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + @item.id.to_s + "/full")
-                open(Rails.root.to_s+'/public/images/master_musics/' + @item.id.to_s + '/thumb/' + @item.filename_file_name, "wb").write(open(m.images.first.uri150).read)
-                open(Rails.root.to_s+'/public/images/master_musics/' + @item.id.to_s + '/full/' + @item.discogscode.to_s + '.jpg', "wb").write(open(m.images.first.uri150.gsub(/\-150\-/, '-')).read)
-                @item.save!
-              end
+        
+        elsif @category == 'MasterMusic' 
+          unless @item.discogscode.blank?
+            if params[:master_music][:resync_image] == "1"
+              @item.resync_discogs_image(session[:discogs_token])
             end
           end
         end
-      end
+        
+  
         expire_fragment(/genericmaster\/#{Regexp.escape(@item.master_id.to_s)}\?(.*)category\=master#{Regexp.escape(@item.class.to_s.downcase)}/)
         expire_fragment(/.*newsfeed_front.*/)       
         flash[:notice] = 'Entry updated.'

@@ -1,3 +1,3 @@
 - discussion.each_with_index do |chat, index|
   - view = View.where(:agent_id => chat.agent_id).where(:year => chat.date.strftime("%Y")).first
-  .item_listing= render :partial => 'shared/discussion_entry', locals: {chat: chat}
+  .item_listing= render :partial => 'shared/discussion_entry', locals: {chat: chat, master: master.nil? ? false : master}
