@@ -47,7 +47,7 @@ module ApplicationHelper
     if item.class == Comment
        sanitize item.content , tags:  %w{b i em italic bold strong a  br p src ol li ul img}, attributes: %w{href}
     else
-      item.comment.blank? ? '<em>No comment yet.</em>' : sanitize(item.comment.gsub(/\<p\>\&nbsp;\<\/p\>/, ''), tags:  %w{b i em italic bold strong a  br p ol li ul img}, attributes: %w{href})
+      item.comment.blank? ? '<em>No comment yet.</em>' : sanitize(item.comment.gsub(/\<br\/*\>/, '<br/><br/>').gsub(/\<p\>\&nbsp;\<\/p\>/, ''), tags:  %w{b i em italic bold strong a  br p ol li ul img}, attributes: %w{href})
     end
   end
   

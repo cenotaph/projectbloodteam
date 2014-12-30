@@ -3,11 +3,15 @@
   .row
     - if chat.class == Comment
       .large-7.large-offset-2.columns.comment
-        %span.big= raw('&ldquo;')
-        = raw display_comment(chat)
-        - unless chat.userimages.empty?
-          = raw one_or_slideshow(chat)
-        .newsfeed_entry_link= raw "comment posted " + time_ago_in_words(chat.created_at) + " ago"
+        .row
+          .small-1.columns.text-right.big= raw('&ldquo;')
+          .small-11.columns.comment_body
+            = raw display_comment(chat)
+            - unless chat.userimages.empty?
+              = raw one_or_slideshow(chat)
+            .newsfeed_entry_link= raw "comment posted " + time_ago_in_words(chat.created_at) + " ago"
+        
+        
         
         
 
@@ -52,12 +56,14 @@
             = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
 
     - else
-      .large-9.medium-10.columns
+      .medium-10.columns
         - unless display_comment(chat).blank?
           .row
             .comment.columns.large-offset-0{class: chat.references.empty? ? "small-12" : "small-10 small-offset-1" }
-              %span.big= raw('&ldquo;')
-              = raw display_comment(chat)
+              .row
+                .small-1.columns.text-right.big= raw('&ldquo;')
+                .small-11.columns.comment_body
+                  = raw display_comment(chat)
             - unless chat.references.empty?
               .references.small-12.columns.large-2
                 .heading References:

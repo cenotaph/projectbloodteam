@@ -1,14 +1,17 @@
 .row
   .small-10.large-5.small-offset-1.large-offset-3.only_comment.columns.left
     .newsfeed_comment
-      %span.big= raw('&ldquo;')
-      = raw display_comment(entry.entry)
-      - unless entry.entry.userimages.empty?
-        = raw one_or_slideshow(entry.entry)
-    .newsfeed_entry_link= raw "commenting on #{entry.entry.item.class.to_s.downcase.gsub(/^master/, '')} #{link_to raw(entry.entry.item.name), entry.entry.item}"
+      .row.comment_body_wrapper
+        .small-1.columns.text-right.big= raw('&ldquo;')
+        .small-11.columns.comment_body
+          = raw display_comment(entry.entry)
+          - unless entry.entry.userimages.empty?
+            = raw one_or_slideshow(entry.entry)
+          .newsfeed_entry_link= raw "commenting on #{entry.entry.item.class.to_s.downcase.gsub(/^master/, '')} #{entry.entry.item.class == Forum ? "thread" : ''} #{link_to raw(entry.entry.item.name), entry.entry.item}"
   .small-12.large-2.comment_metadata.columns.text-left.end
     .agent_name= "Agent #{entry.agent.surname}"
     .newsfeed_icon= entry_agent_icon(entry)
-    = link_to fa_icon('pencil'), edit_comment_path(entry.entry)
-    = link_to fa_icon('microphone-slash'), entry, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }
+    - if entry.entry.agent == current_agent
+      = link_to fa_icon('pencil'), edit_comment_path(entry.entry)
+      = link_to fa_icon('microphone-slash'), entry, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }
     .newsfeed_date= "posted " + time_ago_in_words(entry.created_at) + " ago"

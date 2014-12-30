@@ -192,22 +192,32 @@
   
 
   .comment {
-    
-    padding: 0px;
-    font-size: 1.0rem;
-    line-height: 1.45rem;
-    color: #333;
-    font-weight: 300;
-    p.wrapper {
-      margin: 0px;
-      padding: 0px;
+    .newsfeed_entry_link {
+      margin-top: 1.5rem;
+    }
+    .big {
+      font-size: 2.7rem;
+      margin: -20px 0px 0px -8px;
+      font-weight: 600;
+      color: #777;
+      padding: 0;
+    }
+    .comment_body { 
+      padding-left: 0px;
       font-size: 1.0rem;
-      line-height: 1.45rem;
+      line-height: 1.6rem;
       color: #333;
       font-weight: 300;
+      p.wrapper {
+        margin: 0px;
+        padding: 0px;
+        font-size: 1.0rem;
+        line-height: 1.6rem;
+        color: #333;
+        font-weight: 300;
+      }
     }
   }
-
 }
   
 
@@ -257,7 +267,7 @@
     font-size: 1.2rem;
     line-height: 1.9rem;
     .big {
-      font-size: 2rem;
+      font-size: 2.7rem;
       float: left;
       margin-right: 0.6rem;
     }
