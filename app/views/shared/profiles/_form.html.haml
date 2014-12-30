@@ -3,30 +3,32 @@
 
 .row
   .small-8.small-offset-2.columns
-    = semantic_form_for profile, :html => {:multipart => true} do |f|
+    = semantic_form_for profile, :html => {:multipart => true, :"data-abide" => ''} do |f|
       .form_wrapper
         .row
           .small-6.columns
             %h2 
               Your profile for
               = profile.year
-            = f.input :year, :as => :hidden 
-            = f.input :agent_id, :as => :hidden, :data => {:value => current_agent.id.to_s }
+            = f.input :year, :as => :hidden
+            = f.input :agent_id, :as => :hidden
         .row
-          .small-6.columns= f.input :surname
+          .small-6.columns= f.input :surname, input_html: {required: ''}
         .row
-          .small-6.columns= f.input :age
+          .small-6.columns= f.input :age, input_html: {required: ''}
         .row
-          .small-6.columns= f.input :location
+          .small-6.columns= f.input :location, input_html: {required: ''}
         .row
-          .small-6.columns= f.input :missionname
+          .small-6.columns= f.input :missionname, input_html: {required: ''}
         .row
           .small-10.columns
-            - unless f.object.new_record?
+            - if f.object.avatar?
               = image_tag f.object.avatar.url(:thumb)
-            = f.input :avatar, :label => "Profile picture"  + (f.object.new_record? ? '(choose)' : '(change)')
+              = f.input :avatar, :label => "Change profile picture" 
+            - else
+              = f.input :avatar, :label => "Profile picture" , input_html: {required: ''}
         .row
-          .small-6.columns= f.input :theme
+          .small-6.columns= f.input :theme,  input_html: {disabled: ''}, hint: 'Themes may return later.'
         .row
           .small-6.columns= f.input :currency, :label => "Default currency"
         .row

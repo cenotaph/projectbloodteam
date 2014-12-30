@@ -14,8 +14,10 @@ class Profile < ActiveRecord::Base
                       :large => "400x400>"
                     }
                     
-  validates_presence_of :theme_id, :agent_id, :defaultcurrency_id, :surname, :missionname, :year
+  validates_presence_of :theme_id, :agent_id, :defaultcurrency_id, :surname, :missionname, :year,  :location, :age
   
+  validates_attachment_size :avatar, :less_than => 2.megabytes
   validates_attachment_presence :avatar
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
   
 end

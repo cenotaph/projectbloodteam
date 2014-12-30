@@ -38,6 +38,7 @@ class ApplicationController < ActionController::Base
     @active_agents = Profile.where(:year => getYear).includes(:agent).sort_by {|x| x.agent.surname  }
     @forums = Comment.paginate_with_items(params[:page], 6)
   end
+  
   def getYear
      year = request.domain(2)
 

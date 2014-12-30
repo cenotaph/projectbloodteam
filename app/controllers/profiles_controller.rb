@@ -4,7 +4,7 @@ class ProfilesController < ApplicationController
   before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]
   
   def create
-    @profile = Profile.create(params[:profile])
+    @profile = Profile.create(profile_params)
     if @profile.save
       category = Category.create(:agent_id => @profile.agent_id, :year => @profile.year)
       views = View.create(:agent_id => @profile.agent_id, :year => @profile.year)
@@ -28,6 +28,8 @@ class ProfilesController < ApplicationController
     end
   end
   
+
+
   def update
     @profile = Profile.find(params[:id])
     if @profile.agent != current_agent
@@ -45,7 +47,7 @@ class ProfilesController < ApplicationController
   private
   
   def profile_params
-    params.require(:profile).permit(:surname, :age, :location, :missionname, :dateformat, :freetext, :shortfilms, :theme_settings, :defaultcurrency_id, :theme_id)
+    params.require(:profile).permit(:surname,:agent_id, :year, :age, :avatar, :location, :missionname, :dateformat, :freetext, :shortfilms, :theme_settings, :defaultcurrency_id, :theme_id)
   end
   
 end

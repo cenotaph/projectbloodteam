@@ -6,7 +6,7 @@
         = @category.pluralize.downcase
   .row.search_result
     .large-10.large-offset-1.small-12.small-offset-0.columns#results
-      = render :partial => 'shared/item', :collection => @items, :locals => {:searchterm => ''}
+      = render :partial => 'shared/item', :collection => @items, :locals => {:searchterm => '', master: @category.constantize.new.has_master?}
   
 - unless @items.blank?
   = paginate @items

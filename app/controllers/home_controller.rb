@@ -61,6 +61,7 @@ class HomeController < ApplicationController
       @profile.age = current_agent.age
       @profile.missionname = current_agent.missionname
       @profile.defaultcurrency_id = Currency.where(:symbol => current_agent.defaultcurrency).first.id
+      set_meta_tags :title => 'New profile for ' + getYear.to_s
       render :template => 'shared/profiles/new'
     else
       flash[:error] = 'You already have a profile for this year.'

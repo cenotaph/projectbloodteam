@@ -303,6 +303,7 @@ class GenericmasterController < ApplicationController
       if request.xhr?
         render :partial => 'shared/item', :collection => @items, :locals => {:searchterm => nil}
       else
+        set_meta_tags title: @category.pluralize
         render :template => 'shared/index_for_category'
       end
     end
