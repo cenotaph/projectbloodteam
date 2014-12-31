@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141231220522) do
+ActiveRecord::Schema.define(version: 20141231222451) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "agent_id",       limit: 4
@@ -841,7 +841,7 @@ ActiveRecord::Schema.define(version: 20141231220522) do
     t.integer "year",                  limit: 4,                                null: false
     t.string  "movie_started",         limit: 50,  default: "Started"
     t.string  "movie_format",          limit: 50,  default: "Format"
-    t.string  "movie_location",        limit: 5
+    t.string  "movie_location",        limit: 255, default: "Location",         null: false
     t.string  "movie_company",         limit: 50,  default: "Company"
     t.string  "movie_cost",            limit: 50,  default: "Cost"
     t.string  "movie_first",           limit: 255, default: "First?",           null: false
@@ -857,7 +857,7 @@ ActiveRecord::Schema.define(version: 20141231220522) do
     t.string  "book_difficulty",       limit: 50,  default: "Difficulty"
     t.string  "book_pagecount",        limit: 50,  default: "Pagecount"
     t.string  "book_cost",             limit: 50,  default: "Cost"
-    t.string  "book_first",            limit: 5
+    t.string  "book_first",            limit: 255, default: "First reading?",   null: false
     t.string  "book_rating",           limit: 50,  default: "Rating"
     t.string  "book_comment",          limit: 50,  default: "Comment"
     t.string  "concert_cost",          limit: 50,  default: "Cost"
