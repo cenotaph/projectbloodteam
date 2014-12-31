@@ -57,9 +57,11 @@
           - unless display_comment(@item).blank?
             .row
               .columns.comment{class: @item.references.empty? ? "small-12" : "small-10" }
-                %span.big= raw('&ldquo;')
-                = raw display_comment(@item)
-                .entered_date= "entered " + time_ago_in_words(@item.created_at) + " ago"
+                .row
+                  .small-1.columns.text-right.big= raw('&ldquo;')
+                  .small-11.columns.comment_body
+                    = raw display_comment(@item)
+                    .entered_date= "entered " + time_ago_in_words(@item.created_at) + " ago"
               - unless @item.references.empty?
                 .references.small-2.columns
                   .heading References:

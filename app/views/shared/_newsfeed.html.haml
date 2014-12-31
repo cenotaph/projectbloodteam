@@ -84,7 +84,7 @@
                       .comment_data.comment_body_wrapper.small-8.small-offset-2.columns
                         .row
                           .columns.text-right.big= raw('&ldquo;')
-                          .small-12.columns.comment_body
+                          .small-11.columns.comment_body
                             = raw display_comment(comment)
                             - unless comment.userimages.empty?
                               = raw one_or_slideshow(comment)
@@ -104,7 +104,7 @@
                       .comment_data.comment_body_wrapper.small-10.columns
                         .row
                           .columns.text-right.big= raw('&ldquo;')
-                          .small-12.columns.comment_body
+                          .small-11.columns.comment_body
                             .agent_by
                               = link_to "Agent #{comment.agent.surname}", comment.agent
                               - if comment.agent == current_agent
@@ -127,7 +127,7 @@
               - sidecomments = entry.entry.discussion.delete_if{|z| z == entry.entry}.delete_if{|k| !show_entry?(k)}.sort{|x, y| y.created_at <=> x.created_at }[0..2].reverse
               -sidecomments.each_with_index do |comment, i|
                 - next unless show_entry?(comment)
-                .side_comment.column.small-3.large-12{:class => sidecomments[i+1].nil? ? :end : false}
+                .side_comment.column.small-4.large-12{:class => sidecomments[i+1].nil? ? :end : false}
                   .comment_icon.column= image_tag comment.agent_icon(:small), :width => 40
                   .comment_data.column
                     .newsfeed_agent_title= raw link_to("Agent #{comment.agent.surname} ", comment.agent)

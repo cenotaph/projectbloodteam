@@ -2,9 +2,9 @@
   - comment = @comment if comment.nil?
   - item = @comment if item.nil?
   .row#new_comment
-    .small-2.columns
-      .index_image= image_tag current_agent.agent_icon(:large)
-    .small-10.columns
+    .medium-2.small-12.columns
+      .index_image= image_tag current_agent.agent_icon(:small)
+    .small-12.medium-10.columns
       .agent_name
         = "Agent #{current_agent.surname} ..."
         %em leave a comment!

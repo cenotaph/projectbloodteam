@@ -11,9 +11,57 @@
       }
     }
   }
+
   
 }
 
+@media #{$small-only} {
+  .newsfeed_entry {
+    .expanded {
+      .comment {
+        .comment_data {
+          .big {
+            width: 10px;
+            margin: 3px 0px 0px 5px !important;
+          }
+        }
+      }
+    }
+  }
+  
+}
+
+
+@media #{$large-only} {
+  .newsfeed_entry {
+    .expanded {
+      .comment {
+        .comment_data {
+          .big {
+            margin: 6px 0px 0px 20px !important;
+          }
+        }
+      }
+    }
+  }
+  
+}
+
+@media #{$medium-only} {
+  .newsfeed_entry {
+    .expanded {
+      .comment {
+        .comment_data {
+          .big {
+            width: initial !important;
+            margin-left: 10px !important;
+          }
+        }
+      }
+    }
+  }
+  
+}
 @media #{$medium-up} {
 
   
