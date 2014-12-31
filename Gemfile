@@ -65,7 +65,7 @@ gem 'paperclip'
 gem 'rails4-autocomplete'
 gem 'randumb'
 gem 'responders', '2.0.2'
-
+gem 'rollbar', '~> 1.3.0'
 gem 'themes_for_rails', github: 'boxcar21/themes_for_rails', branch: 'master'
 gem 'thinking-sphinx', '~> 3.1.2',
   :git    => 'git://github.com/pat/thinking-sphinx.git',
