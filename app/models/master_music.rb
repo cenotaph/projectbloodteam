@@ -34,6 +34,7 @@ class MasterMusic < ActiveRecord::Base
       unless m.images.blank?
         system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/thumb")
         system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/full")
+        self.filename_file_name = CGI.escape(mynew.discogscode.to_s + '.jpg')
         begin
           open("#{Rails.root.to_s}/public/images/master_musics/#{id.to_s}/full/#{CGI.escape(discogscode.to_s + '.jpg') }", "wb").write(token.get(m.images.first.uri).body) 
         rescue
