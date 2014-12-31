@@ -12,7 +12,7 @@
             = link_to fa_icon('external-link'), agent.linkto, :target => "_blank" 
         = raw one_or_slideshow(agent, nil, :thumb)
       - else
-        = highlight(display_column(agent, col, agent.agent_id).strip, params[:filter][:filter_text])
+        = highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text])
         - if col == 'finished' && !display_column(agent, col, agent.agent_id).blank?
           .small
             Time taken:
