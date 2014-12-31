@@ -180,7 +180,7 @@ class GenericController < ApplicationController
           joins
           ]).order('date DESC').page(params[:page]).per(40)
       else
-        @items = @category.classify.constantize.where("date <= '#{getYear}-12-31'").includes(joins).where("agents.security < 2").paginate(:per_page =>  (theme_name == 'flume' ? 40 : 20 ), :page => params[:page], :order => 'date DESC')
+        @items = @category.classify.constantize.where("date <= '#{getYear}-12-31'").joins(joins).where("agents.public_password is null ").order(date: :desc).page(params[:page]).per(40)
         flash[:notice] = 'You are not seeing all entries because you are not logged in.'
       end
       if request.xhr?

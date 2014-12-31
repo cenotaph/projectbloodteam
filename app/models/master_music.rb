@@ -79,7 +79,7 @@ class MasterMusic < ActiveRecord::Base
               begin
                 open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/thumb/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri150).body) 
               rescue
-                mynew.filename_file_name = nil
+              mynew.filename_file_name = nil
               end
               mynew.save!
             end

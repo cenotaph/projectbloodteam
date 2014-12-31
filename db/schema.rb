@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141229124646) do
+ActiveRecord::Schema.define(version: 20141231212204) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "agent_id",       limit: 4
@@ -918,14 +918,17 @@ ActiveRecord::Schema.define(version: 20141229124646) do
   end
 
   create_table "weight", force: :cascade do |t|
-    t.integer  "agent_id",   limit: 4
+    t.integer  "agent_id",    limit: 4
     t.date     "date"
-    t.float    "weight",     limit: 24
-    t.text     "comment",    limit: 65535
-    t.string   "userimage",  limit: 80
-    t.integer  "label_id",   limit: 4
+    t.float    "weight",      limit: 24
+    t.text     "comment",     limit: 65535
+    t.string   "userimage",   limit: 80
+    t.integer  "label_id",    limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "currency_id", limit: 4
   end
+
+  add_index "weight", ["currency_id"], name: "index_weight_on_currency_id", using: :btree
 
 end
