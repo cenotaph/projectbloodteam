@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141231215545) do
+ActiveRecord::Schema.define(version: 20141231220522) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "agent_id",       limit: 4
@@ -844,7 +844,7 @@ ActiveRecord::Schema.define(version: 20141231215545) do
     t.string  "movie_location",        limit: 5
     t.string  "movie_company",         limit: 50,  default: "Company"
     t.string  "movie_cost",            limit: 50,  default: "Cost"
-    t.string  "movie_first",           limit: 255,                              null: false
+    t.string  "movie_first",           limit: 255, default: "First?",           null: false
     t.string  "movie_rating",          limit: 50,  default: "Rating"
     t.string  "movie_comment",         limit: 50,  default: "Comment"
     t.string  "music_source",          limit: 50,  default: "Source"
