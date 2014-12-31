@@ -178,9 +178,9 @@ module ItemHelpers
   
   def pbt_year
     if self.date.blank?
-      Time.now.strftime('%Y')
+      Time.now.localtime.year
     else
-      self.date.strftime('%Y')
+      self.date.to_time.localtime.year
     end
   end
   
