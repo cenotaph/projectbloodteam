@@ -92,7 +92,7 @@
               
             
             - else 
-              .form_wrapper{:class => col}= form.input col, :label => @view.agent_column_name(@item, col).humanize
+              .form_wrapper{:class => col}= form.input col, :label => @view.agent_column_name(@item, col).to_s.humanize
           
           = form.input :agent_id, :as => :hidden
           - symbol = ((@master.gsub(/^Master/, 'master_') + '_id').downcase).to_sym
