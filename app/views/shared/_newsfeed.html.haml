@@ -57,7 +57,7 @@
                       .agent_by
                         = link_to "Agent #{entry.entry.agent_surname}", entry.entry.agent
                         %span.entered_date= "(#{display_column(entry.entry, :created_at, entry.entry.agent)})"
-                      %p.wrapper= entry.entry.comment.blank? ? raw('<i>No comment yet.</i>'): raw(entry.entry.comment)
+                      %p.wrapper= entry.entry.comment.blank? ? raw('<i>No comment yet.</i>'): display_comment(entry.entry)
               - unless entry.entry.references.empty?
                 .references.small-2.columns
                   .heading References:
