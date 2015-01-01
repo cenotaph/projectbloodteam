@@ -127,6 +127,7 @@ class AgentsController < ApplicationController
 
 
   def show
+
     @agent = Agent.find(params[:id])
     @profile = Profile.find_by(:agent => @agent, :year => getYear)
     if @profile.nil?
