@@ -5,10 +5,11 @@ class CssController < ApplicationController
   
     # load CSS for an agent
   def show
-    profile = Profile.where(:agent_id => params[:id]).where(:year => getYear).first
+    @agent = Agent.find(params[:id])
+    profile = Profile.find_by(:agent => @agent, :year => getYear)
     @css = profile.theme_settings
 
-    @agent = Agent.find(params[:id])
+    
     respond_to do |format|
       format.css {render :template => 'shared/agent_stylesheet' }
     end

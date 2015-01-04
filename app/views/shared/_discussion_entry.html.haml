@@ -48,7 +48,7 @@
                         = link_to  edit_master_genericmaster_path(:category => chat.master.class.to_s, :id => chat.master_id) do
                           %span.has-tip{"aria-haspopup" => "true", "data-tooltip" => "", :title => "Edit the master record for #{chat.name}!"}= fa_icon(chat.master.icon_name)
     - if chat.class == Comment
-      .large-2.columns.text-lef
+      .large-2.columns.text-left.medium-2
         .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
         .newsfeed_icon= image_tag chat.agent_icon(:large)
         - if agent_signed_in?

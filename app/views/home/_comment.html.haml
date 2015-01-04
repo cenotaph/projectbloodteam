@@ -8,6 +8,14 @@
           - unless entry.entry.userimages.empty?
             = raw one_or_slideshow(entry.entry)
           .newsfeed_entry_link= raw "commenting on #{entry.entry.item.class.to_s.downcase.gsub(/^master/, '')} #{entry.entry.item.class == Forum ? "thread" : ''} #{link_to raw(entry.entry.item.name), entry.entry.item}"
+      - if agent_signed_in?
+        .row
+          .small-12.columns.text-left
+            .comment_link= link_to fa_icon('comment-o'), '#', onclick: "$('#commententry_#{entry.id.to_s}').slideToggle();var puny_mce = new punymce.Editor({id : 'comment_content_#{entry.id.to_s}'}); return false;"
+            .row.comment_form{:id => "commententry_#{entry.id.to_s}"}
+              .small-11.columns.small-offset-0
+                = render :partial => 'shared/newsfeed_comment', locals: {entry: entry}
+                    
   .small-12.medium-2.comment_metadata.columns.text-left.end
     .agent_name= "Agent #{entry.agent.surname}"
     .newsfeed_icon= entry_agent_icon(entry)

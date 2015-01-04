@@ -4,7 +4,7 @@
     %h2= controller.action_name.to_s.capitalize + " " + @item.class.to_s.downcase
     .row
       .small.1.columns
-        = image_tag current_agent.agent_icon
+        = image_tag current_agent.agent_icon(:small)
       .small-11.columns.text-left
         %p
           Entering for Agent

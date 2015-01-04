@@ -17,8 +17,8 @@
     -#= stylesheet_link_tag 'classic','layout', 'skeleton1200', 'date_input', 'superfish', 'jquery-ui-1.8.21.custom'
     - if controller.controller_name == 'stats' || controller.action_name == 'history'
       = javascript_include_tag 'raphael-min', 'g.raphael', 'g.bar', 'g.line', 'g.dot'
-    - if @agent
-      = stylesheet_link_tag "http://#{request.host}#{request.port  != 80 ? ':' + request.port.to_s : ''}/css/#{@agent.id.to_s}.css"
+    - if agent_signed_in?
+      = stylesheet_link_tag "http://#{request.host}#{request.port  != 80 ? ':' + request.port.to_s : ''}/css/#{current_agent.slug.to_s}.css"
      
     = csrf_meta_tag
 
