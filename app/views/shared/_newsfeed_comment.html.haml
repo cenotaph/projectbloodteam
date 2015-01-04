@@ -4,7 +4,8 @@
 %div{:id => "comment_new_#{entry.id.to_s}"}
   = semantic_nested_form_for(@comment = Comment.new(:foreign_id =>  (entry.entry.has_master? ? entry.entry.master.id : entry.entry.id ), :item_type =>  (entry.entry.has_master? ? "Master#{entry.entry_type}" : (entry.entry_type == "Comment" ? entry.entry.child.class.to_s : entry.entry_type)), agent: current_agent, :add_to_newsfeed => true),  :html => {:multipart => true, :"data-abide" => ""}) do |f|
     .form_wrapper
-      = f.input :foreign_id, :value =>  (entry.entry.has_master? ? entry.entry.master_id : (entry.entry_type == "Comment" ? entry.entry.child.id.to_s : entry.entry_id)), :as => :hidden, :input_html => {:required => '' }
+      = f.input :foreign_id, input_html: {:value =>  (entry.entry.has_master? ? entry.entry.master_id : (entry.entry_type == "Comment" ?  entry.entry.child.id.to_s : entry.entry_id)), :required => ''  }, :as => :hidden
+
       = f.input :item_type,  :as => :hidden, :input_html => {:required => '' }
       = f.input :agent_id, :as => :hidden, :input_html => {:required => '' }
       = f.input :content, :label => "Your #{style}:", :input_html => {:cols => 30, :rows => 7, :id => "comment_content_#{entry.id.to_s}"}
