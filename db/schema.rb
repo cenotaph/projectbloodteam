@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141231222451) do
+ActiveRecord::Schema.define(version: 20150105105526) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "agent_id",       limit: 4
@@ -505,6 +505,7 @@ ActiveRecord::Schema.define(version: 20141231222451) do
     t.integer  "width",                 limit: 4
     t.datetime "filename_updated_at"
     t.boolean  "delta",                 limit: 1
+    t.string   "english_title",         limit: 255
   end
 
   create_table "master_musics", force: :cascade do |t|
@@ -512,7 +513,7 @@ ActiveRecord::Schema.define(version: 20141231222451) do
     t.text     "artist",                limit: 65535
     t.text     "title",                 limit: 65535
     t.integer  "year",                  limit: 4
-    t.string   "label",                 limit: 64
+    t.string   "label",                 limit: 255
     t.string   "format",                limit: 64
     t.integer  "uses",                  limit: 4,     default: 0
     t.datetime "created",                                             null: false
@@ -626,7 +627,7 @@ ActiveRecord::Schema.define(version: 20141231222451) do
     t.integer  "label_id",        limit: 4
     t.text     "comment",         limit: 65535
     t.date     "received"
-    t.integer  "procurement",     limit: 1,     default: 0
+    t.string   "procurement",     limit: 255,   default: "0"
     t.datetime "updated_at"
     t.boolean  "isnew",           limit: 1
     t.integer  "currency_id",     limit: 4

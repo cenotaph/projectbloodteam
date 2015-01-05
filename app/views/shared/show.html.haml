@@ -1,6 +1,6 @@
 .magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
   %dl.sub-nav
-    %dd= link_to @item.name + ": ", '#'
+    %dd= link_to @item.name.to_s + ": ", '#'
     %dd.active{:"data-magellan-arrival" => "details"}= link_to 'Details', "#details"
     - unless @item.userimages.empty?
       %dd{:"data-magellan-arrival" => "images"}= link_to pluralize(@item.userimages.size, 'image'), "#images"
