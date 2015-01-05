@@ -6,7 +6,7 @@
         - if agent_signed_in?
           - if @agent != current_agent
             = "Agent #{@agent.surname}: "
-        = @agent.categories.year(getYear).first.send(@category.tableize).to_s
+        = @agent.categories.year(getYear).first.send(@category.tableize).to_s rescue @category.pluralize
         %span.sort
           = link_to fa_icon('sort-amount-asc'), '#', onclick: '$("#view_options").slideToggle();return false;'
           - if agent_signed_in?
