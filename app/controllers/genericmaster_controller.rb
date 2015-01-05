@@ -215,7 +215,7 @@ class GenericmasterController < ApplicationController
   end
   
   def index
-    if @category == 'Book' || @category == 'Videogame'
+    if @category == 'Book' || @category == 'Videogame' || @category == 'Tvseries'
       date = ' finished DESC, started DESC, received '
     else
       date = ' date '
