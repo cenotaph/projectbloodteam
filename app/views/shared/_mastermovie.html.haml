@@ -2,6 +2,7 @@
   - m = Imdb::Movie.new(item.imdbcode) unless item.imdbcode.blank?
   .row
     .small-12.columns
+
       - unless item.imdbcode.blank?
         .master_metadata
           .metadata= m.tagline
