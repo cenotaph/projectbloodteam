@@ -146,6 +146,7 @@ class MasterMovie < ActiveRecord::Base
       countries = [self.country]
     end
     countries.each do |c|
+      next if c.nil?
       sim += MasterMovie.where(:year => self.year).where(['country LIKE ?', "%#{c.strip}%"]).limit(20).to_a.delete_if{|x| x == self}
     end
     return sim.uniq
