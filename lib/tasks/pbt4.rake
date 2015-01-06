@@ -8,6 +8,29 @@ end
 namespace :pbt do
   desc "PBT stuff"
 
+  task :get_updated_movies => [:environment] do
+    MasterMovie.where("audited is false and imdbcode is not null").each do |mm|
+      begin
+        mm.resync_imdb_image
+        mm.title.strip!
+        mm.country.strip!
+        mm.country.gsub!(/\n/, '')
+        m = Imdb::Movie.new(mm.imdbcode)
+        unless m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
+          mm.english_title = m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }[:title]
+        end
+        unless m.also_known_as.find{|x| x[:version] == '(original title)' }.nil?
+          mm.title = m.also_known_as.find{|x| x[:version] == '(original title)' }[:title]
+        end
+        mm.audited = true
+        puts "audited #{mm.title}"
+        mm.save!  
+      rescue
+        next
+      end  
+    end
+  end
+  
   task :get_discogs_masters => [:environment] do
     wrapper = Discogs::Wrapper.new('f6d728eef1')
     allmusic = MasterMusic.where(:converted => false)

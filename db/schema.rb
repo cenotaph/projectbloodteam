@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106093516) do
+ActiveRecord::Schema.define(version: 20150106102815) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "agent_id",       limit: 4
@@ -506,6 +506,7 @@ ActiveRecord::Schema.define(version: 20150106093516) do
     t.datetime "filename_updated_at"
     t.boolean  "delta",                 limit: 1
     t.string   "english_title",         limit: 255
+    t.boolean  "audited",               limit: 1,     default: false, null: false
   end
 
   create_table "master_musics", force: :cascade do |t|

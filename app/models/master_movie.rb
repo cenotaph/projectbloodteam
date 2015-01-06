@@ -11,6 +11,15 @@ class MasterMovie < ActiveRecord::Base
 
   attr_accessor :followup
   include ItemHelpers
+  validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+  
+  def resync_imdb_image
+    m = Imdb::Movie.new(imdbcode)
+    unless m.poster.blank?
+      self.filename = URI.parse(m.poster)
+      save!
+    end
+  end
   
   
   def self.choose(key, token = nil)
