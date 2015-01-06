@@ -61,7 +61,8 @@
           .row
             .comment.columns.large-offset-0{class: chat.references.empty? ? "small-12" : "small-10 small-offset-1" }
               .row
-                .small-1.columns.text-right.big= raw('&ldquo;')
+                .small-1.columns.text-right.big
+                  = raw('&ldquo;') unless chat.comment.blank?
                 .small-11.columns.comment_body
                   = raw display_comment(chat)
             - unless chat.references.empty?

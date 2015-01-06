@@ -37,7 +37,7 @@
         .row
           - unless entry.entry.userimages.empty? && entry.entry.icon.blank?
             
-            .large-4.small-10.small-offset-1.columns.large-offset-0.medium-offset-0
+            .large-4.small-12.columns
               = raw one_or_slideshow(entry.entry)
           .columns.newsfeed_main{class: (entry.entry.userimages.empty? && entry.entry.icon.blank?) ? "large-12" : "large-8"}
             %h2.item_title.small-text-center.large-text-left.medium-text-left
@@ -52,7 +52,8 @@
               .columns.comment_body_wrapper{class: entry.entry.references.empty? ? "small-12" : "small-10"}
                 - unless entry.entry.comment.blank?
                   .row
-                    .big.column.small-1.text-right= raw('&ldquo;')
+                    .big.column.small-1.text-right
+                      = raw('&ldquo;') unless entry.entry.comment.blank?
                     .comment_body.column.small-11
                       .agent_by
                         = link_to "Agent #{entry.entry.agent_surname}", entry.entry.agent
@@ -83,7 +84,8 @@
                   
                       .comment_data.comment_body_wrapper.small-8.small-offset-2.columns
                         .row
-                          .columns.text-right.big= raw('&ldquo;')
+                          .columns.text-right.big
+                            = raw('&ldquo;')
                           .small-11.columns.comment_body
                             = raw display_comment(comment)
                             - unless comment.userimages.empty?
@@ -103,7 +105,8 @@
                       .comment_icon.small-2.columns= image_tag comment.agent_icon(:small)
                       .comment_data.comment_body_wrapper.small-10.columns
                         .row
-                          .columns.text-right.big= raw('&ldquo;')
+                          .columns.text-right.big
+                            = raw('&ldquo;') unless comment.comment.blank?
                           .small-11.columns.comment_body
                             .agent_by
                               = link_to "Agent #{comment.agent.surname}", comment.agent

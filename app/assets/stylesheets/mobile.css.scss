@@ -11,7 +11,11 @@
       }
     }
   }
-
+  .newsfeed_comment, .expanded .comment {
+    .comment_body_wrapper {
+      margin-left: -25px;
+    }
+  }
   
 }
 
@@ -21,14 +25,18 @@
       .comment {
         .comment_data {
           .big {
-            width: 10px;
+            width: 10px !important;
             margin: 3px 0px 0px 5px !important;
           }
         }
       }
     }
   }
-  
+  .newsfeed_comment, .expanded .comment {
+    .comment_body_wrapper {
+      margin-left: -8px;
+    }
+  }
 }
 
 
@@ -53,7 +61,7 @@
       .comment {
         .comment_data {
           .big {
-            width: initial !important;
+            // width: initial !important;
             margin-left: 10px !important;
           }
         }
