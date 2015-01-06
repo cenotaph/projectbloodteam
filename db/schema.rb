@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150105105526) do
+ActiveRecord::Schema.define(version: 20150106093516) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "agent_id",       limit: 4
@@ -910,12 +910,12 @@ ActiveRecord::Schema.define(version: 20150105105526) do
     t.string  "grocery_clubsavings",   limit: 50,  default: "Club Savings"
     t.string  "tvseries_rating",       limit: 255, default: "Rating"
     t.string  "tvseries_comment",      limit: 255, default: "Comment"
-    t.string  "miles_station",         limit: 255, default: "Station"
-    t.string  "miles_gasamount",       limit: 255, default: "Amount"
-    t.string  "miles_ppg",             limit: 255, default: "Price per gallon"
-    t.string  "miles_miles",           limit: 255, default: "Miles"
-    t.string  "miles_cost",            limit: 255, default: "Cost"
-    t.string  "miles_location",        limit: 255, default: "Location"
+    t.string  "mile_station",          limit: 255, default: "Station"
+    t.string  "mile_gasamount",        limit: 255, default: "Amount"
+    t.string  "mile_ppg",              limit: 255, default: "Price per gallon"
+    t.string  "mile_miles",            limit: 255, default: "Miles"
+    t.string  "mile_cost",             limit: 255, default: "Cost"
+    t.string  "mile_location",         limit: 255, default: "Location"
   end
 
   create_table "weight", force: :cascade do |t|

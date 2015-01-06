@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
         @view = views.first
       end
     end
+
   end
   
   def getData

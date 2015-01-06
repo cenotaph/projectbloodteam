@@ -3,6 +3,7 @@ class View < ActiveRecord::Base
   belongs_to :agent
   
   def agent_column_name(item, column)
+
     if self.respond_to?(item.class.to_s.downcase + "_" + column)
       if self.method(item.class.to_s.downcase + "_" + column).call == "0"
         return nil
@@ -10,6 +11,7 @@ class View < ActiveRecord::Base
         if self.method(item.class.to_s.downcase + "_" + column).call == ""
           return column
         else
+ 
           return self.method(item.class.to_s.downcase + "_" + column).call
         end
       end
