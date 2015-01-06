@@ -30,21 +30,21 @@ class MasterMovie < ActiveRecord::Base
       if existing.empty?
         m = Imdb::Movie.new(key)
         big_poster = m.poster # rescue nil
-        mynew = self.new(:title => m.title, :imdbcode => key, :director => m.director.join(', '), :country => m.countries.join(' / '), :year => m.year)
-        require 'open-uri'
-        if mynew.save
-          unless big_poster.blank?
-            imdbcode = sprintf("%07d",  key.to_i)
-            mynew.filename_file_name = imdbcode  + '.jpg'
-            mynew.filename_content_type = 'image/jpeg'
-            system("mkdir -p " + Rails.root.to_s + '/public/images/master_movies/' + mynew.id.to_s + '/thumb')
-            system("mkdir -p " + Rails.root.to_s + '/public/images/master_movies/' + mynew.id.to_s + '/full')
-            open(Rails.root.to_s + '/public/images/master_movies/' + mynew.id.to_s + '/thumb/' +   imdbcode + '.jpg', "wb").write(open(m.poster).read) unless m.poster.blank?
-            open(Rails.root.to_s + '/public/images/master_movies/' + mynew.id.to_s + '/full/' +   imdbcode + '.jpg', "wb").write(open(big_poster).read)
-            mynew.save!
-          end
-          mynew.id
+        mynew = self.new(:title => HTMLEntities.new.decode(m.title), :imdbcode => key, :director => m.director.join(', '), :country => m.countries.join(' / '), :year => m.year)
+        unless big_poster.blank?
+          mynew.filename = URI.parse(big_poster)
         end
+        unless m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
+          mynew.english_title = HTMLEntities.new.decode  m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }[:title]
+        end
+        if m.also_known_as.find{|x| x[:version] == '(original title)' }.nil?
+          mynew.title = HTMLEntities.new.decode m.title
+          mynew.title.strip!
+        else
+          mynew.title = HTMLEntities.new.decode m.also_known_as.find{|x| x[:version] == '(original title)' }[:title]
+        end
+        mynew.save!
+        mynew.id
       else
         existing.first.id
       end

@@ -7,7 +7,11 @@
       .small-6.large-9.columns.text-left
         .master_title{:"data-magellan-destination" => "details"}
           = raw @item.master.name
-
+          - if @item.respond_to?('english_title')
+            - unless @item.english_title.blank?
+              .title
+                %em= "(English title: "
+                = "#{@item.english_title})"
           - if @item.respond_to?('linkto')
             %span.link_to= link_to fa_icon('external-link'), @item.linkto, :target => "_blank"
         .secondary_title= raw @item.master.secondary_title unless @item.master.name.include?(@item.master.secondary_title)

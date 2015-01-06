@@ -23,8 +23,9 @@ class Movie < ActiveRecord::Base
 
   
 
-
-
+  def english_title
+    master.english_title
+  end
   
   
   def self.has_master?
