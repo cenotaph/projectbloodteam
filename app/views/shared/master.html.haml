@@ -86,8 +86,11 @@
         .row
           - similar_group.each do |similar|
             - next if similar.nil?
-            .small-3.columns
-              = raw one_or_slideshow(similar, '/system/no_image.png', :thumb)
+            .small-3.column
+              .similar_movie_image
+                - if similar.filename?
+                  = image_tag similar.filename.url
+                  -#= raw one_or_slideshow(similar, '/system/no_image.png', :thumb)
               .similar_link= link_to raw(similar.name), similar
               .metadata
                 = "Agents: #{similar.items.map{|x| x.agent.surname }.uniq.join(', ')}"
