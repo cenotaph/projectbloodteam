@@ -27,10 +27,24 @@ class AgentsController < ApplicationController
   end
   
   def create 
-    @agent = Agent.new(params[:agent])
-    if @agent.save
-      redirect_to '/'
+    @agent = Agent.new(agent_params)
+    if params[:new_user_password] = 'norman_reedus'
+      if @agent.save
+        flash[:error] = 'Welcome to PBT! Please log in to complete your registration'
+        redirect_to '/'
+      else
+        flash[:error] = @agent.errors.full_messages.join(', ')
+        render :template => 'agents/new'
+      end
+    else
+      flash[:error] = 'Incorrect new user password, sorry.'
+      render :template => 'agents/new'
     end
+  end
+  
+  def new
+    @agent = Agent.new
+    set_meta_tags title: 'New agent registration'
   end
   
   def edit
@@ -172,7 +186,7 @@ class AgentsController < ApplicationController
   private
   
   def agent_params
-    params.require(:agent).permit(:surname, :agent_since, :lastfm, :twitname, :username, :public_password)
+    params.require(:agent).permit(:surname, :agent_since, :lastfm, :twitname, :age, :email, :location, :missionname, :password, :password_confirmation, :username, :public_password)
   end
   
 end

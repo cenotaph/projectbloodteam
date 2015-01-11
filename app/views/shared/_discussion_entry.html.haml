@@ -11,10 +11,6 @@
               = raw one_or_slideshow(chat)
             .newsfeed_entry_link= raw "comment posted " + time_ago_in_words(chat.created_at) + " ago"
         
-        
-        
-        
-
 
     - else
       .left.large-2.medium-2.small-12.columns.text-right
@@ -39,7 +35,8 @@
                   - next if value.blank?
                 
                   .item_metadata
-                    %span.item_metadata_category= key.humanize + ":"
+                    %span.item_metadata_category= chat.column_name(key) + ": "
+                    -#= key.humanize + ":"
                     %span.item_metadata_value
                       = display_metadata(key, value)
                       - if key == 'format'

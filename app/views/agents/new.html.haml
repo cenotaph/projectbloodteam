@@ -1,18 +1,35 @@
-So, you wish to join PBT?  Please enter the following required information:
-.errors= @agent.errors
+.special_container
+  .row
+    .small-12.columns
+      %h2 New agent?
+      %p So, you wish to join PBT?  Please enter the following required information:
 
-= semantic_form_for(@agent) do |f|
-  = f.input :surname
-  = f.input :age
-  = f.input :email
-  = f.input :agent_since, :as => :hidden, :value => Time.now.strftime('%Y')
-  = f.input :active, :as => :hidden, :value => 1
-  = f.input :location
-  = f.input :missionname
-  = f.input :username, :label => "Username (you will use this to log in):"
-  = f.input :password
-  = f.input :password_confirmation
-  = f.input :lastfm, :value => "Last.fm username"
-  = f.input :role, :as => :hidden, :value => "agent"
-  = f.input :new_user_password, :label => "New user registration code (get from Daron or other agent):"
-  = f.submit
+
+  = semantic_form_for(@agent, html: {:"data-abide" =>''}) do |f|
+    .form_wrapper
+      .row
+        .large-4.small-12.columns= f.input :surname, input_html: {required: ''}
+      .row
+        .large-4.small-12.columns= f.input :age, input_html: {required: ''}
+      .row
+        .large-4.small-12.columns= f.input :email, input_html: {required: ''}
+      .row
+        .large-4.small-12.columns= f.input :agent_since, :as => :hidden, :value => Time.now.strftime('%Y')
+      .row
+        .large-4.small-12.columns= f.input :active, :as => :hidden, :value => 1
+      .row
+        .large-4.small-12.columns= f.input :location, input_html: {required: ''}
+      .row
+        .large-4.small-12.columns= f.input :missionname, input_html: {required: ''}, as: :string
+      .row
+        .large-4.small-12.columns= f.input :username, :label => "Username (you will use this to log in):", input_html: {required: ''}
+      .row
+        .large-4.small-12.columns= f.input :password
+      .row
+        .large-4.small-12.columns= f.input :password_confirmation
+      .row
+        .large-4.small-12.columns= f.input :role, :as => :hidden, :value => "agent"
+      .row
+        .large-4.small-12.columns= f.input :new_user_password, :label => "New user registration code (get from Daron or other agent):", input_html: {required: ''}
+      .row
+        .large-4.small-12.columns= f.submit 'Submit application', class: [:button, :small]

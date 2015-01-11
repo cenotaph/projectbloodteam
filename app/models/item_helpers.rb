@@ -92,7 +92,9 @@ module ItemHelpers
   end
   
 
-  
+  def column_name(col)
+    View.find_by(:agent_id => agent_id, :year => date.year).agent_column_name(self, col).to_s.humanize rescue col.to_s.humanize
+  end
   
   def has_master?
     false

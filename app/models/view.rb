@@ -382,17 +382,22 @@ class View < ActiveRecord::Base
     return true if self.tvseries_comment != '0'
   end
 
-  def hasmiles_gasamount
-    return true if self.miles_gasamount != '0'
+  def hasmile_gasamount
+    return true if self.mile_gasamount != '0'
   end
-  def hasmiles_miles
-    return true if self.miles_miles != '0'
+  def hasmile_location
+    return true if self.mile_location != '0'
   end
-  def hasmiles_ppg
-    return true if self.miles_ppg != '0'
+  def hasmile_miles
+    return true if self.mile_miles != '0'
   end
-  def hasmiles_station
-    return true if self.miles_station != '0'
+  def hasmile_ppg
+    return true if self.mile_ppg != '0'
   end
-    
+  def hasmile_station
+    return true if self.mile_station != '0'
+  end
+  def hasmile_cost
+    return true if self.mile_cost != '0'
+  end   
 end

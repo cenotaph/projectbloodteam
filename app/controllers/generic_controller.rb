@@ -215,6 +215,7 @@ class GenericController < ApplicationController
       end
       @json = hits.map(&:geolocation).uniq unless hits.nil?
     end
+    @view = View.find_by(:agent => @item.agent, :year => @item.date.year)
     
     if @item.class == Comment
       redirect_to @item.child

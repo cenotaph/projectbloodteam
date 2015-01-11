@@ -30,7 +30,8 @@
               - if key == 'cost'
                 - next if value.last.blank? 
               .item_metadata{:class => key}
-                %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
+                %span.item_metadata_category= entry.entry.column_name(key) + ":"
+                -#= (key == 'first' ? 'First viewing' : key.humanize) + ":"
                 %span.item_metadata_value= display_metadata(key, value)
 
       .small-10.small-offset-1.large-offset-0.large-8.columns.medium-9.medium-offset-0

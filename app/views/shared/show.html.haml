@@ -51,7 +51,9 @@
                 - if key == 'cost'
                   - next if value.last.blank? 
                 .item_metadata{:class => key}
-                  %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
+                  %span.item_metadata_category= @item.column_name(key) + ": "
+                  -#= @view.agent_column_name(@item, key).to_s.humanize
+                  //= (key == 'first' ? 'First viewing' : key.humanize) + ":"
                   %span.item_metadata_value= display_metadata(key, value)
             
           - unless display_comment(@item).blank?
@@ -127,7 +129,8 @@
                     - if key == 'cost'
                       - next if value.last.blank? 
                     .item_metadata{:class => key}
-                      %span.item_metadata_category= (key == 'first' ? 'First viewing' : key.humanize) + ":"
+                      %span.item_metadata_category= similar.column_name(key) + ": "
+                      -#= (key == 'first' ? 'First viewing' : key.humanize) + ":"
                       %span.item_metadata_value= display_metadata(key, value)
               
   
