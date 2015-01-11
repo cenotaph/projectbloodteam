@@ -335,7 +335,7 @@ class GenericmasterController < ApplicationController
           @choices = @master.classify.constantize.query(params[:query], session[:discogs_token]) #.delete_if{|x|         @localhits.map{|y| y.external_index}.include?(x['key'].to_i) }.each 
          end
       rescue Discogs::AuthenticationError
-        @choices = @master.classify.constantize.query(params[:query], session[:discogs_token])
+        @choices = []
       end
       if @choices && @localhits
         set_meta_tags :title => 'Searching for ' + params[:query]
