@@ -32,8 +32,6 @@ class Tvseries < ActiveRecord::Base
   
 
 
-  
-  
   def self.has_master?
     true
   end
@@ -76,7 +74,13 @@ class Tvseries < ActiveRecord::Base
   
   def metadata
     {'name' => self.master_tvseries.linked_name, 'started' => self.started, 'finished' => self.finished,
-      'metadata' => { 'location' => self.location, 'season' => self.season,
+       'metadata' => {
+         'time taken' =>
+                  (self.finished.blank? ? nil : 
+                                                 (self.started.blank? ? "" : 
+                                                                             ((self.finished - self.started).to_i + 1).to_s + ' day' + (
+                                                                             ( (self.finished - self.started).to_i > 0 ) ? 's' : '') )),
+          'location' => self.location, 'season' => self.season,
         'rating' => self.rating, 
         'first' => self.first
         } , 'comment' => self.comment}

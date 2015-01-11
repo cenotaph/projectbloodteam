@@ -17,6 +17,7 @@
           .small
             Time taken:
             = agent.metadata['metadata']['time taken']
+
         - if col == 'location'
           - if agent.respond_to?('geolocation')
             - unless agent.geolocation.nil?

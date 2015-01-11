@@ -7,7 +7,7 @@
           = raw display_comment(entry.entry)
           - unless entry.entry.userimages.empty?
             = raw one_or_slideshow(entry.entry)
-          .newsfeed_entry_link= raw "commenting on #{entry.entry.item.class.to_s.downcase.gsub(/^master/, '')} #{entry.entry.item.class == Forum ? "thread" : ''} #{link_to raw(entry.entry.item.name), entry.entry.item}"
+          .newsfeed_entry_link= raw "commenting on #{entry.entry.item.class.to_s.downcase.gsub(/^master/, '').gsub(/^tvs/, 'TV s')} #{entry.entry.item.class == Forum ? "thread" : ''} #{link_to raw(entry.entry.item.name), entry.entry.item}"
       - if agent_signed_in?
         .row
           .small-12.columns.text-left
