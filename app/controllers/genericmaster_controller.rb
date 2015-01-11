@@ -134,7 +134,7 @@ class GenericmasterController < ApplicationController
 
   def create_master
     if @category == 'Movie'
-      if @new_master = MasterMovie.create(params[:master_movie])
+      if @new_master = MasterMovie.create(params[:master_movie].permit!)
         if params[:master_movie][:followup] == 'new'
           redirect_to select_genericmaster_path(:agent_id => current_agent.id, :id => "local_" + @new_master.id.to_s, :category => @category)
         else
@@ -144,7 +144,7 @@ class GenericmasterController < ApplicationController
         flash[:error] = 'Error creating movie record.'
       end
     elsif @category == 'Music'
-      if @new_master = MasterMusic.create(params[:master_music])
+      if @new_master = MasterMusic.create(params[:master_music].permit!)
         if params[:master_music][:followup] == 'new'
           redirect_to select_genericmaster_path(:agent_id => current_agent.id, :id => "local_" + @new_master.id.to_s, :category => @category)
         else
@@ -154,7 +154,7 @@ class GenericmasterController < ApplicationController
         flash[:error] = 'Error creating music record.'
       end
     elsif @category == 'Book'
-      if @new_master = MasterBook.create(params[:master_book])
+      if @new_master = MasterBook.create(params[:master_book].permit!)
         if params[:master_book][:followup] == 'new'
           redirect_to select_genericmaster_path(:agent_id => current_agent.id, :id => "local_" + @new_master.id.to_s, :category => @category)
         else

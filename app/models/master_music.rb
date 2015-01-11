@@ -11,7 +11,7 @@ class MasterMusic < ActiveRecord::Base
       :url => "/images/master_musics/:id/:style/:basename.:extension"
  
   include ItemHelpers
-  
+  validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
   attr_accessor :followup, :resync_image
   
   def artist
