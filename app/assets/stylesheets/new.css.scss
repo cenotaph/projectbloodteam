@@ -11,11 +11,17 @@ header { display: none;
 .magellan_container {
   .sub-nav dd a {
     color: white !important;
+
+    .secondary_title {
+      float: left;
+      font-size: 0.8em;
+    }
   }
    .sub-nav dd.active a{
      background: $secondary-color !important;
      color: $primary-color !important;
   }
+  
   position: fixed;
   top: 40px;
 }

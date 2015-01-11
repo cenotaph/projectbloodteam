@@ -36,7 +36,7 @@ class HomeController < ApplicationController
                                                         ]
                                         }
                               } ]
-        ).where("entry_type not in (?)", ['Music', 'Book', 'Mile', 'Eating', 'Comment', 'Forum', 'Airport', 'Videogame']).order('created_at DESC').limit(50).to_a.delete_if{|x| !x.entry.respond_to?('geolocation')}.map{|x| x.entry.geolocation}.compact.uniq
+        ).where("entry_type not in (?)", ['Music', 'Book', 'Mile', 'Eating', 'Exercise', 'Comment', 'Forum', 'Airport', 'Videogame']).order('created_at DESC').limit(50).to_a.delete_if{|x| !x.entry.respond_to?('geolocation')}.map{|x| x.entry.geolocation}.compact.uniq
         
 
 

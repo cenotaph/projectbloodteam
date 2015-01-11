@@ -20,6 +20,14 @@ class Exercise < ActiveRecord::Base
   def references
     []
   end
+  
+  def check_references
+    []
+  end
+  
+  def name
+    activity
+  end
     
   include ItemHelpers
   

@@ -20,15 +20,18 @@ class Concert < ActiveRecord::Base
   
   
   def name
-    self.new_record? ? "" :  self.try(:artists) + " [#{self.try(:venue)}]"
+    self.new_record? ? "" :  self.try(:artists) + "<div class=\"secondary_title\">#{secondary_title}</div>"
   end
   
   def title
     self.try(:artists)
   end
   
+  def primary_title
+    self.try(:artists) 
+  end
   def secondary_title
-    [self.try(:venue), self.date.strftime('%d %B %Y')].join(' / ')
+    [self.try(:venue), self.date.strftime(agent.profile(date.year).dateformat)].join(' - ')
   end
   
   def metadata

@@ -35,7 +35,7 @@ Pbt4::Application.routes.draw do
     resources :concerts, :controller => :generic, :category => 'Concert'
     resources :eating, :controller => :generic, :category => 'Eating', :path => 'eating'
     resources :events, :controller => :generic, :category => 'Event'
-    resources :exercises, :controller => :generic, :category => 'Exercise', :path => 'exercise'
+    resources :exercise, :controller => :generic, :category => 'Exercise', :path => 'exercise'
     resources :gambling, :controller => :generic, :category => 'Gambling'
     resources :groceries, :controller => :generic, :category => 'Grocery'
     resources :miles, :controller => :generic, :category => 'Mile'

@@ -1,6 +1,6 @@
 .magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
   %dl.sub-nav
-    %dd= link_to @item.name.to_s + ": ", '#'
+    %dd=  link_to raw(@item.name.to_s) + ": ", '#'
     %dd.active{:"data-magellan-arrival" => "details"}= link_to 'Details', "#details"
     - unless @item.userimages.empty?
       %dd{:"data-magellan-arrival" => "images"}= link_to pluralize(@item.userimages.size, 'image'), "#images"
@@ -17,16 +17,20 @@
   
 
 .special_container
-  #outer{:style => @item.userimages.empty? ? false : "background: linear-gradient(rgba(255,255,255,0),rgba(255,255,255,0)), url(http://bloodteam.com#{@item.userimages.first.image.url(:full)});  background-size: cover; "}
+  #outer{:style => @item.userimages.empty? ? false : "background: linear-gradient(rgba(255,255,255,0),rgba(255,255,255,0)), url(http://bloodteam.com#{@item.userimages.first.image.url(:full)});  background-size: contain; "}
   
     .row{:"data-magellan-destination" => "details"}
-      .small-8.columns.small-offset-2.forum_head{:style => @item.userimages.blank? ? "background: url(http://bloodteam.com#{@item.agent_icon(:large)}) no-repeat; background-size: cover" : "background-color: white; opacity: 0.9"}
+      .small-8.columns.small-offset-2.forum_head{:style => @item.userimages.blank? ? "background: url(http://bloodteam.com#{@item.agent_icon(:large)}) no-repeat; background-size: contain" : "background-color: white; opacity: 0.9"}
         %a{:name => "details"}
         .inner.text-center
           %span.big= raw('&ldquo;') if @item.class == Forum
-          .main_title= @item.name
+          .main_title
+            - if @item.respond_to?('primary_title')
+              = raw @item.primary_title
+            - else
+              = raw @item.name
           - if @item.respond_to?('secondary_title')
-            - unless @item.secondary_title.blank?
+            - unless @item.secondary_title.blank? 
               %p.very_small &nbsp;
               .secondary_title= raw @item.secondary_title
           %span.big= raw('&rdquo;') if @item.class == Forum
@@ -147,8 +151,8 @@
         var opac = $(window).scrollTop() / ( ($('#outer').height() / 3) ) ;
    
         $('#outer').css({'background': '-webkit-linear-gradient(rgba(255,255,255,' + opac + '),rgba(255,255,255,' + opac + ')), url(http://bloodteam.com#{@item.userimages.first.image.url(:fuller)})',
-        'background-repeat':'no-repeat','background-size':'cover'});
+        'background-repeat':'no-repeat','background-size':'contain'});
 
-        $('#outer').css({'background': 'linear-gradient(rgba(255,255,255,' + opac + '),rgba(255,255,255,' + opac + ')), url(http://bloodteam.com#{@item.userimages.first.image.url(:fuller)})', 'background-repeat':'no-repeat','background-size':'cover'});
+        $('#outer').css({'background': 'linear-gradient(rgba(255,255,255,' + opac + '),rgba(255,255,255,' + opac + ')), url(http://bloodteam.com#{@item.userimages.first.image.url(:fuller)})', 'background-repeat':'no-repeat','background-size':'contain'});
         $('#slideshow').css('opacity',  opac);
       });        

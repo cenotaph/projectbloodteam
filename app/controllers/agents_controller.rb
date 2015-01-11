@@ -91,8 +91,12 @@ class AgentsController < ApplicationController
 
   
   def index
-    @agent = Agent.find(params[:id])
-    respond_with(@agent)
+    if params[:id].nil?
+      redirect_to '/'
+    else
+      @agent = Agent.find(params[:id])
+      respond_with(@agent)
+    end
   end
 
   def rss
