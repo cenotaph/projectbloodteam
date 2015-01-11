@@ -292,7 +292,7 @@ class GenericmasterController < ApplicationController
         else
           @items = @category.classify.constantize.includes([:agent, 
             {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
-              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").order('date desc').paginate(:per_page =>  (theme_name == 'flume' ? 50 : 20 ), :page => params[:page])
+              ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").order('date desc').page(params[:page]).per(@per)
               # where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").includes(:userimages).sort{|x,y| y.date <=> x.date}.paginate(:per_page => 20, :page => params[:page])
         end
       else
