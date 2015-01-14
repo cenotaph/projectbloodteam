@@ -83,16 +83,17 @@
           %h3 Possibly related entries:
 
       - @item.similars.in_groups_of(4).each do |similar_group|
-        .row
-          - similar_group.each do |similar|
+        .row{:"data-equalizer" => ''}
+          - similar_group.each_with_index do |similar, index|
             - next if similar.nil?
-            .small-3.column
-              .similar_movie_image
+            .small-3.column{class: similar_group[index+1].nil? ? :end : false}
+              .similar_movie_image{:"data-equalizer-watch" => ''}
                 - if similar.filename?
                   = image_tag similar.filename.url
                   -#= raw one_or_slideshow(similar, '/system/no_image.png', :thumb)
-              .similar_link= link_to raw(similar.name), similar
-              .metadata
-                = "Agents: #{similar.items.map{|x| x.agent.surname }.uniq.join(', ')}"
+              .floor
+                .similar_link= link_to raw(similar.name), similar
+                .metadata
+                  = "Agents: #{similar.items.map{|x| x.agent.surname }.uniq.join(', ')}"
 
 

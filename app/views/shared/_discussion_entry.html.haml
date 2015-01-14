@@ -76,4 +76,6 @@
           .entered_date
             = "entered " + time_ago_in_words(chat.created_at) + " ago in "
             = link_to chat.agent_category, "/agents/#{chat.agent.slug}/#{chat.class.table_name}"
-        
+- else
+  %h6
+    %em You must be logged in to view this entry.
