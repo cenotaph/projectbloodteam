@@ -177,7 +177,7 @@ class GenericmasterController < ApplicationController
   end
   
   def custom_master
-    @followup = params[:followup]
+    @followup = 'new'
     set_meta_tags :title => "Custom entry"
     render :template => 'shared/custom'
   end

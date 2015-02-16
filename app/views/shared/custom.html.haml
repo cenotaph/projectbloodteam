@@ -11,7 +11,7 @@
           = f.input :year, :as => :string
           = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
           - if @followup == 'new'
-            = f.input :followup, :as => :hidden, :value => @followup
+            = f.input :followup, as: :hidden, input_html: { :value => @followup }
           = f.submit 'Create', class: [:button, :create]
       
     - if @category == 'Music'
@@ -24,8 +24,9 @@
           = f.input :format, :as => :string
           = f.input :discogscode, :as => :string, :input_html => {:maxlength => 16 }
           = f.input :filename, label: 'Image?'
+
           - if @followup == 'new'
-            = f.input :followup, :as => :hidden, :value => @followup
+            = f.input :followup, :as => :hidden, input_html: {  :value => @followup }
           = f.submit 'Create', class: [:button, :create]
       
     - if @category == 'Book'
@@ -35,7 +36,7 @@
           = f.input :title, :as => :string
           = f.input :amazoncode, :as => :string
           - if @followup == 'new'
-            = f.input :followup, :as => :hidden, :value => @followup
+            = f.input :followup, :as => :hidden, input_html: {  :value => @followup }
           = f.submit 'Create', class: [:button, :create]
       
     - if @category == 'Videogame'
@@ -46,5 +47,5 @@
           = f.input :platform, :as => :string
           = f.input :amazoncode, :as => :string
           - if @followup == 'new'
-            = f.input :followup, :as => :hidden, :value => @followup
+            = f.input :followup, :as => :hidden, input_html: {  :value => @followup }
           = f.submit 'Create', class: [:button, :create]
