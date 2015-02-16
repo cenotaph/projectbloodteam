@@ -76,7 +76,26 @@
       - else 
         = paginate @items
         -#= pageless(@items.total_pages, url_for(@items.first.class.table_name))
+  .row
+    .small-12.columns.totals
+      Totals:
+      %p
+        Entries:
+        = @items.size.to_s + " shown, out of "
+        = @items.total_count.to_s + " returned from filters"
+      - if @items.first.respond_to?('cost')
+        .sums
+          Total cost:
+          - @items.group_by(&:currency_id).each do |currency|
+            - c = Currency.find(currency.first)
+            .line= number_to_currency(currency.last.map(&:cost).sum, unit: c.symbol.html_safe, format: c.unitafter == true ? "%n%u" : "%u%n")
+        .averages
+          - @items.group_by(&:currency_id).each do |currency|
+            - c = Currency.find(currency.first)
+            .line= number_to_currency((currency.last.map(&:cost).sum / currency.last.count).to_f,  unit: c.symbol.html_safe, format: c.unitafter == true ? "%n%u" : "%u%n") + " per item"
+            - unless @items.map(&:date).max == @items.map(&:date).min
 
+              .line= number_to_currency((currency.last.map(&:cost).sum / (@items.map(&:date).max - @items.map(&:date).min).to_i).to_f,  unit: c.symbol.html_safe, format: c.unitafter == true ? "%n%u" : "%u%n") + " per day"
 = content_for :jquery do
   :plain
     $('.date_input').datepicker({dateFormat: 'yy-mm-dd'});

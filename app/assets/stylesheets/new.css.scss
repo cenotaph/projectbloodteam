@@ -692,3 +692,18 @@ table#classic {
     }
   }
 }
+
+.totals {
+  .sums {
+    margin: 0.5rem 0;
+    color: #333;
+  }
+  .averages {
+    
+    .line {
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+      font-weight: 300;
+    }
+  }
+}
