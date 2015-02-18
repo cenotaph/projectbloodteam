@@ -13,7 +13,19 @@
           - if @followup == 'new'
             = f.input :followup, as: :hidden, input_html: { :value => @followup }
           = f.submit 'Create', class: [:button, :create]
-      
+
+    - if @category == 'Tvseries'
+  
+      = semantic_form_for(@tv = MasterTvseries.new, :method => :post, :url => "/genericmaster/create_custom/Tvseries") do |f|
+        .form_wrapper
+          = f.input :title, :as => :string
+          = f.input :year, :as => :string
+          = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
+          = f.input :image
+          - if @followup == 'new'
+            = f.input :followup, as: :hidden, input_html: { :value => @followup }
+          = f.submit 'Create', class: [:button, :create]
+                
     - if @category == 'Music'
       = semantic_form_for(@music = MasterMusic.new, :method => :post, :url => "/genericmaster/create_custom/Music", html: {multipart: true}) do |f|
         .form_wrapper

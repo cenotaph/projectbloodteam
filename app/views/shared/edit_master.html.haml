@@ -80,7 +80,9 @@
             .row
               .large-6.columns= f.input :amazoncode, :as => :string
             .row
-              .large-6.columns= f.input :filename    
+              .large-6.columns= f.input :filename
+            .row
+              .large-6.columns= f.input :resync_image, label: 'Attempt to re-sync the image from amazon.com', hint: 'If there is an image for this object it will be overwritten', as: :boolean              
             - if @followup == 'new'
               .row
                 .large-6.columns= f.input :followup, :as => :hidden, :value => @followup

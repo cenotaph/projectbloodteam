@@ -8,21 +8,21 @@ class MasterBook < ActiveRecord::Base
   :styles => {:thumb => "150x150>", :full => "600x450>"},
    :path => ":rails_root/public/images/master_books/:id/:style/:basename.:extension", 
    :default_style => :original, :url => "/images/master_books/:id/:style/:basename.:extension"
- 
+  validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] 
   include ItemHelpers
-  attr_accessor :followup
-  before_update :syncimage
+  attr_accessor :followup, :resync_image
+  # before_update :syncimage
   
   def syncimage
     return if amazoncode.blank?
     book = Amazon::Ecs.item_search(self.amazoncode, {:response_group => 'Medium'}).items[0]
     require 'open-uri'
-    unless book.get_hash('MediumImage').blank?
+    unless book.get_hash('LargeImage').blank?
       self.filename_file_name = self.amazoncode.to_s + '.jpg'
       system('mkdir -p ' + Rails.root.to_s + '/public/images/master_books/' + self.id.to_s + '/thumb')
       self.filename_content_type = 'image/jpeg'
       open("#{Rails.root.to_s}/public/images/master_books/#{self.id.to_s}/thumb/#{self.amazoncode}.jpg",
-            "wb").write(open(book.get_hash('MediumImage')['URL']).read)
+            "wb").write(open(book.get_hash('LargeImage')['URL']).read)
       # self.save
     end
   end

@@ -143,6 +143,18 @@ class GenericmasterController < ApplicationController
       else
         flash[:error] = 'Error creating movie record.'
       end
+    
+    elsif @category == 'Tvseries'
+      if @new_master = MasterTvseries.create(params[:master_tvseries].permit!)
+        if params[:master_tvseries][:followup] == 'new'
+          redirect_to select_genericmaster_path(:agent_id => current_agent.id, :id => "local_" + @new_master.id.to_s, :category => @category)
+        else
+          redirect_to @new_master
+        end
+      else
+        flash[:error] = 'Error creating TV record.'
+      end
+      
     elsif @category == 'Music'
       if @new_master = MasterMusic.create(params[:master_music].permit!)
         if params[:master_music][:followup] == 'new'
@@ -472,7 +484,13 @@ class GenericmasterController < ApplicationController
               @item.save!
             end
           end
-        
+        elsif @category == 'MasterBook'
+          unless @item.amazoncode.blank?
+            if params[:master_book][:resync_image] == "1"
+
+              @item.syncimage
+            end
+          end
         elsif @category == 'MasterMusic' 
           unless @item.discogscode.blank?
             if params[:master_music][:resync_image] == "1"
