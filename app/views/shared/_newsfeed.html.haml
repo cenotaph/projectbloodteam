@@ -96,7 +96,7 @@
                       .comment_icon.small-2.columns.text-right
                     
                         .newsfeed_icon= image_tag comment.agent_icon(:small)
-                        .agent_name= "Agent #{comment.agent.surname}"
+                        .agent_name= link_to "Agent #{comment.agent.surname}", comment.agent
                         - if comment.agent == current_agent
                           = link_to fa_icon('pencil'), edit_comment_path(comment)
                         = link_to fa_icon('microphone-slash'), comment, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }

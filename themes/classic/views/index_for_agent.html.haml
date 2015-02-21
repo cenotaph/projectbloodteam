@@ -88,14 +88,14 @@
           Total cost:
           - @items.group_by(&:currency_id).each do |currency|
             - c = Currency.find(currency.first)
-            .line= number_to_currency(currency.last.map(&:cost).sum, unit: c.symbol.html_safe, format: c.unitafter == true ? "%n%u" : "%u%n")
+            .line= number_to_currency(currency.last.map(&:cost).compact.sum, unit: c.symbol.html_safe, format: c.unitafter == true ? "%n%u" : "%u%n")
         .averages
           - @items.group_by(&:currency_id).each do |currency|
             - c = Currency.find(currency.first)
-            .line= number_to_currency((currency.last.map(&:cost).sum / currency.last.count).to_f,  unit: c.symbol.html_safe, format: c.unitafter == true ? "%n%u" : "%u%n") + " per item"
+            .line= number_to_currency((currency.last.map(&:cost).compact.sum / currency.last.count).to_f,  unit: c.symbol.html_safe, format: c.unitafter == true ? "%n%u" : "%u%n") + " per item"
             - unless @items.map(&:date).max == @items.map(&:date).min
 
-              .line= number_to_currency((currency.last.map(&:cost).sum / (@items.map(&:date).max - @items.map(&:date).min).to_i).to_f,  unit: c.symbol.html_safe, format: c.unitafter == true ? "%n%u" : "%u%n") + " per day"
+              .line= number_to_currency((currency.last.map(&:cost).compact.sum / (@items.map(&:date).max - @items.map(&:date).min).to_i).to_f,  unit: c.symbol.html_safe, format: c.unitafter == true ? "%n%u" : "%u%n") + " per day"
 = content_for :jquery do
   :plain
     $('.date_input').datepicker({dateFormat: 'yy-mm-dd'});

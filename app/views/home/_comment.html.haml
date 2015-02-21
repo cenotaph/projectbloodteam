@@ -17,7 +17,7 @@
                 = render :partial => 'shared/newsfeed_comment', locals: {entry: entry}
                     
   .small-12.medium-2.comment_metadata.columns.text-left.end
-    .agent_name= "Agent #{entry.agent.surname}"
+    .agent_name= link_to "Agent #{entry.agent.surname}", entry.agent
     .newsfeed_icon= entry_agent_icon(entry)
     - if entry.entry.agent == current_agent
       = link_to fa_icon('pencil'), edit_comment_path(entry.entry)
