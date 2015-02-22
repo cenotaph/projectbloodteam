@@ -32,7 +32,7 @@ class GeolocationsController < ApplicationController
   
   def show
     @geolocation = Geolocation.find(params[:id])
-    @json = @geolocation.to_gmaps4rails
+    @json = @geolocation
   end
   
   def update
@@ -40,9 +40,9 @@ class GeolocationsController < ApplicationController
     unless params[:geolocation][:address].nil?
       @others = Geolocation.find_by_address(params[:geolocation][:address])
       if @others.nil? || @others.id.to_s == params[:id]
-        if @geolocation.update_attributes(params[:geolocation])
+        if @geolocation.update_attributes(geolocation_params)
           flash[:notice] = 'Location updated.'
-          expire_page :action => :index
+          # expire_page :action => :index
           redirect_to @geolocation
         end
       else
@@ -51,7 +51,7 @@ class GeolocationsController < ApplicationController
             entry.geolocation_id = @others.id
             entry.save!
           end
-          expire_page :action => :index
+          # expire_page :action => :index
           flash[:notice] = 'Changed data for ' + @geolocation.pbt_entries.size + ' items'
           @geolocation.destroy!
         else
@@ -64,5 +64,11 @@ class GeolocationsController < ApplicationController
       redirect_to '/'
     end
   end
-        
+  
+  protected
+  
+  def geolocation_params
+    params.require(:geolocation).permit([:address, :latitude, :longitude ] )
+  end
+
 end
