@@ -536,7 +536,7 @@ class GenericmasterController < ApplicationController
   protected
   
   def permitted_params 
-    params.permit(:master_music  => [:artist, :title, :label, :year, :format, :discogscode])
+    params.permit(:master_music  => [:artist, :title, :label, :year, :format, :discogscode], :master_book => [:title, :author, :amazoncode, :filename], :master_movie => [:title, :director, :year, :country, :imdbcode, :filename, :english_title])
   end
 
 end
