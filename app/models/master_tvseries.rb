@@ -12,7 +12,7 @@ class MasterTvseries < ActiveRecord::Base
   include ItemHelpers
   extend FriendlyId
   friendly_id :title_and_year, use: [:slugged, :finders]
-  validates_attachment_content_type :image, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] 
+  validates_attachment_content_type :image, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed? 
   
   def title_and_year
     "#{title}-#{year}"

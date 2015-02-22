@@ -8,7 +8,7 @@ class MasterVideogame < ActiveRecord::Base
   :styles => {:thumb => "150x150", :full => "450x450>"},
       :default_style => :thumb, 
        :url => "/images/master_videogames/:id/:style/:basename.:extension"
- 
+  validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed?
   include ItemHelpers
   attr_accessor :followup
   

@@ -8,7 +8,7 @@ class MasterBook < ActiveRecord::Base
   :styles => {:thumb => "150x150>", :full => "600x450>"},
    :path => ":rails_root/public/images/master_books/:id/:style/:basename.:extension", 
    :default_style => :original, :url => "/images/master_books/:id/:style/:basename.:extension"
-  validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] 
+  validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed?
   include ItemHelpers
   attr_accessor :followup, :resync_image
   # before_update :syncimage
