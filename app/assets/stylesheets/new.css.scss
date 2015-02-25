@@ -206,6 +206,12 @@ header { display: none;
     }
     .comment_body {
       padding-right: 1.5rem;
+      br {
+         display: block;
+         margin: 10px 0;
+         content: " ";
+         
+      }
     }
     padding: 0px;
     font-size: 1.0rem;
@@ -256,6 +262,12 @@ header { display: none;
       line-height: 1.45rem;
       color: #333;
       font-weight: 300;
+      br {
+         display: block;
+         margin: 10px 0;
+         content: " ";
+         
+      }
       p.wrapper {
  
         padding: 0px;
