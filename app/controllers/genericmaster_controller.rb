@@ -3,7 +3,7 @@ class GenericmasterController < ApplicationController
   respond_to :html, :xml
   before_filter :getView
   before_filter :getCategory
-  before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy, :directid,  :unreviewed]
+  before_filter :authenticate_agent!, :only => [:new, :edit, :edit_master, :update, :create, :destroy, :directid,  :unreviewed]
   theme :getTheme
   autocomplete :movie, :location
   
