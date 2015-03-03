@@ -1,13 +1,9 @@
 # -*- encoding : utf-8 -*-
 class Comment < ActiveRecord::Base
   include Item
+  has_many :entries, :as => :entry, :dependent => :delete_all
 
   belongs_to :item, :polymorphic => true, :foreign_key => :foreign_id
-  # define_index do
-  #      indexes content
-  #      set_property :delta => true
-  #      has agent_id, created_at, updated_at
-  #    end
   
   validate :not_empty
   validates_presence_of :foreign_id, :item_type, :agent_id
