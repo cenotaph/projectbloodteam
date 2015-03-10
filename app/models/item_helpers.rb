@@ -104,7 +104,7 @@ module ItemHelpers
     if self.userimages.empty?
        ""
     else
-       self.userimages.first.image.url
+       self.userimages.first.image.url(:fuller)
     end
   end
   
