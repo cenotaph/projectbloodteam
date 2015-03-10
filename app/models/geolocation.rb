@@ -5,18 +5,18 @@ class Geolocation < ActiveRecord::Base
   after_validation :geocode, :on => :create
   # acts_as_gmappable :process_geocoding => false
   validates_presence_of :latitude, :longitude
-  has_many :bars
-  has_many :concerts
-  has_many :takeaways
-  has_many :activities
-  has_many :movies
-  has_many :brewing
-  has_many :groceries
-  has_many :musicplayed
-  has_many :tvseries
-  has_many :events
-  has_many :restaurants
-    
+  has_many :bars, :dependent => :nullify 
+  has_many :concerts, :dependent => :nullify 
+  has_many :takeaways, :dependent => :nullify 
+  has_many :activities, :dependent => :nullify 
+  has_many :movies, :dependent => :nullify 
+  has_many :brewing, :dependent => :nullify 
+  has_many :groceries, :dependent => :nullify 
+  has_many :musicplayed, :dependent => :nullify 
+  has_many :tvseries, :dependent => :nullify 
+  has_many :events, :dependent => :nullify 
+  has_many :restaurants, :dependent => :nullify 
+  has_many :takeaway, :dependent => :nullify 
   # after_create :update_cache
   
   def address_or_coordinates
@@ -28,10 +28,11 @@ class Geolocation < ActiveRecord::Base
   end
   
   def infowindow
+    out = '<a href="/geolocations/' + self.id.to_s + '/edit"><i class="fa fa-globe" style="margin-right: 5px; float: left"></i></a>'
       if self.pbt_entries.size == 1
-        "<div class=\"map_title\">#{self.pbt_entries.first.name}</div><div class=\"map_address\">#{self.address}</div><div class=\"window_entries\">entered by Agent #{self.pbt_entries.first.agent.surname}</div><div class=\"window_entries\"><a href=\"/#{self.pbt_entries.first.class.to_s.tableize}/#{(self.pbt_entries.first.id)}\">more info</a></div>"
+        out += "<div class=\"map_title\">#{self.pbt_entries.first.name}</div><div class=\"map_address\">#{self.address}</div><div class=\"window_entries\">entered by Agent #{self.pbt_entries.first.agent.surname}</div><div class=\"window_entries\"><a href=\"/#{self.pbt_entries.first.class.to_s.tableize}/#{(self.pbt_entries.first.id)}\">more info</a></div>"
       else
-        out = "<div class=\"map_title\">#{self.address}</div><div class=\"window_entries\">#{self.pbt_entries.size.to_s} entries here!</div> <div class=\"map_marker_small\">"
+        out += "<div class=\"map_title\">#{self.address}</div><div class=\"window_entries\">#{self.pbt_entries.size.to_s} entries here!</div> <div class=\"map_marker_small\">"
         if self.pbt_entries.size > 5 
           out += "<ul>"
           self.pbt_entries.sort{|x, y| y.date <=> x.date}[0..4].each do |entry|

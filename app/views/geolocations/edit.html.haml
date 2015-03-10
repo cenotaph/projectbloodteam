@@ -25,13 +25,30 @@
         .large-8.columns= f.input :longitude
       .row
         .large-8.columns= f.submit 'Save', class: [:button, :small]
-  
+  .row
+    .small-6.columns
+      %p If you believe this location is an error, you can delete it and the entries below will no longer have a geographic location associated to them.
+      
+      = link_to 'Delete', @geolocation, method: :delete, data: {confirm: 'Are you sure?'}, class: [:button, :tiny, :alert]
+    .small-6.columns
+      - unless @others.empty?
+        %p The following locations have the same exact latitude and longitude entries. Please consider merging them into one entry if they are in fact duplicate addresses.
+        %ol
+          - @others.each do |other|
+            %li
+              = other.address
+              = " (#{pluralize(other.pbt_entries.size, 'entry')})"
+              - if other.pbt_entries.size <= @geolocation.pbt_entries.size
+                = link_to 'Merge into current page', "/geolocations/#{@geolocation.id.to_s}/merge_location/#{other.id.to_s}", class: [:button, :tiny, :alert]
+              - else
+                = link_to 'Edit', edit_geolocation_path(other), class: [:button, :tiny]
   .row
     .small-12.columns
       %p The following entries use this location, and editing this will alter the relation for ALL. Do this with care, especially if it is not yours!
 
   .row
     .small-12.columns
+      %p= pluralize(@geolocation.pbt_entries.size, 'entry') + ":"
       %ol
         - @geolocation.pbt_entries.each do |e|
           %li

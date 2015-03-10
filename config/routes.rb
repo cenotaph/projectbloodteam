@@ -20,7 +20,12 @@ Pbt4::Application.routes.draw do
     end
   end
   resources :css
-  resources :geolocations
+  resources :geolocations do
+    member do
+      match '/merge_location/:second_id' => 'geolocations#merge', via: :get
+    end
+  end
+      
   get "ajax/geolocations"
   resources :agents do
 

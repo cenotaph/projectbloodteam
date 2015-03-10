@@ -60,15 +60,16 @@
         .row
           .small-12.columns.text-center= flash[:error]          
     = yield.force_encoding('utf-8')
-    %footer
-      .row
-        .small-8.small-offset-2.columns.past_years.text-center
-          %p
-            %strong Project Blood Team
-          %p Since 2002
-          %p
-            - 2014.downto(2002).map(&:to_s).each do |y|
-              = link_to image_tag("/img/logos/#{y}_small.jpg"), "http://#{y}.bloodteam.com"
+    - unless controller.controller_name == 'geolocations' && controller.action_name == 'index'
+      %footer
+        .row
+          .small-8.small-offset-2.columns.past_years.text-center
+            %p
+              %strong Project Blood Team
+            %p Since 2002
+            %p
+              - 2014.downto(2002).map(&:to_s).each do |y|
+                = link_to image_tag("/img/logos/#{y}_small.jpg"), "http://#{y}.bloodteam.com"
     - if current_agent
     
       .reveal-modal#prompt_movie{:"data-reveal" => ''}

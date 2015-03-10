@@ -96,7 +96,9 @@ class Tvseries < ActiveRecord::Base
   end
   
   def name
-    self.master_tvseries.title
+    out = "<div class='main_title'>#{master_tvseries.title.strip}</div><div class='secondary_title'>Season #{season}</div>"
+    out.html_safe
+
   end
     
   def others

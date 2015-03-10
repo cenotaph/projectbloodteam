@@ -14,9 +14,16 @@ class GeolocationsController < ApplicationController
 
   end
   
+  def destroy
+    @geolocation = Geolocation.find(params[:id])
+    @geolocation.destroy!
+    redirect_to '/'
+  end
+  
   def edit
     set_meta_tags :title => 'Edit geolocation data'
     @geolocation = Geolocation.find(params[:id])
+    @others = Geolocation.where(latitude: @geolocation.latitude, longitude: @geolocation.longitude).to_a.delete_if {|x| x == @geolocation }
   end
   
   def index
@@ -30,9 +37,22 @@ class GeolocationsController < ApplicationController
     # end
   end
   
+  def merge
+    locations = [Geolocation.find(params[:id]), Geolocation.find(params[:second_id]) ].sort_by{|x| x.pbt_entries.size }.reverse
+    removing = locations.last
+    original = locations.first
+    removing.pbt_entries.each do |entry|
+      entry.geolocation = original
+      entry.save
+    end
+    removing.destroy!
+    redirect_to original
+  end
+    
   def show
     @geolocation = Geolocation.find(params[:id])
     @json = @geolocation
+    set_meta_tags title: @geolocation.address
   end
   
   def update

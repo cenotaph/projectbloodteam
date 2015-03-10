@@ -1,15 +1,24 @@
 .row
   .small-10.columns.small-offset-1
     %h4 All data for location:
-
+    
     %p= @geolocation.address
+    
+    %p
+      %em= pluralize(@geolocation.pbt_entries.size, 'entry')
 #map_container
 = render :partial => 'home/front_map', locals: {json: [@json], target: 'map_container', center: @json}
 .row
-  .small-10.columns.small-offset-1
-    %ul
-      - @geolocation.pbt_entries.each do |entry|
-        %li
-          = link_to entry.name, entry
-          = "(Agent #{entry.agent.surname})"
-          %span.pbt_date= entry.formatted_date
+  .small-10.columns.small-offset-1.location_list
+    - @geolocation.pbt_entries.sort_by{|x| x.date}.in_groups_of(6) do |group|
+      .row{:"data-equalizer" => ''}
+        - group.compact.each do |entry|
+          .small-6.medium-2.columns
+            %u= entry.class.to_s.humanize + ":" 
+            .image{:"data-equalizer-watch" => ''}
+              - if entry.icon
+                = link_to image_tag(entry.icon), entry
+            .floor
+              .agent_name= link_to "Agent #{entry.agent.surname}", entry.agent
+              = link_to entry.name, entry
+              .pbt_date= entry.formatted_date

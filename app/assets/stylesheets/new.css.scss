@@ -719,3 +719,28 @@ table#classic {
     }
   }
 }
+
+.location_list {
+  padding-top: 1rem;
+  .floor {
+    padding-bottom: 2rem;
+    float: left;
+    margin-right: 25px;
+    list-style-type: none;
+    font-weight: 300;
+    .secondary_title {
+      font-size: 0.75rem;
+      color: #777;
+
+    }
+    .agent_name {
+      font-size: 0.8rem;
+      a { color: #555; }
+    }
+    .pbt_date {
+      font-size: 0.9rem;
+      color: #333;
+    }
+  }
+  
+}
