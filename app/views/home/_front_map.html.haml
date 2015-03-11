@@ -48,7 +48,7 @@
         infowindow_<%= center.id %>.open(map,marker_<%= center.id %>);
         map.setCenter(marker_<%= center.id %>.getPosition());
       <% else %>
-        var mc = new MarkerClusterer(map, markers, { minimumClusterSize: 3 });
+        var mc = new MarkerClusterer(map, markers, { minimumClusterSize: 5 });
         map.fitBounds(bounds);
       <% end %>
       return map;
