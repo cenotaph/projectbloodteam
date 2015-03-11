@@ -2,6 +2,7 @@
 class Geolocation < ActiveRecord::Base
   geocoded_by :address
   # reverse_geocoded_by :latitude, :longitude
+  before_validation :geocode, on: :update
   after_validation :geocode, :on => :create
   # acts_as_gmappable :process_geocoding => false
   validates_presence_of :latitude, :longitude

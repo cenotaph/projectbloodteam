@@ -12,13 +12,13 @@
   .small-10.columns.small-offset-1.location_list
     - @geolocation.pbt_entries.sort_by{|x| x.date}.in_groups_of(6) do |group|
       .row{:"data-equalizer" => ''}
-        - group.compact.each do |entry|
-          .small-6.medium-2.columns
+        - group.compact.each_with_index do |entry, i|
+          .small-6.medium-2.columns{class: entry == group.compact.last ? :end : false}
             %u= entry.class.to_s.humanize + ":" 
             .image{:"data-equalizer-watch" => ''}
               - if entry.icon
                 = link_to image_tag(entry.icon), entry
             .floor
               .agent_name= link_to "Agent #{entry.agent.surname}", entry.agent
-              = link_to entry.name, entry
+              = link_to raw(entry.name), entry
               .pbt_date= entry.formatted_date

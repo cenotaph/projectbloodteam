@@ -75,8 +75,12 @@ class GeolocationsController < ApplicationController
           flash[:notice] = 'Changed data for ' + @geolocation.pbt_entries.size + ' items'
           @geolocation.destroy!
         else
-          flash[:warning] = 'There is another entry with the same address but different coordinates, please check.'
-          update! { '/' }
+          flash[:error] = 'There is another entry with the same address but different coordinates, please check it.'
+          if @geolocation.update_attributes(geolocation_params)
+            redirect_to edit_geolocation_path(@others)
+          else
+            flash[:error] = 'There was an error saving your updates.'
+          end
         end
       end
     else
