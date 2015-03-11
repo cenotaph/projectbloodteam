@@ -6,18 +6,19 @@ class Geolocation < ActiveRecord::Base
   after_validation :geocode, :on => :create
   # acts_as_gmappable :process_geocoding => false
   validates_presence_of :latitude, :longitude
-  has_many :bars, :dependent => :nullify 
-  has_many :concerts, :dependent => :nullify 
-  has_many :takeaways, :dependent => :nullify 
   has_many :activities, :dependent => :nullify 
-  has_many :movies, :dependent => :nullify 
+  has_many :bars, :dependent => :nullify 
   has_many :brewing, :dependent => :nullify 
-  has_many :groceries, :dependent => :nullify 
-  has_many :musicplayed, :dependent => :nullify 
-  has_many :tvseries, :dependent => :nullify 
+  has_many :concerts, :dependent => :nullify 
   has_many :events, :dependent => :nullify 
+  has_many :gambling, :dependent => :nullify
+  has_many :groceries, :dependent => :nullify 
+  has_many :movies, :dependent => :nullify 
+  has_many :musicplayed, :dependent => :nullify 
   has_many :restaurants, :dependent => :nullify 
-  has_many :takeaway, :dependent => :nullify 
+  has_many :takeaways, :dependent => :nullify 
+  has_many :tvseries, :dependent => :nullify 
+
   # after_create :update_cache
   
   def address_or_coordinates
@@ -75,14 +76,19 @@ class Geolocation < ActiveRecord::Base
   
   def pbt_entries
     out = []
-    out += bars
-    out += concerts
-    out += takeaways
     out += activities
-    out += movies
+    out += bars
+    out += brewing
+    out += concerts
     out += events
+    out += gambling
+    out += groceries
+    out += movies
+    out += musicplayed
     out += restaurants
+    out += takeaways
     out += tvseries
+
     out
   end
   
