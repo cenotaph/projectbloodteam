@@ -329,7 +329,11 @@ class GenericmasterController < ApplicationController
       begin
         @localhits = @master.classify.gsub(/^Master/, '').constantize.search(ThinkingSphinx::Query.escape(params[:query]), :per_page => 999).map{|x| x.master}.uniq
       rescue ThinkingSphinx::ConnectionError
-        @localhits = []
+        if @master.classify.gsub(/^Master/, '').constantize == Movie
+          @localhits = MasterMovie.where("title LIKE '%" + params[:query] + "%'")
+        else
+          @localhits = []
+        end
       end      
       begin
          if @master == "MasterMusic"\
@@ -371,22 +375,57 @@ class GenericmasterController < ApplicationController
   
 
   def shorts
+    if params[:filter].nil?
+      params[:filter] = ActionController::Parameters.new
+    else
+      @filters = true
+    end
+    @per =  params[:filter][:per].blank? ? 40 : params[:filter][:per]
+    @start_date = params[:filter][:start_date].blank? ? '2002-01-01' : params[:filter][:start_date] 
+    @end_date = params[:filter][:end_date].blank? ?  getYear + '-12-31' : params[:filter][:end_date]
+    @sort_direction = params[:filter][:sort_direction].blank? ? 'DESC' : params[:filter][:sort_direction]
+    @sort = params[:filter][:sort].blank? ? "date " : params[:filter][:sort] 
+    @filter_text = params[:filter][:filter_text]
+    
+    set_meta_tags title: 'Shorts'
+    
+    unless @filter_text.blank?
+      filter_query = []
+
+      sample =  @category.classify.constantize.first
+      %w{name title destination comment company ordered location product task games station cuisine}.each do |field|
+
+        if !sample[field.to_sym].nil?          
+          filter_query << "lower(#{@category.downcase.tableize}.#{field.to_s}) like '%#{@filter_text.downcase}%'"
+        end
+        if !sample.master[field.to_sym].nil?
+          filter_query << "lower(master_#{@category.downcase.tableize}.#{field.to_s}) like '%#{@filter_text.downcase}%'"
+        end
+      end
+      filter_query = filter_query.join(" OR ")
+   
+    end
+    filter_query = 1 if filter_query.blank?
+    
     if params[:agent_id]
       @agent = Agent.find(params[:agent_id])
-      @items = @category.classify.constantize.includes(:userimages).where(:agent_id => params[:agent_id]).where(:is_short => true).order('date DESC').paginate(:per_page =>  (theme_name == 'flume' ? 40 : 20 ), :page => params[:page])
+      @items = @category.classify.constantize.includes(:userimages).where(:agent => @agent).where(:is_short => true).where(filter_query).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
+
+      
       if request.xhr?
         render :partial => '/agent', :collection => @items
       else
         render :template => 'index_for_agent'
       end
     else
-      @items = @category.classify.constantize.where(:is_short => true).paginate(:per_page =>  (theme_name == 'flume' ? 40 : 20 ), :page => params[:page], :include => [:agent, :userimages, @master.gsub(/^Master/, 'master_').downcase.to_sym], :order => 'date DESC')
+      @items = @category.classify.constantize.where(:is_short => true).page(params[:page]).per(@per).order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}")
       if request.xhr?
         render :partial => '/item', :collection => @items
       else
         render :template => 'shared/index_for_category'
       end
     end
+    
   end
   
   def show

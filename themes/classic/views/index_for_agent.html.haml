@@ -33,7 +33,7 @@
             = link_to_if current_agent == @agent, 'Suggest unreviewed', unreviewed_agent_musics_path, class: [:tiny, :secondary, :button]
 
   .row#view_options{style: (@items.empty? || @filters == true  ? "display: block" : false) }
-    = form_for :filter, url: "/agents/#{@agent.slug}/#{@category.tableize}/", method: :get do |f|
+    = form_for :filter, url: "/agents/#{@agent.slug}/#{@category.tableize}/#{ controller.action_name == 'shorts' ? 'shorts' : ''}", method: :get do |f|
       .large-1.small-4.columns
         %label Per page
         = f.text_field :per, value: @per, :required => true
