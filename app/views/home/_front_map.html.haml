@@ -19,9 +19,13 @@
        };
              
       map =  new google.maps.Map(document.getElementById("<%= target %>"), mapOptions);
-      
+      <% processed = [] %>
       <% json.each do |m| %>
        <% next unless m.latitude %>
+       <% if processed.include?([m.latitude, m.longitude]) %>
+         <% m.latitude += 0.000005 %>
+         <% m.longitude += 0.000005 %>
+        <% end %>
         var marker_<%= m.id %> = new google.maps.Marker({
             position: new google.maps.LatLng(<%= m.latitude.to_s %>,<%= m.longitude.to_s %>),
             map: map
@@ -35,6 +39,7 @@
             infowindow_<%= m.id %>.open(map,marker_<%= m.id %>);
           });
           markers.push(marker_<%= m.id %>);
+        <% processed.push([m.latitude, m.longitude]) %>
       <% end %>
       
       
