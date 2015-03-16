@@ -13,7 +13,11 @@
   .small-10.columns.small-offset-1.master_head#details
     %a{:name => "#details"}
     .row
-      .small-3.columns= image_tag @item.icon(:full)
+      .small-3.columns
+        - if @item.class.to_s =~ /ook$/
+          = image_tag @item.icon(:original)
+        - else
+          = image_tag @item.icon(:full)
       .small-9.columns.text-center
         .main_title{:"data-magellan-destination" => "details"}
           = raw @item.name
@@ -43,7 +47,7 @@
 #discussion
   %a{:name => "discussion", :"data-magellan-destination" => "discussion"}
   .row
-    .large-10.columns.large-offset-1.item_listing= render :partial => 'shared/new_discussion', :locals => {:discussion => @item.discussion, :json => @json, :master => false}
+    .large-10.columns.large-offset-1.item_listing= render :partial => 'shared/new_discussion', :locals => {:discussion => @item.discussion.uniq, :json => @json, :master => false}
     
   - if agent_signed_in?
     .row
