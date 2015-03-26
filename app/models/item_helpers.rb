@@ -47,7 +47,7 @@ module ItemHelpers
   end
   
   def check_currency_id
-    unless [Tvseries, Weight, Musicplayed].include?(self.class)
+    unless [Tvseries, Weight, Musicplayed, Airport].include?(self.class)
       if self.currency_id.nil? && !self.date.nil?
         self.currency_id = Profile.where(:year => self.date.strftime('%Y').to_i, :agent_id => self.agent_id).first.defaultcurrency_id
       end

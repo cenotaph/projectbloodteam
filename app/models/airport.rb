@@ -17,6 +17,7 @@ class Airport < ActiveRecord::Base
         } , 'comment' => self.comment}
   end
   
+  
   def self.has_master?
     false
   end
