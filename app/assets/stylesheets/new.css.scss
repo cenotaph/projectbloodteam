@@ -81,7 +81,7 @@ header { display: none;
       border-bottom: 1px dotted $secondary-color;
       padding: 1.5rem 0;
       .comment_data {
-        margin: 0px 0px 0px -40px;
+        margin: 0px;
         padding: 0px;
         font-size: 1.0rem;
         line-height: 1.6rem;
@@ -237,6 +237,10 @@ header { display: none;
   }
 }
 
+.expanded .comment_body {
+  
+  
+}
 .newsfeed_comment, .expanded .comment {
   .comment_link {
     clear: left;
@@ -247,6 +251,19 @@ header { display: none;
   }
   .comment_body_wrapper {
     margin-left: -5.5%;
+    .row {
+      margin: 0;
+    }
+    .expanded_quote {
+      font-size: 2.7rem;
+      font-weight: 600;
+      color: #777;
+      padding: 0;
+      float: left;
+      width: 20px;
+      text-align: left;
+      margin-left: -8px;
+    }
     .big {
       font-size: 2.7rem;
       margin: -20px 0px 0px -8px;
@@ -256,8 +273,11 @@ header { display: none;
     }
   
     .comment_body {
+      .row {
+        margin: 0;
+      }
       padding-left: 3px;
-
+   
       font-size: 1.0rem;
       line-height: 1.45rem;
       color: #333;
@@ -268,7 +288,7 @@ header { display: none;
          content: " ";
          
       }
-      p.wrapper {
+      p.wrapper, p {
  
         padding: 0px;
         font-size: 1.0rem;
