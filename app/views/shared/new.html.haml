@@ -83,7 +83,7 @@
       .row
         .small-12.columns#userimages
           = form.fields_for :userimages do |ff|
-            = if ff.object.image?
+            - if ff.object.image?
               = image_tag ff.object.image.url
             = ff.input :image
             -#= render :partial => 'shared/userimage_fields', :locals => { :ff => ff }      

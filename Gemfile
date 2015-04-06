@@ -2,7 +2,7 @@
 source 'http://gemcutter.org'
 source 'https://rubygems.org'
 ruby '2.1.1'
-gem 'rails', '4.2'
+gem 'rails', '4.2.1'
 gem 'mysql2'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
@@ -15,7 +15,7 @@ gem 'jbuilder', '~> 1.2'
 
 gem 'execjs', :group => [:staging, :production]
 
-gem 'therubyracer', :group => [:staging, :production]
+#gem 'therubyracer', :group => [:staging, :production]
 
 # gem 'activerecord', '3.0.3'
 # gem 'buntine-discogs'
@@ -27,7 +27,7 @@ group :development do
   gem 'spring'
 end
     
-gem 'rails4_upgrade'
+#gem 'rails4_upgrade'
 
 gem 'capistrano', '~> 3.1.0'
 gem 'capistrano-rails', '~> 1.1.0'

@@ -63,10 +63,12 @@
     - unless controller.controller_name == 'geolocations' && controller.action_name == 'index'
       %footer
         .row
-          .small-8.small-offset-2.columns.past_years.text-center
+          .small-6.columns.past_years.small-centered.text-center
             %p
               %strong Project Blood Team
             %p Since 2002
+        .row
+          .small-8.columns.past_years.small-centered.text-center
             %p
               - 2014.downto(2002).map(&:to_s).each do |y|
                 = link_to image_tag("/img/logos/#{y}_small.jpg"), "http://#{y}.bloodteam.com"

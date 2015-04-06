@@ -511,17 +511,12 @@ class GenericmasterController < ApplicationController
 
         if @category == 'MasterMovie'
           if @item.filename_file_name.blank? && !@item.imdbcode.blank?
-            i = IMDB.new(@item.imdbcode)
-            big_poster = i.poster_link
+            i = Imdb::Movie.new(@item.imdbcode)
+            big_poster = i.poster
             unless big_poster.blank?
-              @item.filename_file_name = @item.imdbcode.to_s  + '.jpg'
-              @item.filename_content_type = 'image/jpeg'
-              system("mkdir -p " + Rails.root.to_s  + '/public/images/master_movies/' + @item.id.to_s + '/thumb')
-              system("mkdir -p " + Rails.root.to_s  + '/public/images/master_movies/' + @item.id.to_s + '/full')
-              open(Rails.root.to_s + '/public/images/master_movies/' + @item.id.to_s + '/thumb/' +   @item.imdbcode.to_s + '.jpg', "wb").write(open(i.poster_small).read) rescue nil
-              open(Rails.root.to_s  + '/public/images/master_movies/' + @item.id.to_s + '/full/' +   @item.imdbcode.to_s + '.jpg', "wb").write(open(big_poster).read) rescue nil
-              @item.save!
+              @item.filename = URI.parse(big_poster)
             end
+            @item.save!
           end
         elsif @category == 'MasterBook'
           unless @item.amazoncode.blank?
