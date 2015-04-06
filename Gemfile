@@ -35,7 +35,7 @@ gem 'capistrano-rvm'
 gem 'capistrano-bundler'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
-gem 'dalli'
+gem 'dalli', '2.6.4'
 gem 'dalli-store-extensions', :git => "git://github.com/defconomicron/dalli-store-extensions.git", :group => :production
 # gem 'dalli-store-extensions', :git => "git://github.com/defconomicron/dalli-store-extensions.git", :group => :production
 gem 'date_validator'
@@ -67,7 +67,7 @@ gem 'paperclip'
 gem 'rails4-autocomplete'
 gem 'randumb'
 gem 'responders', '2.0.2'
-gem 'rollbar', '~> 1.3.0'
+
 gem 'themes_for_rails', github: 'boxcar21/themes_for_rails', branch: 'master'
 gem 'thinking-sphinx', '~> 3.1.2',
   :git    => 'git://github.com/pat/thinking-sphinx.git',
