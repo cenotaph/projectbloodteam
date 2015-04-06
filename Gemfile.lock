@@ -14,6 +14,12 @@ GIT
       nokogiri (= 1.6.4.1)
 
 GIT
+  remote: git://github.com/defconomicron/dalli-store-extensions.git
+  revision: 04145d3e8c79768333d5adfdadef6ba91fae5de3
+  specs:
+    dalli-store-extensions (0.0.1)
+
+GIT
   remote: git://github.com/justinfrench/formtastic.git
   revision: a89f933626c90c779b1fe9c4c44cabb057462c99
   specs:
@@ -325,6 +331,7 @@ DEPENDENCIES
   capistrano-rvm
   coffee-rails (~> 4.0.0)
   dalli
+  dalli-store-extensions!
   date_validator
   devise
   devise-encryptable

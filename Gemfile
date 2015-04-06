@@ -36,6 +36,7 @@ gem 'capistrano-bundler'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'dalli'
+gem 'dalli-store-extensions', :git => "git://github.com/defconomicron/dalli-store-extensions.git", :group => :production
 # gem 'dalli-store-extensions', :git => "git://github.com/defconomicron/dalli-store-extensions.git", :group => :production
 gem 'date_validator'
 gem 'devise'
