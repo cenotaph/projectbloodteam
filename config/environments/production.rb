@@ -4,9 +4,9 @@ Pbt4::Application.configure do
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
   config.cache_classes = true
-  # config.cache_store = :file_store , "tmp/cache/"
+  config.cache_store = :file_store , "tmp/cache/"
   
-  config.cache_store = :dalli_store
+  # config.cache_store = :dalli_store
   config.action_controller.perform_caching = true
   
   config.eager_load = true
