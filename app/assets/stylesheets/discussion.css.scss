@@ -208,11 +208,12 @@
       color: #777;
       padding: 0;
     }
-    .comment_body { 
+    .comment_body, .comment_body p { 
       padding-left: 0px;
       font-size: 1.0rem;
       line-height: 1.6rem;
       color: #333;
+      margin-bottom: 0;
       font-weight: 300;
       p.wrapper {
         margin: 0px;

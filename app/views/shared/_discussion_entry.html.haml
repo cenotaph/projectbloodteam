@@ -61,6 +61,7 @@
                 .small-1.columns.text-right.big
                   = raw('&ldquo;') unless chat.comment.blank?
                 .small-11.columns.comment_body
+                  
                   = raw display_comment(chat)
             - unless chat.references.empty?
               .references.small-12.columns.large-2
