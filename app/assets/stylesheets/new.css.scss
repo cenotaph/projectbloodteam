@@ -397,7 +397,11 @@ header { display: none;
   margin-top: 1.1rem;
 }
 form {
-
+  .fields {
+    border: 1px dotted #666;
+    padding: 10px;
+    margin-bottom: 1.5rem;
+  }
   li {
     list-style-type: none;
     &.boolean {

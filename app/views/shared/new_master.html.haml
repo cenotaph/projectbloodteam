@@ -105,9 +105,10 @@
       .row
         .small-12.columns#userimages
           = form.fields_for :userimages do |ff|
-            = if ff.object.image?
+            - if ff.object.image?
               = image_tag ff.object.image.url
             = ff.input :image
+            = ff.link_to_remove 'Remove this image'
             -#= render :partial => 'shared/userimage_fields', :locals => { :ff => ff }      
           = form.link_to_add "+ Add an image", :userimages, class: "button tiny secondary"
         
