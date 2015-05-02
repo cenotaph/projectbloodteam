@@ -5,7 +5,7 @@ module ImageHelper
     out = '<div class="slick_carousel" id="' + item.class.to_s.downcase + "_" + item.id.to_s + '">'
     images.each do |i|
       out += '<div>'
-      out += link_to image_tag(i, :alt => item.name), "http://bloodteam.com#{i}"
+      out += link_to image_tag(i, :alt => strip_tags(item.name)), "http://bloodteam.com#{i}"
       out += "</div>"
     end
     out += '</div>'
