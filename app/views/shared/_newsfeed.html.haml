@@ -71,7 +71,7 @@
                           %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
               
               - if agent_signed_in?
-                .comment_link= link_to fa_icon('comment-o'), '#', onclick: "$('#commententry_#{entry.id.to_s}').slideToggle();var puny_mce = new punymce.Editor({id : 'comment_content_#{entry.id.to_s}'}); return false;"
+                .comment_link= link_to fa_icon('comment-o'), '#', onclick: "$('#commententry_#{entry.id.to_s}').slideToggle();var puny_mce = new punymce.Editor({spellcheck: true, id : 'comment_content_#{entry.id.to_s}'}); return false;"
                 .row.comment_form{:id => "commententry_#{entry.id.to_s}"}
                   .small-11.columns.small-offset-0
                     = render :partial => 'shared/newsfeed_comment', locals: {entry: entry}
