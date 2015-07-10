@@ -52,6 +52,7 @@ module ApplicationHelper
   end
   
   def display_metadata(key, value)
+
     if key == 'cost'
       if value.last.blank?
         ""

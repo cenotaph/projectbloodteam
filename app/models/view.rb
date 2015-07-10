@@ -5,18 +5,18 @@ class View < ActiveRecord::Base
   def agent_column_name(item, column)
 
     if self.respond_to?(item.class.to_s.downcase + "_" + column)
-      if self.method(item.class.to_s.downcase + "_" + column).call == "0"
-        return nil
+      if self.method(item.class.to_s.downcase + "_" + column).call == "0" 
+        return nil 
       else
         if self.method(item.class.to_s.downcase + "_" + column).call == ""
-          return column
+          return column 
         else
  
-          return self.method(item.class.to_s.downcase + "_" + column).call
+          return self.method(item.class.to_s.downcase + "_" + column).call 
         end
       end
     else
-      return (column == 'first' ? 'First?' : column)
+      return (column == 'first' ? 'First?' : column) 
     end
 
   end

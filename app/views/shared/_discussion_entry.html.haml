@@ -1,5 +1,5 @@
 - if show_entry?(chat)
-
+  - view = View.where(:agent_id => chat.agent_id).where(:year => chat.date.strftime("%Y")).first
   .row
     - if chat.class == Comment
       .large-7.large-offset-2.columns.comment
@@ -33,7 +33,7 @@
                 = chat.formatted_date
                 - chat.metadata['metadata'].each_pair do |key, value|
                   - next if value.blank?
-                
+                  - next if view.agent_column_name(chat, key).blank?
                   .item_metadata
                     %span.item_metadata_category= chat.column_name(key) + ": "
                     -#= key.humanize + ":"
