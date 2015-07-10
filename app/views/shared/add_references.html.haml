@@ -6,7 +6,7 @@
       .row.choice_row
         - group.each_with_index do |pr, i|
           - next if pr.nil?
-          .small-4.columns
+          .small-4.columns{class: group[i + 1].nil? ? :end : false }
             .row
               .small-4.columns
                 - if pr.icon
@@ -18,7 +18,11 @@
                   = ff.hidden_field :reference_type, value: pr.class.to_s
                   = pr.class.to_s.gsub(/^Master/, '').to_s + ": "
                   = raw pr.name
-
+                  .agents
+                    = pluralize(pr.items.count, 'Entry')
+                    from 
+                    = "agent".pluralize(pr.items.count) + ": "
+                    = pr.items.map(&:agent).flatten.map(&:surname).join(', ')
                   %p
                     %small Add a comment or annotation to the reference:
                     = ff.text_area :comment

@@ -1,8 +1,8 @@
 # Edit this Gemfile to bundle your application's dependencies.
 source 'http://gemcutter.org'
 source 'https://rubygems.org'
-ruby '2.1.1'
-gem 'rails', '4.2.1'
+ruby '2.2.2'
+gem 'rails', '4.2.3'
 gem 'mysql2'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
@@ -68,7 +68,7 @@ gem 'rails4-autocomplete'
 gem 'randumb'
 gem 'responders', '2.0.2'
 
-gem 'themes_for_rails', github: 'boxcar21/themes_for_rails', branch: 'master'
+gem 'themes_for_rails', github: 'cenotaph/themes_for_rails', branch: 'master'
 gem 'thinking-sphinx', '~> 3.1.2',
   :git    => 'git://github.com/pat/thinking-sphinx.git',
   :branch => 'develop',
