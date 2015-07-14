@@ -45,7 +45,7 @@ module ApplicationHelper
   
   def display_comment(item)
     if item.class == Comment
-       sanitize item.content , tags:  %w{b i em italic bold strong a u  br p src ol li ul img}, attributes: %w{href}
+       sanitize item.content , tags:  %w{b i em italic embed iframe div bold strong a u  br p src ol li ul img}, attributes: %w{href src height class width}
     else
       item.comment.blank? ? '<em>No comment yet.</em>' :  sanitize(item.comment.gsub(/\<br\/*\>/, '<br /><br />').gsub(/^<p>/i, '').gsub(/\n/, '<br />'), tags:  %w{b i em italic bold strong a u br p ol li ul img}, attributes: %w{href})
     end
