@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class Comment < ActiveRecord::Base
   include Item
-  has_many :entries, :as => :entry, :dependent => :delete_all
+  has_many :entries, :as => :entry, :dependent => :destroy
 
   belongs_to :item, :polymorphic => true, :foreign_key => :foreign_id
   
