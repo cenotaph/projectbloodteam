@@ -2,7 +2,16 @@
   - view = View.where(:agent_id => chat.agent_id).where(:year => chat.date.strftime("%Y")).first
   .row
     - if chat.class == Comment
-      .large-7.large-offset-2.columns.comment
+      - unless chat.references.empty?
+        .references.small-12.columns.large-2.text-right
+          .heading References:
+          %ul
+            - chat.references.each do |ref|
+              %li
+                = link_to raw(ref.reference.name), ref.reference, target: :_blank
+                - unless ref.comment.blank?
+                  %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
+      .columns.large-7.comment{class: chat.references.empty? ? "small-12 large-offset-2" : "small-10 small-offset-1 large-offset-0" }
         .row
           .small-1.columns.text-right.big= raw('&ldquo;')
           .small-11.columns.comment_body
@@ -34,6 +43,7 @@
                 - chat.metadata['metadata'].each_pair do |key, value|
                   - next if value.blank?
                   - next if view.agent_column_name(chat, key).blank?
+                  - next if key == 'season' 
                   .item_metadata
                     %span.item_metadata_category= chat.column_name(key) + ": "
                     -#= key.humanize + ":"
@@ -57,6 +67,11 @@
         - unless display_comment(chat).blank?
           .row
             .comment.columns.large-offset-0{class: chat.references.empty? ? "small-12" : "small-10 small-offset-1" }
+              - if chat.class == Tvseries
+                .row
+                  .small-12.columns.season_marker
+                    Season:
+                    = chat.season
               .row
                 .small-1.columns.text-right.big
                   = raw('&ldquo;') unless chat.comment.blank?

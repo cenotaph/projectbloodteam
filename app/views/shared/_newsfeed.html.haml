@@ -84,24 +84,35 @@
               
                     - if comment.class == Comment
                   
-                      .comment_data.comment_body_wrapper.small-8.small-offset-2.columns
+                      .small-12.small-offset-0.comment_data.comment_body_wrapper.columns
+                        
                         .row
-                          .expanded_quote
-                            = raw('&ldquo;')
-                          .small-11.columns.comment_body
+                          - unless comment.references.empty?
+                            .references.small-2.columns.text-right
+                              .heading References:
+                              %ul
+                                - comment.references.each do |ref|
+                                  %li
+                                    = link_to raw(ref.reference.name), ref.reference, target: :_blank
+                                    - unless ref.comment.blank?
+                                      %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
+
+                          .small-8.columns.comment_body{class: comment.references.empty? ? 'small-offset-2' : ' small-offset-0'}
+                            .expanded_quote
+                              = raw('&ldquo;')
                             = raw display_comment(comment)
                             - unless comment.userimages.empty?
                               = raw one_or_slideshow(comment)
 
                   
-                      .comment_icon.small-2.columns.text-right
+                          .comment_icon.small-2.columns.text-right
                     
-                        .newsfeed_icon= image_tag comment.agent_icon(:small)
-                        .agent_name= link_to "Agent #{comment.agent.surname}", comment.agent
-                        - if comment.agent == current_agent
-                          = link_to fa_icon('pencil'), edit_comment_path(comment)
-                        = link_to fa_icon('microphone-slash'), comment, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }
-                        .entered_date= "posted " + time_ago_in_words(comment.created_at) + " ago"
+                            .newsfeed_icon= image_tag comment.agent_icon(:small)
+                            .agent_name= link_to "Agent #{comment.agent.surname}", comment.agent
+                            - if comment.agent == current_agent
+                              = link_to fa_icon('pencil'), edit_comment_path(comment)
+                            = link_to fa_icon('microphone-slash'), comment, :method => :delete, :data => {:confirm => 'Are you sure you want to remove this from the newsfeed? (This does not delete the entry)' }
+                            .entered_date= "posted " + time_ago_in_words(comment.created_at) + " ago"
                     
                     - else
                       .comment_icon.small-2.columns= image_tag comment.agent_icon(:small)
@@ -116,12 +127,21 @@
                               %span.entered_date= "(#{comment.formatted_date})"
                           - if comment.comment.blank?
                             .small-12.columns
+                              - if comment.class == Tvseries
+                                .season_marker
+                                  Season:
+                                  = raw comment.season
                               %em No comment yet.
                           - else
                             - unless comment.comment.blank?
+                              - if comment.class == Tvseries
+                                .small-11.columns.season_marker
+                                  Season:
+                                  = raw comment.season
                               .expanded_quote
                                 = raw('&ldquo;')
                               .small-11.columns.comment_body.medium-10
+
                                 %p.wrapper= display_comment(comment)
                       - unless comment.references.empty?
                         .references.small-2.columns

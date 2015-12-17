@@ -1,9 +1,18 @@
 .row
-  .small-10.large-5.medium-8.small-offset-1.large-offset-3.only_comment.columns.left
+  .small-10.large-7.medium-8.small-offset-1.large-offset-2.only_comment.columns.left
     .newsfeed_comment
       .row.comment_body_wrapper
+        - unless entry.entry.references.empty?
+          .references.small-2.columns.text-right
+            .heading References:
+            %ul
+              - entry.entry.references.each do |ref|
+                %li
+                  = link_to raw(ref.reference.name), ref.reference, target: :_blank
+                  - unless ref.comment.blank?
+                    %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
         .small-1.columns.text-right.big= raw('&ldquo;')
-        .small-11.columns.comment_body
+        .columns.comment_body{class: entry.entry.references.empty? ? "small-11 large-offset-2" : "small-9 small-offset-1 large-offset-0" }
           = raw display_comment(entry.entry)
           - unless entry.entry.userimages.empty?
             = raw one_or_slideshow(entry.entry)
@@ -16,7 +25,7 @@
               .small-11.columns.small-offset-0
                 = render :partial => 'shared/newsfeed_comment', locals: {entry: entry}
                     
-  .small-12.medium-2.comment_metadata.columns.text-left.end
+  .small-12.medium-2.comment_metadata.columns.text-left.end.small-text-right
     .agent_name= link_to "Agent #{entry.agent.surname}", entry.agent
     .newsfeed_icon= entry_agent_icon(entry)
     - if entry.entry.agent == current_agent

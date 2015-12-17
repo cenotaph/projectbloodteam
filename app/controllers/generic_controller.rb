@@ -97,6 +97,7 @@ class GenericController < ApplicationController
   
   def destroy
     @item = @category.classify.constantize.find(params[:id])
+
     if @item.agent == current_agent
       @item.destroy
       expire_fragment(/.*forum_front.*/)
@@ -108,11 +109,10 @@ class GenericController < ApplicationController
           expire_fragment(/.*newsfeed_front.*/)
         end  
       else
-        unless @item.entry.empty?
-          expire_fragment(/.*newsfeed_front.*/)
-        end      
+        expire_fragment(/.*newsfeed_front.*/)
       end
     end
+
     redirect_to "/agents/#{current_agent.id.to_s}/#{@category.classify.constantize.table_name}"
   end
 

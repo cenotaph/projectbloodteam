@@ -103,6 +103,7 @@ header { display: none;
       }
       
       .entered_date {
+        line-height: 0.9rem;
         margin-top: 0;
       }
     }
@@ -237,20 +238,37 @@ header { display: none;
   }
 }
 
-.expanded .comment_body {
-  
-  
+.item_listing {
+  .season_marker {
+    color: #444;
+        margin: 0px 0px 10px 15px;
+        font-size: 1.1rem;
+  }
+}
+
+.newsfeed_entry .expanded .comment {
+  border-bottom: 1px dotted #008cba;
 }
 .newsfeed_comment, .expanded .comment {
   .comment_link {
     clear: left;
     margin-left: 17px;
   }
+
   .comment_comment_body {
     padding-left: 3px;
   }
   .comment_body_wrapper {
     margin-left: -5.5%;
+    
+    .season_marker {
+      color: #444;
+      margin: 0px 0px 10px 0px;
+      font-size: 0.9rem;
+      float: none;
+      
+    }
+    
     .row {
       margin: 0;
     }
@@ -260,7 +278,7 @@ header { display: none;
       color: #777;
       padding: 0;
       float: left;
-      width: 20px;
+      width: 24px;
       text-align: left;
       margin-left: -8px;
     }
@@ -271,7 +289,7 @@ header { display: none;
       color: #777;
       padding: 0; margin: -20px 0px 0px 0px;
     }
-  
+
     .comment_body {
       .embed_container {
         position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;

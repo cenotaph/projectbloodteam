@@ -1,8 +1,8 @@
 # Edit this Gemfile to bundle your application's dependencies.
-source 'http://gemcutter.org'
-source 'https://rubygems.org'
+# source 'http://gemcutter.org'
+# source 'https://rubygems.org'
 ruby '2.2.2'
-gem 'rails', '4.2.3'
+gem 'rails', '4.2.5'
 gem 'mysql2'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
