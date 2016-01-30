@@ -104,7 +104,7 @@
     .across_strip
       .row
         .small-12.columns.text-center
-          = link_to "This appears to be popular. See all aggregated for #{@item.name} ...",  aggregate_generic_path(:category => @item.class.to_s, :id => @item.id)
+          = link_to raw("This appears to be popular. See all aggregated for #{@item.name} ..."),  aggregate_generic_path(:category => @item.class.to_s, :id => @item.id)
   #similars
     %a{:name => "similars", :"data-magellan-destination" => "similars"}
   

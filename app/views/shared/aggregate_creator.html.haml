@@ -6,7 +6,7 @@
       
 .row.with_title
   .small-10.columns.small-offset-1
-    %h2= "Aggregated entries for #{@item.creator}"
+    %h2= raw "Aggregated entries for #{@item.creator}"
 
 
 - @all_titles.to_a.delete_if{|x| x.discussion.empty? }.each do |title|

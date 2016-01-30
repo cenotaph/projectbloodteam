@@ -5,7 +5,7 @@
 
 .row.with_title
   .small-10.columns.small-offset-1
-    %h2= "Aggregated entries for #{@item.name}"
+    %h2= raw "Aggregated entries for #{@item.name}"
     
 - @discussion.reverse.group_by{|x| x.date.year }.map.each do |year|
   %a{:name => "year_#{year.first.to_s}"}
