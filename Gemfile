@@ -4,7 +4,7 @@
 ruby '2.2.2'
 gem 'rails', '4.2.5'
 gem 'mysql2'
-gem 'sass-rails', '~> 4.0.0'
+
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails', '3.1'
@@ -48,7 +48,7 @@ gem 'discogs-wrapper'
 gem 'figaro'
 gem 'font-awesome-rails'
 gem 'formtastic' , :git => 'git://github.com/justinfrench/formtastic.git'
-gem 'foundation-rails', '5.4.5.0'
+gem 'foundation-rails', '5.5.3.2'
 gem 'friendly_id', branch: :master, github: 'norman/friendly_id'
 gem 'geocoder'
 # gem 'gmaps4rails'
@@ -75,3 +75,4 @@ gem 'thinking-sphinx', '~> 3.1.2',
   :git    => 'git://github.com/pat/thinking-sphinx.git',
   :branch => 'develop',
   :ref    => '87928c9298'
+gem 'truncate_html'

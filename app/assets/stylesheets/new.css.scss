@@ -598,7 +598,9 @@ h2 {
 }
 table#classic {
   tr {
-    
+    &.popup {
+      background-color: rgba(20, 54, 100, 0.3);
+    }
     td {
       border-collapse: collapse;
       font-weight: 300;
@@ -611,7 +613,7 @@ table#classic {
         font-size: 1rem;
         line-height: 1.5rem;
       }
-      &.name, &.station, &.artists {
+      &.name, &.station, &.artists, &.product {
         font-size: 1.0rem;
         font-weight: 500;
         max-width: 18rem !important;

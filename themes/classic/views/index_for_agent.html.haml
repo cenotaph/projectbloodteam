@@ -99,7 +99,14 @@
 = content_for :jquery do
   :plain
     $('.date_input').datepicker({dateFormat: 'yy-mm-dd'});
-
+    $(document).on('open.fndtn.reveal', '[data-reveal]', function () {
+      var modal = $(this);
+      modal.closest('tr').addClass('popup');
+    });
+    $(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
+      var modal = $(this);
+      modal.closest('tr').removeClass('popup');
+    });
     $('#filter_start_date').change( function() {
       if ($('#filter_start_date').val() > $('#filter_end_date').val()) {
         alert('Start date has to be before end date!');

@@ -5,12 +5,22 @@
     - next unless show_entry?(agent)
     %td{:class => (col == 'label' ? "recordlabel" : col ) + " #{agent.class.table_name}"}
       
-      - if col == 'name' || col == 'title' || col == 'artists' || col == 'station'
+      - if col == 'name' || col == 'title' || col == 'artists' || col == 'station' || col == 'product'
         = link_to highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text]), url_for(agent.has_master? ? agent.master : agent)
         - if agent.respond_to?('linkto')
           - unless agent.linkto.blank?
             = link_to fa_icon('external-link'), agent.linkto, :target => "_blank" 
         = raw one_or_slideshow(agent, nil, :thumb)
+      - elsif col == 'comment'
+        - unless display_column(agent, col, agent.agent_id).blank?
+          - if display_column(agent, col, agent.agent_id).length > 400
+            .reveal-modal{:id => "comment_" + agent.id.to_s, :"data-reveal" => ''}
+              
+              = raw display_column(agent, col, agent.agent_id)
+            = truncate_html(display_column(agent, col, agent.agent_id), length: 400)
+            = link_to raw(fa_icon('bullhorn')), '#', "data-reveal-id" => "comment_" + agent.id.to_s
+          - else
+            = raw display_column(agent, col, agent.agent_id)
       - else
         = highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text])
         - if col == 'finished' && !display_column(agent, col, agent.agent_id).blank?
