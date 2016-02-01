@@ -17,7 +17,7 @@
   
 
 .special_container
-  #outer{:style => @item.userimages.empty? ? false : "background: linear-gradient(rgba(255,255,255,0),rgba(255,255,255,0)), url(http://bloodteam.com#{@item.userimages.first.image.url(:full)});  background-size: contain; "}
+  #outer{:style => @item.userimages.empty? ? false : "background: linear-gradient(rgba(255,255,255,0),rgba(255,255,255,0)), url(http://bloodteam.com#{@item.userimages.first.image.url(:fuller)});  background-size: contain; "}
   
     .row{:"data-magellan-destination" => "details"}
       .small-8.columns.small-offset-2.forum_head{:style => @item.userimages.blank? ? "background: url(http://bloodteam.com#{@item.agent_icon(:large)}) no-repeat; background-size: contain" : "background-color: white; opacity: 0.9"}
