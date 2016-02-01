@@ -43,6 +43,18 @@
   #map_container{:"data-magellan-destination" => "map"}
 
 
+- unless @item.references.empty?
+  .referred_bar
+    %h3 Referenced by:
+    %ul
+      - @item.references.each do |ref|
+        %li
+          .agent
+            = "Agent #{ref.source.agent.surname} on "
+            %span.date= ref.source.formatted_date
+            = ":"
+          .title= link_to raw(ref.source.name), url_for(ref.source) + "##{ref.source.class.to_s.tableize.singularize}_#{ref.source.id.to_s}", target: :_blank
+          .agent
 
 #discussion
   %a{:name => "discussion", :"data-magellan-destination" => "discussion"}

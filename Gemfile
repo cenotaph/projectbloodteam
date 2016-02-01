@@ -27,6 +27,8 @@ group :development do
   gem 'spring'
 end
     
+    
+gem "bullet", :group => "development"
 #gem 'rails4_upgrade'
 
 gem 'capistrano', '~> 3.1.0'

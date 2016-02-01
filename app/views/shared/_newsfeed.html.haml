@@ -45,6 +45,20 @@
               = link_to raw(entry.entry.name), entry.entry
             - if entry.entry.respond_to?('linkto')
               .link_to= link_to fa_icon('external-link'), entry.entry.linkto, :target => "_blank"
+            - if entry.entry.respond_to?('master')
+              - unless entry.entry.master.references.empty?
+                .referenced_indicator
+                  = link_to raw("referenced by #{pluralize(entry.entry.master.references.size, 'other entry')} " + fa_icon('arrow-right')), '#', onclick: "$('#reference_list_#{entry.id.to_s}').slideToggle();$(this).find('i').toggleClass('fa-arrow-right fa-arrow-down');"
+                %ol.reference_list{id: 'reference_list_' + entry.id.to_s}
+                  - entry.entry.master.references.each do |ref|
+                    %li
+                      .agent
+                        = "Agent #{ref.source.agent.surname} on "
+                        %span.date= ref.source.formatted_date
+                        = ":"
+                      .title= link_to raw(ref.source.name), url_for(ref.source) + "##{ref.source.class.to_s.tableize.singularize}_#{ref.source.id.to_s}", target: :_blank
+                  
+                
         .row
           .newsfeed_comment.small-11.columns.small-offset-0
 
