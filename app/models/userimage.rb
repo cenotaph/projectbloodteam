@@ -5,7 +5,7 @@ class Userimage < ActiveRecord::Base
   belongs_to :entry, :polymorphic => true
   has_attached_file :image,
     :default_url => '/img/no_image.png',
-    :styles => {:thumb => "150x150>", :full => "600x450>", :fuller => "1920x1024>"}, 
+    :styles => {:thumb => "150x150>", :full => "1024x768>", :fuller => "1920x1440>"}, 
     :path =>  ":rails_root/public/images/:entry_type/:entry_id/:mystyle:basename.:extension",
     :url => "/images/:entry_type/:entry_id/:mystyle:basename.:extension"
     
