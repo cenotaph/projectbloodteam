@@ -35,7 +35,7 @@
     
       .row
         .small-12.columns
-          - @imports.each do |import|
+          - @imports.sort_by(&:year).each do |import|
             - next if import.processed == true
             .row.imports{class: cycle('odd', 'even')}
               .small-2.columns
@@ -55,7 +55,7 @@
     
       .row
         .small-12.columns
-          - @imports.each do |import|
+          - @imports.sort_by(&:year).each do |import|
             - next if import.processed == false
             .row.imports{class: cycle('odd', 'even')}
               .small-3.columns
