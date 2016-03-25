@@ -55,7 +55,7 @@ class ImportsController  < ApplicationController
             newentry[columns[index]]  = c
             if columns[index] == 'cost'
               if c =~ /£/
-                newentry.currency = Currency.find_by(code: 'GBP')
+                newentry.currency_id = Currency.find_by(code: 'GBP').id
               elsif c =~ /€/
                 newentry.currency = Currency.find_by(code: 'EUR')
               else
