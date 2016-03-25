@@ -31,7 +31,7 @@ class SearchController < ApplicationController
     end
     
     for cat in scope do
-      hits =  cat.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 999)
+      hits =  cat.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 10)
       unless hits.empty?
         hits.each do |hit|
           if params[:search_scope] =~ /^\d+$/
