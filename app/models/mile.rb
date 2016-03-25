@@ -11,6 +11,8 @@ class Mile < ActiveRecord::Base
 
     
   include ItemHelpers
+  
+  belongs_to :currency
 
   def name
     station

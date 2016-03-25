@@ -12,6 +12,7 @@ class Event < ActiveRecord::Base
   
   reverse_geocoded_by :my_latitude, :my_longitude
   has_many :comments, -> { where('item_type = \'Event\'')}, :foreign_key => 'foreign_id', :dependent => :destroy
+  belongs_to :currency
   
   include Item
   
