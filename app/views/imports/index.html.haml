@@ -25,7 +25,7 @@
             .small-10.columns
               = semantic_form_for @import = Import.new, html: {multipart: true }  do |f|
                 = f.input :year, as: :select, collection:  2007.downto(2002).to_a
-                = f.input :category, as: :select, collection: ['Activity', 'Airport', 'Bar', 'Brewing', 'Concert', 'Event', 'Gambling', 'Grocery', 'Mile', 'Music Played', 'Restaurant', 'Takeaway']
+                = f.input :category, as: :select, collection: ['Activity', 'Airport', 'Bar', 'Brewing', 'Concert', 'Event', 'Gambling', 'Grocery', 'Mile', 'Musicplayed', 'Restaurant', 'Takeaway']
                 = f.input :csvfile
                 = submit_tag 'Upload'
 

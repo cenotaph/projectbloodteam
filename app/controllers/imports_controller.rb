@@ -47,7 +47,7 @@ class ImportsController  < ApplicationController
       columns = params[:column].sort.map(&:last)
       @import.importbacklogs.each do |line|
         newentry = @import.category.constantize.new
-        newentry.agent_id = current_agent.id
+        
         CSV.parse(line.csvline).each do |csv|
           csv.each_with_index do |c, index|
             next if columns[index] == 'nil'
@@ -58,6 +58,7 @@ class ImportsController  < ApplicationController
             end
           end
         end
+        newentry.agent_id = current_agent.id
         if newentry.save!
           line.imported = true
           line.pbtentry = newentry
