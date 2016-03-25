@@ -4,7 +4,7 @@
       %h2
         Processing 
         = @import.csvfile_file_name
-      %p Set your columns below and then click 'process'.
+      %p Set your columns below and then click 'process'. Select 'nil' to skip a column. Don't duplicate columns! Use the appropriate system default column names - you can go back and rename columns for a given year/category later.
       
   .row.setline
     = form_tag process_columns_import_path(@import) do 

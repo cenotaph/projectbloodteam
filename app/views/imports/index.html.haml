@@ -5,7 +5,21 @@
 
       .row
         .small-10.columns
-          %p Please prepare your data as a .CSV file. Export each category to a separate .CSV file, and remove the header row.
+          %p 
+            Please prepare your data as a .CSV file:
+            %ol
+              %li Use OpenOffice/Libre Office. Excel does not correctly export CSV and does not deal with Unicode characters correctly.
+              %li Convert ALL dates to the format YYYY-MM-DD (ex: 2003-12-21)
+              %li Convert decimals to American style (with . instead of , for decimal places)
+              %li Save each category as a separate CSV.
+              %li Save only the data fields - do not include header rows, total rows, borders or other decorations. Try cutting and pasting these fields to a new spreadsheet and saving that as .CSV.
+              %li Upload the CSV below and choose the appropriate category and year.
+          %p
+            You can look at your 
+            = link_to 'history graph', history_agent_path(current_agent.slug)
+            to see what categories already have content. Do not duplicate content!
+          %p After you have uploaded each .CSV, it will appear in your import queue to the right. Click 'process' on each one to go to the next step.
+          %p Only non-master categories can be imported at this moment. Thank you for your patience!
     
           .row
             .small-10.columns
