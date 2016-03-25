@@ -58,7 +58,11 @@ class ImportsController  < ApplicationController
               elsif c =~ /€/
                 newentry.currency = Currency.find_by(code: 'EUR')
               else
-                newentry.currency = Currency.find_by(code: Monetize.parse(c.encode("cp1252").force_encoding("UTF-8")).currency.iso_code)
+                begin
+                  newentry.currency_id = Currency.find_by(code: Monetize.parse(c.encode("cp1252").force_encoding("UTF-8")).currency.iso_code)
+                rescue
+                  newentry.currency_id = 1
+                end
               end
               newentry[columns[index]]  = Monetize.parse(c.encode("cp1252").force_encoding("UTF-8")).to_f
             end
