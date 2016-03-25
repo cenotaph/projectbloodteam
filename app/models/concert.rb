@@ -11,7 +11,7 @@ class Concert < ActiveRecord::Base
   end
   reverse_geocoded_by :my_latitude, :my_longitude
   
-
+  belongs_to :currency
   
   include ItemHelpers
 

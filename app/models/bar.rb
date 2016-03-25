@@ -15,6 +15,7 @@ class Bar < ActiveRecord::Base
   has_many :comments, -> { where('item_type = \'Bar\'')}, :foreign_key => 'foreign_id', :dependent => :delete_all
 
 
+  belongs_to :currency
   
   include ItemHelpers
   

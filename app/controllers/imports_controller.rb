@@ -46,6 +46,7 @@ class ImportsController  < ApplicationController
     else
       columns = params[:column].sort.map(&:last)
       @import.importbacklogs.each do |line|
+        next if line.imported == true && !line.pbtentry.nil?
         newentry = @import.category.constantize.new
         
         CSV.parse(line.csvline).each do |csv|
@@ -64,7 +65,7 @@ class ImportsController  < ApplicationController
                   newentry.currency_id = 1
                 end
               end
-              newentry[columns[index]]  = Monetize.parse(c.encode("cp1252").force_encoding("UTF-8")).to_f
+              newentry[columns[index]]  = Monetize.parse(c).to_f
             end
           end
         end

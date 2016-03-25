@@ -15,7 +15,7 @@
       %br/
       = submit_tag 'Process!'
   - @import.importbacklogs.each do |line|
-
+    - next if line.imported == true
     .row.imports{class: cycle('even', 'odd')}
       - CSV.parse(line.csvline).each do |csv|
         - csv.each do |c|
