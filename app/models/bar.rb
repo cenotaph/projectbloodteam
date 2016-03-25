@@ -20,7 +20,9 @@ class Bar < ActiveRecord::Base
   include ItemHelpers
   
 
-
+  def currency_id=(value)
+    self[:currency_id] = value
+  end
   
   def metadata
     {'name' => self.name, 'date' => self.date,
