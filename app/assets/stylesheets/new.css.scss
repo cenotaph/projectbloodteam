@@ -880,3 +880,17 @@ a.anchor {
     }
   }
 }
+
+.import_container {
+  .row.imports {
+    border-top: 1px dotted $primary-color;
+    font-size: 0.875rem;
+    &.even {
+      background-color: #efefef
+    }
+    .cell {
+      border-right: 1px dotted $primary-color;
+
+    }
+  }
+}

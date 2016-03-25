@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  import_id: 
+  csvline: MyText
+  imported: false
+  pbtentry_id: 
+
+two:
+  import_id: 
+  csvline: MyText
+  imported: false
+  pbtentry_id: 

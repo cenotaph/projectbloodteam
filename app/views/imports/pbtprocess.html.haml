@@ -1,0 +1,25 @@
+.import_container
+  .row
+    .small-12.columns
+      %h2
+        Processing 
+        = @import.csvfile_file_name
+      %p Set your columns below and then click 'process'.
+      
+  .row.setline
+    = form_tag process_columns_import_path(@import) do 
+      - CSV.parse(@import.importbacklogs.first.csvline).each do |e|
+        - e.each_with_index do |s, index|
+          .small-1.columns.cell{class: e.last == s ? :end : false}
+            = select_tag "column[#{index}]", options_for_select( @import.category.constantize.columns.delete_if{|x| ['id', 'agent_id', 'delta', 'geolocation_id', 'currency_id'].include?(x.name)}.map{|s|[s.name, s.name]} + ['nil'])
+      %br/
+      = submit_tag 'Process!'
+  - @import.importbacklogs.each do |line|
+
+    .row.imports{class: cycle('even', 'odd')}
+      - CSV.parse(line.csvline).each do |csv|
+        - csv.each do |c|
+          - if c.nil?
+            .small-1.columns.cell &nbsp;
+          - else
+            .small-1.columns.cell{class: csv.last == c ? :end : false}= truncate_html(c, length: 20)

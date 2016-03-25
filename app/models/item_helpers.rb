@@ -141,9 +141,7 @@ module ItemHelpers
   def others
     []
   end
-  #
-  # def referred_by
-  #   if self.
+
   
   def similars
     out = []

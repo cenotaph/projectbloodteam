@@ -1,0 +1,57 @@
+.import_container
+  .row
+    .medium-6.columns.small-12
+      %h2 Import old data
+
+      .row
+        .small-10.columns
+          %p Please prepare your data as a .CSV file. Export each category to a separate .CSV file, and remove the header row.
+    
+          .row
+            .small-10.columns
+              = semantic_form_for @import = Import.new, html: {multipart: true }  do |f|
+                = f.input :year, as: :select, collection:  2007.downto(2002).to_a
+                = f.input :category, as: :select, collection: ['Activity', 'Airport', 'Bar', 'Brewing', 'Concert', 'Event', 'Gambling', 'Grocery', 'Mile', 'Music Played', 'Restaurant', 'Takeaway']
+                = f.input :csvfile
+                = submit_tag 'Upload'
+
+
+    .medium-6.columns.small-12
+      %h2 Your import queue
+    
+      .row
+        .small-12.columns
+          - @imports.each do |import|
+            - next if import.processed == true
+            .row.imports{class: cycle('odd', 'even')}
+              .small-2.columns
+                %small= import.csvfile_file_name
+              .small-3.columns
+                = import.year + " " + import.category.pluralize
+              .small-2.columns
+                = import.importbacklogs.where(imported: true).size 
+                = " / "
+                = import.importbacklogs.size
+                %small= " processed"
+              .small-4.columns
+                = link_to 'Process', pbtprocess_import_path(import), class: [:button, :tiny, :secondary]
+                = link_to 'Delete', import, method: :delete, data: {confirm: 'Are you sure?'}, class: [:button, :tiny, :alert]
+                
+      %h2 Your completed imports
+    
+      .row
+        .small-12.columns
+          - @imports.each do |import|
+            - next if import.processed == false
+            .row.imports{class: cycle('odd', 'even')}
+              .small-3.columns
+                = import.csvfile_file_name
+              .small-3.columns
+                = import.year + " " + import.category.pluralize
+              .small-5.columns.end
+                = import.importbacklogs.where(imported: true).size 
+                = " / "
+                = import.importbacklogs.size
+                = " processed"
+                       
+                

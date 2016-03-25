@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106102815) do
+ActiveRecord::Schema.define(version: 20160325134127) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "agent_id",       limit: 4
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "currency_id",    limit: 4
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "geolocation_id", limit: 4
   end
 
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.string   "role",                   limit: 12
     t.string   "username",               limit: 24
     t.string   "imageurl",               limit: 255
-    t.boolean  "active",                 limit: 1,     default: false
+    t.boolean  "active",                               default: false
     t.datetime "created"
     t.string   "headingsize",            limit: 5,     default: "0.9em"
     t.string   "rowsize",                limit: 5,     default: "0.8em"
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.string   "twitpasswd",             limit: 48
     t.string   "remember_token",         limit: 255
     t.datetime "remember_created_at"
-    t.boolean  "email_notify",           limit: 1,     default: false,     null: false
+    t.boolean  "email_notify",                         default: false,     null: false
     t.integer  "security",               limit: 4,     default: 0,         null: false
     t.string   "password_salt",          limit: 255,   default: "",        null: false
     t.string   "reset_password_token",   limit: 255
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "label_id",       limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "geolocation_id", limit: 4
   end
 
@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "currency_id",    limit: 4
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "geolocation_id", limit: 4
   end
 
@@ -131,10 +131,12 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.text     "comment",        limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "first",          limit: 1,     default: true
+    t.boolean  "first",                        default: true
     t.integer  "currency_id",    limit: 4
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.string   "userimage",      limit: 255
+    t.boolean  "abandoned"
+    t.date     "abandoned_at"
   end
 
   add_index "books", ["agent_id"], name: "books_agent_idx", using: :btree
@@ -149,7 +151,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.float    "cost",           limit: 24
     t.text     "comment",        limit: 65535
     t.string   "userimage",      limit: 255
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "currency_id",    limit: 4
     t.integer  "agent_id",       limit: 4
     t.integer  "label_id",       limit: 4
@@ -194,7 +196,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "agent_id",   limit: 4
-    t.boolean  "delta",      limit: 1
+    t.boolean  "delta"
   end
 
   create_table "concerts", force: :cascade do |t|
@@ -212,7 +214,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "currency_id",    limit: 4
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "geolocation_id", limit: 4
   end
 
@@ -225,7 +227,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.string   "symbol",    limit: 12
     t.datetime "created"
     t.datetime "modified"
-    t.boolean  "unitafter", limit: 1,  default: false, null: false
+    t.boolean  "unitafter",            default: false, null: false
   end
 
   create_table "eating", force: :cascade do |t|
@@ -251,7 +253,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "label_id",       limit: 4
     t.text     "comment",        limit: 65535
     t.string   "userimage",      limit: 80
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
   end
 
   create_table "entries", force: :cascade do |t|
@@ -278,7 +280,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "currency_id",    limit: 4
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "geolocation_id", limit: 4
   end
 
@@ -287,7 +289,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
   create_table "exchanges", force: :cascade do |t|
     t.integer  "basecurrency_id",  limit: 4
     t.integer  "othercurrency_id", limit: 4
-    t.boolean  "entire_year",      limit: 1
+    t.boolean  "entire_year"
     t.date     "sample_date"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -307,7 +309,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "reps",       limit: 4
     t.text     "comment",    limit: 65535
     t.string   "userimage",  limit: 80
-    t.boolean  "delta",      limit: 1
+    t.boolean  "delta"
   end
 
   create_table "favoritemovies", force: :cascade do |t|
@@ -324,7 +326,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.text     "body",       limit: 65535
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.boolean  "delta",      limit: 1
+    t.boolean  "delta"
     t.string   "slug",       limit: 255
   end
 
@@ -342,7 +344,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "currency_id",    limit: 4
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "geolocation_id", limit: 4
   end
 
@@ -361,7 +363,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.float    "cost",           limit: 24
     t.text     "comment",        limit: 65535
     t.string   "userimage",      limit: 255
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "currency_id",    limit: 4
     t.integer  "agent_id",       limit: 4
     t.integer  "label_id",       limit: 4
@@ -384,7 +386,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.string   "currency",       limit: 8
     t.float    "cost",           limit: 24
     t.float    "rating",         limit: 24
-    t.boolean  "first",          limit: 1
+    t.boolean  "first"
     t.text     "comments",       limit: 65535
     t.datetime "created",                      null: false
     t.string   "difficulty",     limit: 25
@@ -438,17 +440,32 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created",                null: false
   end
 
-  create_table "imports", force: :cascade do |t|
-    t.integer  "agent_id",            limit: 4
-    t.string   "upload_file_name",    limit: 255
-    t.string   "upload_content_type", limit: 255
-    t.integer  "upload_file_size",    limit: 4
-    t.datetime "upload_updated_at"
-    t.string   "category",            limit: 255
-    t.boolean  "finished",            limit: 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "importbacklogs", force: :cascade do |t|
+    t.integer  "import_id",     limit: 4
+    t.text     "csvline",       limit: 65535
+    t.boolean  "imported",                    default: false, null: false
+    t.integer  "pbtentry_id",   limit: 4
+    t.string   "pbtentry_type", limit: 255
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
+
+  add_index "importbacklogs", ["import_id"], name: "index_importbacklogs_on_import_id", using: :btree
+
+  create_table "imports", force: :cascade do |t|
+    t.integer  "agent_id",             limit: 4
+    t.string   "year",                 limit: 255
+    t.string   "category",             limit: 255
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.string   "csvfile_file_name",    limit: 255
+    t.string   "csvfile_content_type", limit: 255
+    t.integer  "csvfile_file_size",    limit: 4
+    t.datetime "csvfile_updated_at"
+    t.boolean  "processed",                        default: false, null: false
+  end
+
+  add_index "imports", ["agent_id"], name: "index_imports_on_agent_id", using: :btree
 
   create_table "labels", force: :cascade do |t|
     t.integer  "agent_id",   limit: 4
@@ -464,7 +481,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "agent_id",    limit: 4,                    null: false
     t.date     "date"
     t.date     "ended"
-    t.boolean  "is_out",      limit: 1,     default: true, null: false
+    t.boolean  "is_out",                    default: true, null: false
     t.string   "name",        limit: 255,                  null: false
     t.string   "material",    limit: 80
     t.string   "other_party", limit: 80,                   null: false
@@ -473,7 +490,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.string   "userimage",   limit: 80
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "delta",       limit: 1
+    t.boolean  "delta"
   end
 
   create_table "master_books", force: :cascade do |t|
@@ -504,9 +521,9 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "height",                limit: 4
     t.integer  "width",                 limit: 4
     t.datetime "filename_updated_at"
-    t.boolean  "delta",                 limit: 1
+    t.boolean  "delta"
     t.string   "english_title",         limit: 255
-    t.boolean  "audited",               limit: 1,     default: false, null: false
+    t.boolean  "audited",                             default: false, null: false
   end
 
   create_table "master_musics", force: :cascade do |t|
@@ -525,7 +542,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "width",                 limit: 4
     t.datetime "filename_updated_at"
     t.integer  "masterdiscogs_id",      limit: 4
-    t.boolean  "converted",             limit: 1,     default: false, null: false
+    t.boolean  "converted",                           default: false, null: false
   end
 
   create_table "master_tvseries", force: :cascade do |t|
@@ -537,7 +554,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "height",             limit: 4
     t.integer  "width",              limit: 4
     t.datetime "image_updated_at"
-    t.boolean  "delta",              limit: 1
+    t.boolean  "delta"
     t.string   "slug",               limit: 255
     t.integer  "imdbcode",           limit: 4
     t.datetime "created_at"
@@ -574,7 +591,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "currency_id", limit: 4
     t.text     "comment",     limit: 65535
     t.string   "userimage",   limit: 80
-    t.boolean  "delta",       limit: 1
+    t.boolean  "delta"
   end
 
   create_table "movies", force: :cascade do |t|
@@ -591,11 +608,11 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "label_id",        limit: 4
     t.text     "comment",         limit: 65535
     t.datetime "created_at"
-    t.boolean  "is_short",        limit: 1,     default: false
+    t.boolean  "is_short",                      default: false
     t.datetime "updated_at"
-    t.boolean  "first",           limit: 1,     default: true
+    t.boolean  "first",                         default: true
     t.integer  "currency_id",     limit: 4
-    t.boolean  "delta",           limit: 1
+    t.boolean  "delta"
     t.string   "userimage",       limit: 255
     t.integer  "geolocation_id",  limit: 4
   end
@@ -613,7 +630,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "label_id",       limit: 4
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "geolocation_id", limit: 4
   end
 
@@ -630,9 +647,9 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.date     "received"
     t.string   "procurement",     limit: 255,   default: "0"
     t.datetime "updated_at"
-    t.boolean  "isnew",           limit: 1
+    t.boolean  "isnew"
     t.integer  "currency_id",     limit: 4
-    t.boolean  "delta",           limit: 1
+    t.boolean  "delta"
     t.string   "userimage",       limit: 255
   end
 
@@ -644,6 +661,18 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.string   "category",   limit: 40
     t.string   "action",     limit: 10
     t.datetime "time"
+  end
+
+  create_table "old_imports", force: :cascade do |t|
+    t.integer  "agent_id",            limit: 4
+    t.string   "upload_file_name",    limit: 255
+    t.string   "upload_content_type", limit: 255
+    t.integer  "upload_file_size",    limit: 4
+    t.datetime "upload_updated_at"
+    t.string   "category",            limit: 255
+    t.boolean  "finished"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -662,7 +691,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.string   "location",            limit: 50
     t.string   "missionname",         limit: 255,                        null: false
     t.string   "imageurl",            limit: 255
-    t.boolean  "active",              limit: 1,     default: false,      null: false
+    t.boolean  "active",                            default: false,      null: false
     t.integer  "defaultcurrency_id",  limit: 4,     default: 1,          null: false
     t.string   "dateformat",          limit: 16,    default: "%Y-%m-%d", null: false
     t.integer  "theme_id",            limit: 4,     default: 1,          null: false
@@ -671,7 +700,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "customrss",           limit: 65535
-    t.boolean  "showtwitter",         limit: 1,     default: true,       null: false
+    t.boolean  "showtwitter",                       default: true,       null: false
     t.string   "delicious",           limit: 40
     t.string   "deliciouspw",         limit: 40
     t.string   "avatar_file_name",    limit: 255
@@ -679,7 +708,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.string   "avatar_content_type", limit: 255
     t.datetime "avatar_updated_at"
     t.text     "theme_settings",      limit: 65535
-    t.boolean  "shortfilms",          limit: 1
+    t.boolean  "shortfilms"
   end
 
   add_index "profiles", ["year", "agent_id"], name: "year", unique: true, using: :btree
@@ -704,10 +733,10 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.text     "comment",       limit: 65535
     t.string   "userimage",     limit: 80
     t.integer  "label_id",      limit: 4
-    t.boolean  "priv",          limit: 1,     default: false, null: false
+    t.boolean  "priv",                        default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "delta",         limit: 1
+    t.boolean  "delta"
   end
 
   create_table "references", force: :cascade do |t|
@@ -739,7 +768,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "currency_id",    limit: 4
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "geolocation_id", limit: 4
   end
 
@@ -770,14 +799,14 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "currency_id",    limit: 4
-    t.boolean  "delta",          limit: 1
+    t.boolean  "delta"
     t.integer  "geolocation_id", limit: 4
   end
 
   create_table "themes", force: :cascade do |t|
     t.string   "name",        limit: 24
     t.text     "description", limit: 65535
-    t.boolean  "active",      limit: 1,     default: false
+    t.boolean  "active",                    default: false
     t.datetime "created"
     t.datetime "modified"
     t.text     "defaultcss",  limit: 65535
@@ -791,7 +820,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.integer  "season",             limit: 4
     t.float    "rating",             limit: 24
     t.text     "comment",            limit: 65535
-    t.boolean  "first",              limit: 1
+    t.boolean  "first"
     t.string   "userimage",          limit: 255
     t.string   "location",           limit: 255
     t.string   "venue_address",      limit: 255
@@ -811,7 +840,7 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.string   "image_content_type", limit: 255
     t.integer  "image_file_size",    limit: 4
     t.datetime "image_updated_at"
-    t.boolean  "primary",            limit: 1
+    t.boolean  "primary"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image_remote_url",   limit: 255
@@ -829,9 +858,9 @@ ActiveRecord::Schema.define(version: 20150106102815) do
     t.float    "rating",              limit: 24
     t.integer  "label_id",            limit: 4
     t.text     "comment",             limit: 65535
-    t.boolean  "first",               limit: 1
+    t.boolean  "first"
     t.integer  "currency_id",         limit: 4
-    t.boolean  "delta",               limit: 1
+    t.boolean  "delta"
     t.string   "userimage",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -933,4 +962,5 @@ ActiveRecord::Schema.define(version: 20150106102815) do
 
   add_index "weight", ["currency_id"], name: "index_weight_on_currency_id", using: :btree
 
+  add_foreign_key "importbacklogs", "imports"
 end

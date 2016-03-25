@@ -48,7 +48,7 @@
             - if entry.entry.respond_to?('master')
               - unless entry.entry.master.references.empty?
                 .referenced_indicator
-                  = link_to raw("referenced by #{pluralize(entry.entry.master.references.size, 'other entry')} " + fa_icon('arrow-right')), '#', onclick: "$('#reference_list_#{entry.id.to_s}').slideToggle();$(this).find('i').toggleClass('fa-arrow-right fa-arrow-down');"
+                  = link_to raw("referenced by #{pluralize(entry.entry.master.references.size, 'other entry')} " + fa_icon('arrow-right')), '#', onclick: "$('#reference_list_#{entry.id.to_s}').slideToggle();$(this).find('i').toggleClass('fa-arrow-right fa-arrow-down');return false;"
                 %ol.reference_list{id: 'reference_list_' + entry.id.to_s}
                   - entry.entry.master.references.each do |ref|
                     %li

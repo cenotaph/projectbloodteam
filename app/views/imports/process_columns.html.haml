@@ -1,0 +1,19 @@
+
+- rejected = @import.importbacklogs.reject{|x| x.imported == true}
+
+.import_container
+  - if rejected.empty?
+    .row
+      .small-12.columns
+        %h3 All imported successfully!
+        
+        %p= link_to "Return to your imports page", '/imports'
+  - else
+    .row
+      .small-12.columns
+        %h4 Errors:
+        
+        %p There were problems with the following entries. Please try to correct these in OpenOffice and try importing a new sheet with just the error lines.
+        
+        - rejected.each do |line|
+          %p= line.csvline

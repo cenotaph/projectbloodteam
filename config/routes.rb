@@ -20,6 +20,12 @@ Pbt4::Application.routes.draw do
     end
   end
   resources :css
+  resources :imports do
+    member do
+      get :pbtprocess
+      post :process_columns
+    end
+  end
   resources :geolocations do
     member do
       match '/merge_location/:second_id' => 'geolocations#merge', via: :get

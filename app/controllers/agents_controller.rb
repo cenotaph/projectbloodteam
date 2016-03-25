@@ -69,8 +69,10 @@ class AgentsController < ApplicationController
           @history[category.to_s][year] = 0
         end
       end
-      records = category.where(:agent_id => params[:id]).group_by{|x| x.date.strftime('%Y') }.map{|year, entries| {year => entries.count} }
+      records = category.where(agent_id: @agent.id).group_by{|x| x.date.strftime('%Y') }.map{|year, entries| {year => entries.count} }
+
       records.each do |hash|
+      
         @history[category.to_s][hash.keys.first.to_i] = hash.values.first
       end
       @href = []
@@ -85,7 +87,9 @@ class AgentsController < ApplicationController
       end
       @history
       @data = @history.map{|x| x.last.values}.flatten 
+
     end
+ 
     # exit
   end
 

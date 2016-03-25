@@ -2,7 +2,7 @@
 # source 'http://gemcutter.org'
 # source 'https://rubygems.org'
 ruby '2.2.2'
-gem 'rails', '4.2.5'
+gem 'rails', '4.2.6'
 gem 'mysql2'
 gem 'sass-rails', '5.0.4'
 gem 'uglifier', '>= 1.3.0'
@@ -61,6 +61,8 @@ gem 'imdb', github: 'cenotaph/imdb'
 gem 'kaminari'
 gem 'meta-tags', require: 'meta_tags'
 gem 'mini_magick'
+gem 'monetize'
+
 gem "nested_form"
 gem "non-stupid-digest-assets"
 gem "oauth2"
