@@ -18,8 +18,20 @@ class SearchController < ApplicationController
       render :layout => getTheme(params[:oneagent] ? params[:oneagent] : params[:id], getYear), :template => getTheme(params[:id], getYear) + '/searchresults'
   end
      
+  def by_category
+    @items = Hash.new
+    @totals = Hash.new
+    cat = params[:id]
+    @searchterm = params[:search]
+    @items[cat] =  cat.constantize.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 25, page: params[:page])
+    @totals[cat] = @items[cat].total_entries
+    set_meta_tags :title => "Search: #{@searchterm}"
+    render :template => 'shared/search_results'
+  end
+  
   def simple
-    @items = []
+    @items = Hash.new
+    @totals = Hash.new
     scope = []
     case params[:search_scope]
       when 'all'
@@ -30,20 +42,35 @@ class SearchController < ApplicationController
         scope = [Movie, Book, Music, Concert, Event, Restaurant, Bar, Takeaway, Activity, Airport, Brewing, Eating,  Grocery,   Videogame]
     end
     
+    # @movies = Movie.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @books = Book.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @music = Music.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @concerts = Concerts.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @events = Event.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @restaurants = Restaurant.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 4
+    # @bar = Bar.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @takeaway = Takeaway.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @activities = Activity.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @airports = Airport.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @brewing = Brewing.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @groceries = Grocery.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    # @videogames = Videogame.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)
+    
     for cat in scope do
-      hits =  cat.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 10)
-      unless hits.empty?
-        hits.each do |hit|
-          if params[:search_scope] =~ /^\d+$/
-            next if hit.agent_id.to_s != params[:search_scope]
-          elsif params[:search_scope] == 'forums'
-            if hit.class == Comment
-              next unless hit.item_type == 'Forum'
-            end
-          end
-          @items << hit
-        end
-      end
+      @items[cat.to_s] = cat.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 25)
+      @totals[cat.to_s] = @items[cat.to_s].total_entries
+      # unless @items[cat.to_s].empty?
+#         @items[cat.to_s].each do |hit|
+#           if params[:search_scope] =~ /^\d+$/
+#             next if hit.agent_id.to_s != params[:search_scope]
+#           elsif params[:search_scope] == 'forums'
+#             if hit.class == Comment
+#               next unless hit.item_type == 'Forum'
+#             end
+#           end
+#           @items[cat.to_s] << hit
+#         end
+#       end
     end
     
 

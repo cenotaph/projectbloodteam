@@ -13,6 +13,7 @@ Pbt4::Application.routes.draw do
   match '/agents/rss/:id/:password.:format', :controller => 'agents', :action => 'rss', via: :get
   match '/missing_profile', :controller => :home, :action => :missing_profile, via: :get
   match '/search/simple', :controller => 'search', :action => 'simple', via: :post
+  match '/search/category', controller: :search, :action => :by_category, via: :get
   resources :stats do
     collection do
       get :gbp

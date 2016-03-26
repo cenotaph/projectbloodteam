@@ -881,6 +881,8 @@ a.anchor {
   }
 }
 
+
+
 .import_container {
   .row.imports {
     border-top: 1px dotted $primary-color;
@@ -889,8 +891,15 @@ a.anchor {
       background-color: #efefef
     }
     .cell {
-      border-right: 1px dotted $primary-color;
+      border-right: 1px dotted $primary-color;;
 
     }
+  }
+}
+
+.search_header {
+  font-size: 0.9rem;
+  &.even {
+    background-color: #efefef
   }
 }

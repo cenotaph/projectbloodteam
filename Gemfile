@@ -73,8 +73,6 @@ gem 'randumb'
 gem 'responders', '2.0.2'
 
 gem 'themes_for_rails', github: 'cenotaph/themes_for_rails', branch: 'master'
-gem 'thinking-sphinx', '~> 3.1.2',
-  :git    => 'git://github.com/pat/thinking-sphinx.git',
-  :branch => 'develop',
-  :ref    => '87928c9298'
+gem 'thinking-sphinx', '3.1.4'
+
 gem 'truncate_html'

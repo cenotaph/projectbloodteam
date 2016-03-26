@@ -1,7 +1,7 @@
 .magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
   %dl.sub-nav
-    - @items.group_by(&:class).each_with_index do |item_type, i|
-      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "type_#{item_type.first.to_s}"}= link_to item_type.first.to_s.pluralize + " (#{item_type.last.size.to_s})", "#type_#{item_type.first.to_s}"
+    - @items.keys.each_with_index do |item_type, i|
+      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "type_#{item_type.to_s}"}= link_to item_type.to_s.pluralize + " (#{@totals[item_type]})", "#type_#{item_type.to_s}"
       
 .container      
   .row.with_title
@@ -10,22 +10,26 @@
     
   .row
     .small-12.columns
-      = pluralize(@items.size, 'search result')
+      
+      = pluralize( @totals.values.sum , 'search result')
       - if !agent_signed_in?
         - missing = @items.reject{|x| x.agent.security == 0}.size
         - if missing > 0
           %em= " (#{pluralize(missing, 'protected entry')} in search results that are only visible to other PBT agents.)"
         - @items.delete_if{|x| x.agent.security != 0}
       = "for '#{@searchterm}'"
-  - @items.group_by{|x| x.class}.each do |cl|
-    %a{name: "type_#{cl.first.to_s}"}
-    .search_header.row{:"data-magellan-destination" => "type_#{cl.first.to_s}"}
+  - @items.each do |cl, hits|
+    %a{name: "type_#{cl}"}
+    .search_header.row{:"data-magellan-destination" => "type_#{cl}", class: cycle('odd', 'even')}
       .small-8.columns
-        %h4= pluralize(cl.last.size, cl.first.to_s)
-    
-    - cl.last.each do |item|
-      .row.search_result
-        .small-8.columns.small-offset-2.item_listing= render :partial => 'shared/item', :locals => {:item =>  item, :searchterm => @searchterm, master: nil}
+        %h4= pluralize(@totals[cl], cl)
+        - if @totals[cl] > 25
+          %small Showing only 25 per page.
+          = paginate hits, params: {:controller => 'search', :action => 'by_category', id: cl}
+      .small-12.columns
+        - hits.each do |item|
+          .row.search_result
+            .small-8.columns.small-offset-2.item_listing= render :partial => 'shared/item', :locals => {:item =>  item, :searchterm => @searchterm, master: nil}
 
 = content_for :jquery do
   :plain
