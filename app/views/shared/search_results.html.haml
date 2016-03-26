@@ -8,10 +8,11 @@
     .small-12.columns
 
       %h2= "Search results for #{@searchterm}"
-- unless @map.compact.uniq.empty?
+- unless @map.blank?
   #search_map
   = render :partial => 'home/front_map', locals: {json: @map, target: 'search_map', center: @map.size > 1 ? false : @map.first }
-        
+.container      
+    
   .row
     .small-12.columns
       

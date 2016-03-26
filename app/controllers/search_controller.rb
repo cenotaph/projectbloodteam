@@ -21,10 +21,20 @@ class SearchController < ApplicationController
   def by_category
     @items = Hash.new
     @totals = Hash.new
+    @map = []
     cat = params[:id]
     @searchterm = params[:search]
     @items[cat] =  cat.constantize.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 25, page: params[:page])
     @totals[cat] = @items[cat].total_entries
+    unless @items[cat.to_s].empty?
+      @items[cat.to_s].each do |hit|
+        if hit.respond_to?(:geolocation)
+          unless hit.geolocation.nil?
+            @map.push hit.geolocation
+          end
+        end
+      end
+    end
     set_meta_tags :title => "Search: #{@searchterm}"
     render :template => 'shared/search_results'
   end
