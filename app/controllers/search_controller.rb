@@ -32,6 +32,7 @@ class SearchController < ApplicationController
   def simple
     @items = Hash.new
     @totals = Hash.new
+    @map = []
     scope = []
     case params[:search_scope]
       when 'all'
@@ -59,8 +60,15 @@ class SearchController < ApplicationController
     for cat in scope do
       @items[cat.to_s] = cat.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 25)
       @totals[cat.to_s] = @items[cat.to_s].total_entries
-      # unless @items[cat.to_s].empty?
-#         @items[cat.to_s].each do |hit|
+      unless @items[cat.to_s].empty?
+        @items[cat.to_s].each do |hit|
+          if hit.respond_to?(:geolocation)
+            unless hit.geolocation.nil?
+              @map.push hit.geolocation
+            end
+          end
+        end
+      end
 #           if params[:search_scope] =~ /^\d+$/
 #             next if hit.agent_id.to_s != params[:search_scope]
 #           elsif params[:search_scope] == 'forums'

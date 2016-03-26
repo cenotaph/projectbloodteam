@@ -15,7 +15,7 @@
         .row
           .small-1.columns.text-right.big= raw('&ldquo;')
           .small-11.columns.comment_body
-            = raw display_comment(chat)
+            = raw highlight(display_comment(chat), searchterm)
             - unless chat.userimages.empty?
               = raw one_or_slideshow(chat)
             .newsfeed_entry_link= raw "comment posted " + time_ago_in_words(chat.created_at) + " ago"
@@ -42,13 +42,14 @@
                 = chat.formatted_date
                 - chat.metadata['metadata'].each_pair do |key, value|
                   - next if value.blank?
+                  - next if view.nil?
                   - next if view.agent_column_name(chat, key).blank?
                   - next if key == 'season' 
                   .item_metadata
                     %span.item_metadata_category= chat.column_name(key) + ": "
                     -#= key.humanize + ":"
                     %span.item_metadata_value
-                      = display_metadata(key, value)
+                      = highlight(display_metadata(key, value), searchterm)
                       - if key == 'format'
                         = link_to fa_icon('external-link'), chat.linkto, :target => "_blank"
                       - if key == 'label' && master == true
@@ -77,7 +78,7 @@
                   = raw('&ldquo;') unless chat.comment.blank?
                 .small-11.columns.comment_body
                   
-                  = raw display_comment(chat)
+                  = raw highlight(display_comment(chat), searchterm)
             - unless chat.references.empty?
               .references.small-12.columns.large-2
                 .heading References:

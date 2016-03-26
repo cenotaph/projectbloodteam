@@ -2,7 +2,7 @@
 @include exports("global") {}
 @import "foundation/components/global";
 
-#map_container {
+#map_container, #search_map {
   width: 100%;
   height: 410px;
   margin-top: 2rem;

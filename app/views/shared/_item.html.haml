@@ -13,4 +13,4 @@
         .small-12.columns.title= link_to raw(item.name), item
           
       
-    .row_under= render :partial => 'shared/discussion_entry', locals: {chat: item , master: master.nil? ? false : master}
+    .row_under= render :partial => 'shared/discussion_entry', locals: {chat: item , master: master.nil? ? false : master, searchterm: searchterm}
