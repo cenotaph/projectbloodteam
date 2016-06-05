@@ -4,7 +4,7 @@ module Item
   included do 
     belongs_to :agent
   
-    has_many :references, as: :source
+    has_many :references, as: :source, :dependent => :destroy
     has_many :userimages, :as => :entry, :dependent => :destroy
     accepts_nested_attributes_for :userimages, :allow_destroy => true, :reject_if => proc { |attributes| attributes['image'].blank? && attributes['image_url'].blank?   && attributes['id'].blank?}
     belongs_to :currency
