@@ -11,7 +11,7 @@
 //= require jquery.clearfield
 //= require jquery_nested_form
 //= require punymce/puny_mce
-
+//= require markerclusterer
 
 $(function(){ $(document).foundation(); 
 
