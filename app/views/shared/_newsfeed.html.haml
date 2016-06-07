@@ -27,6 +27,7 @@
             - entry.entry.metadata['metadata'].each_pair do |key, value|
               - next if value.blank?
               - next if value == 0
+              - next if entry.entry.column_name(key).blank?
               - if key == 'cost'
                 - next if value.last.blank? 
               .item_metadata{:class => key}
@@ -173,7 +174,10 @@
         
       .large-2.columns.discussion.small-12
         .newsfeed_entry_date
-          = "entered " + time_ago_in_words(entry.created_at) + " ago in "
+          - if entry.entry.created_at != entry.entry.updated_at
+            = "updated " + time_ago_in_words(entry.created_at) + " ago in "
+          - else 
+            = "entered " + time_ago_in_words(entry.created_at) + " ago in "
           = link_to entry.entry.agent_category, "/#{entry.entry_type.tableize}"
         - if entry.entry.discussion.size > 1 || entry.entry.class == Comment
           %div{:id => "comment_preview_#{entry.id.to_s}", :style => (entry.entry.class == Comment ? 'display: none;' : '')}
@@ -181,10 +185,14 @@
               - sidecomments = entry.entry.discussion.delete_if{|z| z == entry.entry}.delete_if{|k| !show_entry?(k)}.sort{|x, y| y.created_at <=> x.created_at }[0..2].reverse
               -sidecomments.each_with_index do |comment, i|
                 - next unless show_entry?(comment)
-                .side_comment.column.small-4.large-12{:class => sidecomments[i+1].nil? ? :end : false}
+                .side_comment.column.small-4.large-12{:class => [sidecomments[i+1].nil? ? :end : false, comment.class == Comment ? 'text-right' : false]}
                   .comment_icon.column= image_tag comment.agent_icon(:small), :width => 40
                   .comment_data.column
-                    .newsfeed_agent_title= raw link_to("Agent #{comment.agent.surname} ", comment.agent)
+                    .newsfeed_agent_title
+                      = raw link_to("Agent #{comment.agent.surname} ", comment.agent)
+                      - if comment.class == Comment 
+                        commented
+                        
                     .time_when= time_ago_in_words(comment.created_at) + " ago "
                     .newsfeed_date= raw " (#{comment.formatted_date})"
 
