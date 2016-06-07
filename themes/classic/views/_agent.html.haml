@@ -13,14 +13,24 @@
         = raw one_or_slideshow(agent, nil, :thumb)
       - elsif col == 'comment'
         - unless display_column(agent, col, agent.agent_id).blank?
-          - if display_column(agent, col, agent.agent_id).length > 400
-            .reveal-modal{:id => "comment_" + agent.id.to_s, :"data-reveal" => ''}
+          - if agent.has_master?
+            - if display_column(agent, col, agent.agent_id).length > 1000
+              .reveal-modal{:id => "comment_" + agent.id.to_s, :"data-reveal" => ''}
               
-              = raw display_column(agent, col, agent.agent_id)
-            = truncate_html(display_column(agent, col, agent.agent_id), length: 400)
-            = link_to raw(fa_icon('bullhorn')), '#', "data-reveal-id" => "comment_" + agent.id.to_s
+                = raw display_column(agent, col, agent.agent_id)
+              = truncate_html(display_column(agent, col, agent.agent_id), length: 1000)
+              = link_to raw(fa_icon('bullhorn')), '#', "data-reveal-id" => "comment_" + agent.id.to_s
+            - else
+              = raw display_column(agent, col, agent.agent_id)       
           - else
-            = raw display_column(agent, col, agent.agent_id)
+            - if display_column(agent, col, agent.agent_id).length > 550
+              .reveal-modal{:id => "comment_" + agent.id.to_s, :"data-reveal" => ''}
+              
+                = raw display_column(agent, col, agent.agent_id)
+              = truncate_html(display_column(agent, col, agent.agent_id), length: 550)
+              = link_to raw(fa_icon('bullhorn')), '#', "data-reveal-id" => "comment_" + agent.id.to_s
+            - else
+              = raw display_column(agent, col, agent.agent_id)
       - else
         = highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text])
         - if col == 'finished' && !display_column(agent, col, agent.agent_id).blank?
