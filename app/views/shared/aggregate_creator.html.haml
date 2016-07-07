@@ -29,13 +29,13 @@
         - if title.respond_to?(:other_versions)
           - unless title.other_versions.empty?
             - title.all_versions.map(&:discussion).flatten.uniq.sort_by(&:date).each do |chat|
-              .item_listing= render :partial => "shared/discussion_entry", locals: {:chat => chat, master: true}
+              .item_listing= render :partial => "shared/discussion_entry", locals: {:chat => chat, master: true, :searchterm => nil}
           - else
             - title.discussion.each do |chat|
-              .item_listing= render :partial => "shared/discussion_entry", locals: {:chat => chat, master: true}
+              .item_listing= render :partial => "shared/discussion_entry", locals: {:chat => chat, master: true , :searchterm => nil}
         - else
           - title.discussion.each do |chat|
-            .item_listing= render :partial => "shared/discussion_entry", locals: {:chat => chat, master: true}
+            .item_listing= render :partial => "shared/discussion_entry", locals: {:chat => chat, master: true, :searchterm => nil}
 
 
 = content_for :jquery do
