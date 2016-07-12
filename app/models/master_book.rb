@@ -112,7 +112,7 @@ class MasterBook < ActiveRecord::Base
   end
   
   def secondary_title
-    " <span class='small_meta'>by</span> " + self.author
+    " <span class='small_meta'>by</span> " + self.author rescue 'no author'
   end
   
   def self.query(searchterm, token = nil)
