@@ -23,7 +23,7 @@ class Comment < ActiveRecord::Base
   
   def self.paginate_with_items(page, per_page = 20) 
     page = 1 if page.nil?
-    sql = "select * from (	select id, foreign_id, agent_id, max(created_at) as created_at, max(updated_at) as updated_at, item_type from comments group by foreign_id, item_type UNION select id, id as foreign_id, agent_id, created_at, updated_at, 'Forum' as item_type from forums group by foreign_id, item_type ) c group by c.foreign_id, c.item_type  order by c.updated_at DESC"
+    sql = "select c.foreign_id, c.item_type from (	select id, foreign_id, agent_id, max(created_at) as created_at, max(updated_at) as updated_at, item_type from comments group by foreign_id, item_type, id UNION select id, id as foreign_id, agent_id, created_at, updated_at, 'Forum' as item_type from forums group by foreign_id, item_type ) c group by c.foreign_id, c.item_type  order by c.updated_at DESC"
     Kaminari.paginate_array(find_by_sql(sql).to_a).page(page).per(per_page)
   end
     
