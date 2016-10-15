@@ -10,7 +10,7 @@ class Userimage < ActiveRecord::Base
     :path => "/:entry_type/:entry_id/:mystyle:basename.:extension"
     
   after_save :set_original_userimage
-  after_save :destroy_original
+  # after_save :destroy_original
   attr_accessor :image_url
   before_validation :download_remote_image, :if => :image_url_provided?
   validates_presence_of :image_remote_url, :if => :image_url_provided?, :message => 'is invalid or inaccessible'

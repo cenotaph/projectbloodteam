@@ -1,16 +1,16 @@
 # Edit this Gemfile to bundle your application's dependencies.
 # source 'http://gemcutter.org'
-# source 'https://rubygems.org'
-ruby '2.2.2'
-gem 'rails', '4.2.6'
+source 'https://rubygems.org'
+ruby '2.3.1'
+gem 'rails', '5.0.0.1'
 gem 'mysql2'
-gem 'sass-rails', '5.0.4'
-gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.0.0'
-gem 'jquery-rails', '3.1'
+gem 'sass-rails'#, '5.0.4'
+gem 'uglifier'#, '>= 1.3.0'
+# gem 'coffee-rails'# '~> 4.0.0'
+gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-ui-themes'
-gem 'jquery-validation-rails'
+# gem 'jquery-validation-rails'
 gem 'jbuilder', '~> 1.2'
 
 gem 'execjs', :group => [:staging, :production]
@@ -19,22 +19,24 @@ gem 'execjs', :group => [:staging, :production]
 
 # gem 'activerecord', '3.0.3'
 # gem 'buntine-discogs'
-gem 'amazon-ecs', '2.3.0'
+gem 'amazon-ecs'#, github: 'jugend/amazon-ecs' #, '2.3.0'
+gem 'ruby-hmac'
 group :development do
   gem 'better_errors'
   gem "binding_of_caller"
-  gem 'quiet_assets'
+  # gem 'quiet_assets'
   gem 'spring'
 end
     
-gem 'aws-sdk'
+gem 'aws-sdk', '< 2'
 gem "bullet", :group => "development"
 #gem 'rails4_upgrade'
 
-gem 'capistrano', '~> 3.1.0'
-gem 'capistrano-rails', '~> 1.1.0'
+gem 'capistrano'#, '~> 3.1.0'
+gem 'capistrano-rails'#, '~> 1.1.0'
 gem 'capistrano-rvm'
 gem 'capistrano-bundler'
+gem 'capistrano-puma'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 # gem 'dalli', '2.6.4'
@@ -66,11 +68,11 @@ gem 'monetize'
 gem "nested_form"
 gem "non-stupid-digest-assets"
 gem "oauth2"
-gem 'paperclip'
+gem 'paperclip', :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
 # gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'
 gem 'randumb'
-gem 'responders', '2.0.2'
+# gem 'responders', '2.0.2'
 
 gem 'themes_for_rails', github: 'cenotaph/themes_for_rails', branch: 'master'
 gem 'thinking-sphinx', '3.1.4'
