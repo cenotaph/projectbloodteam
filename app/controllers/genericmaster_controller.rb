@@ -1,9 +1,9 @@
 # -*- encoding : utf-8 -*-
 class GenericmasterController < ApplicationController
   respond_to :html, :xml
-  before_filter :getView
-  before_filter :getCategory
-  before_filter :authenticate_agent!, :only => [:new, :edit, :edit_master, :update, :create, :destroy, :directid,  :unreviewed]
+  before_action :getView
+  before_action :getCategory
+  before_action :authenticate_agent!, :only => [:new, :edit, :edit_master, :update, :create, :destroy, :directid,  :unreviewed]
   theme :getTheme
   autocomplete :movie, :location
   

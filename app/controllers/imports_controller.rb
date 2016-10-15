@@ -1,6 +1,6 @@
 class ImportsController  < ApplicationController
   
-  before_filter :authenticate_agent!
+  before_action :authenticate_agent!
   
   def create
     @import = Import.new(import_params)

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class CategoriesController < ApplicationController
   
-  before_filter :authenticate_agent!
+  before_action :authenticate_agent!
   
   def edit  # edit category
     @category = Category.find_by(:agent => Agent.friendly.find(params[:id]), :year =>  getYear)

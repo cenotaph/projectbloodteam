@@ -4,8 +4,8 @@ class ApplicationController < ActionController::Base
   include ThemesForRails::ActionController 
   #include AuthenticatedSystem
 
-  before_filter :configure_permitted_parameters, if: :devise_controller?
-  before_filter :getData
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :getData
 
     
   def getTheme

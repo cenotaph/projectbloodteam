@@ -1,8 +1,8 @@
 # -*- encoding : utf-8 -*-
 class GenericController < ApplicationController
   respond_to :html, :xml
-  before_filter :getView, :getCategory
-  before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :create_references, :destroy]
+  before_action :getView, :getCategory
+  before_action :authenticate_agent!, :only => [:new, :edit, :update, :create, :create_references, :destroy]
   theme :getTheme 
   
   autocomplete :bar, :name

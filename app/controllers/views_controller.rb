@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class ViewsController < ApplicationController
   
-  before_filter :authenticate_agent!
+  before_action :authenticate_agent!
   
   def edit  # edit view
     @view = View.where(:agent_id => current_agent.id).where(:year => getYear).first

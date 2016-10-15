@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class HomeController < ApplicationController
-  before_filter :login_required, :only => [:missing_profile]
+  before_action :login_required, :only => [:missing_profile]
     
   def index
     # @random_agents = Profile.where(:year => getYear).includes(:agent).sort_by {|x| x.agent.lastlogin }.reverse[0..11]

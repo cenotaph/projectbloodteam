@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class AgentsController < ApplicationController
   respond_to :html, :rss
-  before_filter :authenticate_agent!, :only => [:your_settings, :edit, :update]
+  before_action :authenticate_agent!, :only => [:your_settings, :edit, :update]
   
   
   def change_password 

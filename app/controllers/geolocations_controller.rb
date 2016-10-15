@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class GeolocationsController < ApplicationController
   respond_to :html, :xml
-  before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]
+  before_action :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]
   
   #caches_page :index 
 

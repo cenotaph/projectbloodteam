@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class ForumsController < ApplicationController
-   before_filter :authenticate_agent!, :only => [:new, :edit, :add, :choose, :create, :update]
+   before_action :authenticate_agent!, :only => [:new, :edit, :add, :choose, :create, :update]
   
   def create
     @forum = Forum.new(forum_params)

@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class ProfilesController < ApplicationController
   respond_to :html
-  before_filter :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]
+  before_action :authenticate_agent!, :only => [:new, :edit, :update, :create, :destroy]
   
   def create
     @profile = Profile.create(profile_params)

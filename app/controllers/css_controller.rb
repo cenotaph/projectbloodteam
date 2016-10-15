@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class CssController < ApplicationController
 
-  before_filter :login_required, :only => [:edit, :update]
+  before_action :login_required, :only => [:edit, :update]
   
     # load CSS for an agent
   def show
