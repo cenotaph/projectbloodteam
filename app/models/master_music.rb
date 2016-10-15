@@ -5,10 +5,10 @@ class MasterMusic < ActiveRecord::Base
   has_many :references, as: :reference
   has_many :agents, :through => :musics
   has_attached_file :filename, :default_url => '/img/no_image.png', 
-      :path => ":rails_root/public/images/master_musics/:id/:style/:basename.:extension", 
+     #:path => ":rails_root/public/images/master_musics/:id/:style/:basename.:extension", 
       :styles => {:thumb => "150x150", :full => "450x450>"},
       :default_style => :thumb, 
-      :url => "/images/master_musics/:id/:style/:basename.:extension"
+      path: "/master_musics/:id/:style/:basename.:extension"
  
   include ItemHelpers
   validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed?

@@ -5,8 +5,8 @@ class MasterTvseries < ActiveRecord::Base
   has_many :agents, :through => :tvseries
   has_attached_file :image, :default_url => '/img/no_image.png', 
       :styles => {:thumb => "150x150>", :full => "600x450>"},
-      :path => ":rails_root/public/images/master_tvseries/:id/:style/:basename.:extension", 
-      :default_style => :full, :url => "/images/master_tvseries/:id/:style/:basename.:extension"
+      # :path => ":rails_root/public/images/master_tvseries/:id/:style/:basename.:extension",
+      :default_style => :full, path: "/master_tvseries/:id/:style/:basename.:extension"
  
   attr_accessor :followup
   include ItemHelpers

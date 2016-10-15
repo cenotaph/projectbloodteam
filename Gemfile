@@ -27,7 +27,7 @@ group :development do
   gem 'spring'
 end
     
-    
+gem 'aws-sdk'
 gem "bullet", :group => "development"
 #gem 'rails4_upgrade'
 

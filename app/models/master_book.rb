@@ -6,8 +6,8 @@ class MasterBook < ActiveRecord::Base
   has_many :agents, :through => :books
   has_attached_file :filename, :default_url => '/img/no_image.png',
   :styles => {:thumb => "150x150>", :full => "600x450>"},
-   :path => ":rails_root/public/images/master_books/:id/:style/:basename.:extension", 
-   :default_style => :original, :url => "/images/master_books/:id/:style/:basename.:extension"
+   # :path => ":rails_root/public/images/master_books/:id/:style/:basename.:extension",
+   :default_style => :original, path: "/master_books/:id/:style/:basename.:extension"
   validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed?
   include ItemHelpers
   attr_accessor :followup, :resync_image

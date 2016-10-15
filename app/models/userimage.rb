@@ -6,8 +6,8 @@ class Userimage < ActiveRecord::Base
   has_attached_file :image,
     :default_url => '/img/no_image.png',
     :styles => {:thumb => "150x150>", :full => "1024x768>", :fuller => "1920x1440>"}, 
-    :path =>  ":rails_root/public/images/:entry_type/:entry_id/:mystyle:basename.:extension",
-    :url => "/images/:entry_type/:entry_id/:mystyle:basename.:extension"
+    # :path =>  ":rails_root/public/images/:entry_type/:entry_id/:mystyle:basename.:extension",
+    :path => "/:entry_type/:entry_id/:mystyle:basename.:extension"
     
   after_save :set_original_userimage
   after_save :destroy_original

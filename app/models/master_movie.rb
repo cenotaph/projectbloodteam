@@ -6,8 +6,8 @@ class MasterMovie < ActiveRecord::Base
   has_many :agents, :through => :movies
   has_attached_file :filename, :default_url => '/img/no_image.png', 
       :styles => {:thumb => "150x150>", :full => "600x450>"},
-      :path => ":rails_root/public/images/master_movies/:id/:style/:basename.:extension", 
-      :default_style => :full, :url => "/images/master_movies/:id/:style/:basename.:extension"
+      # :path => ":rails_root/public/images/master_movies/:id/:style/:basename.:extension",
+      :default_style => :full, path: "/master_movies/:id/:style/:basename.:extension"
 
   attr_accessor :followup
   include ItemHelpers

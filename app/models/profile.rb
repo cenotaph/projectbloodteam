@@ -5,8 +5,8 @@ class Profile < ActiveRecord::Base
   belongs_to :theme
   self.primary_key = 'id'
   has_attached_file :avatar, :default_url => '/images/anonymous.gif', 
-                    :path => "#{Rails.root}/public/images/agents/:id/:style/:basename.:extension",
-                    :url => "/images/agents/:id/:style/:basename.:extension",
+                    # :path => "#{Rails.root}/public/images/agents/:id/:style/:basename.:extension",
+                    path: "/agents/:id/:style/:basename.:extension",
                     :default_style => '',
                     :styles => { 
                       :small => "75x75#",

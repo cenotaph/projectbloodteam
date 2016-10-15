@@ -31,7 +31,10 @@ Pbt4::Application.configure do
   #   Bullet.rails_logger = true
   #   Bullet.disable_browser_cache = true
   # end 
-     
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :bucket => 'pbt-production'
+  }
   # Don't care if the mailer can't send
   config.active_record.raise_in_transactional_callbacks = true
   config.action_mailer.raise_delivery_errors = false

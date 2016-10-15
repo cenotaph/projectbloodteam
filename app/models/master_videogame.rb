@@ -4,10 +4,10 @@ class MasterVideogame < ActiveRecord::Base
   has_many :videogames
   has_many :agents, :through => :videogames
   has_attached_file :filename, :default_url => '/img/no_image.png', 
-  :path => ":rails_root/public/images/master_videogames/:id/:style/:basename.:extension", 
+
   :styles => {:thumb => "150x150", :full => "450x450>"},
       :default_style => :thumb, 
-       :url => "/images/master_videogames/:id/:style/:basename.:extension"
+       path: "/master_videogames/:id/:style/:basename.:extension"
   validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed?
   include ItemHelpers
   attr_accessor :followup
