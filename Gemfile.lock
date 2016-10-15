@@ -123,14 +123,15 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.2)
     capistrano-harrow (0.5.3)
-    capistrano-puma (0.2.3)
-      capistrano (>= 3.0)
     capistrano-rails (1.1.8)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+    capistrano3-puma (1.2.1)
+      capistrano (~> 3.0)
+      puma (>= 2.6)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
@@ -245,6 +246,7 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     orm_adapter (0.5.0)
+    puma (3.6.0)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -339,9 +341,9 @@ DEPENDENCIES
   bullet
   capistrano
   capistrano-bundler
-  capistrano-puma
   capistrano-rails
   capistrano-rvm
+  capistrano3-puma
   date_validator
   devise
   devise-encryptable
@@ -371,6 +373,7 @@ DEPENDENCIES
   non-stupid-digest-assets
   oauth2
   paperclip!
+  puma
   rails (= 5.0.0.1)
   rails4-autocomplete
   randumb
