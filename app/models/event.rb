@@ -9,7 +9,7 @@ class Event < ActiveRecord::Base
   delegate :geolocation, to: :geolocation_item, allow_nil: true
   
   geocoded_by :my_address
-  after_validation do
+  after_save do
     store_geocodes unless self.dont_geocode == '1'
   end
   

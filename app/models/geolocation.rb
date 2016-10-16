@@ -85,7 +85,7 @@ class Geolocation < ActiveRecord::Base
   end
   
   def pbt_entries
-    geolocation_items.map(&:item)
+    geolocation_items.map(&:item).compact
   end
   
   def update_cache

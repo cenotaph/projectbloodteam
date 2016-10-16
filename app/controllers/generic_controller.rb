@@ -213,7 +213,7 @@ class GenericController < ApplicationController
         hits += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", @item.geolocation.latitude - 0.5, @item.geolocation.latitude + 0.5, @item.geolocation.longitude - 0.5, @item.geolocation.longitude + 0.5]).includes([{:geolocation_items => {:item => [:agent, :userimages, :comments, :references]}}]).map(&:pbt_entries).uniq.flatten
 
       end
-      @json = hits.map(&:geolocation).uniq unless hits.nil?
+      @json = hits.compact.map(&:geolocation).uniq unless hits.nil?
     end
     @view = View.find_by(:agent => @item.agent, :year => @item.date.year)
     

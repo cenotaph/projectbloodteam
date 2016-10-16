@@ -14,7 +14,7 @@ class Tvseries < ActiveRecord::Base
   geocoded_by :my_address
   validate :at_least_one_date
   
-  after_validation do
+  after_save do
     store_geocodes unless self.dont_geocode == '1'
   end
   

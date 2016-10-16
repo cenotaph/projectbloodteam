@@ -10,7 +10,7 @@ class Musicplayed < ActiveRecord::Base
   delegate :geolocation, to: :geolocation_item, allow_nil: true
   geocoded_by :my_address
   belongs_to :agent
-  after_validation do
+  after_save do
     store_geocodes unless self.dont_geocode == '1'
   end
   reverse_geocoded_by :my_latitude, :my_longitude
