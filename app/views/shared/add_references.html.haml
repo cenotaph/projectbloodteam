@@ -2,9 +2,12 @@
   = nested_form_for :references, url: create_references_path do |f|
     = f.hidden_field :source_id, value: @item.id
     = f.hidden_field :source_type, value: @item.class.to_s
-    - @potential_references.uniq.in_groups_of(3).each_with_index do |group, index|
+    - overall = 0
+    - @potential_references.uniq.in_groups_of(3).each_with_index do |group, index| 
+
       .row.choice_row
         - group.each_with_index do |pr, i|
+          - overall += 1
           - next if pr.nil?
           .small-4.columns{class: group[i + 1].nil? ? :end : false }
             .row
@@ -12,7 +15,7 @@
                 - if pr.icon
                   = image_tag pr.icon
               .small-8.columns
-                = fields_for "pr[]", pr.references.build  do |ff|
+                = fields_for "pr[#{overall}]", pr.references.build do |ff|
                   = ff.check_box :activated, checked: @item.references.map(&:reference).include?(pr)
                   = ff.hidden_field :reference_id, value: pr.id
                   = ff.hidden_field :reference_type, value: pr.class.to_s

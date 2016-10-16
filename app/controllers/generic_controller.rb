@@ -33,9 +33,14 @@ class GenericController < ApplicationController
   def create_references
     @item = params[:references][:source_type].classify.constantize.find(params[:references][:source_id])
     @item.references = []
-    params[:pr].delete_if{|x| x["activated"] == "0" }.each do |reference|
-      @item.references << Reference.new(reference_id: reference['reference_id'], reference_type: reference['reference_type'], comment: reference['comment'])
+   
+    params[:pr].delete_if{|k, v| v['activated'] == "0" }.each do |key, reference|
+      next if reference['activated'] == "0"
+     
+      @item.references << Reference.new(reference_id: reference['reference_id'], 
+                    reference_type: reference['reference_type'], comment: reference['comment'], source: @item)
     end
+   
     flash[:notice] = 'The entry has been saved.'
     @item.save!
     redirect_to url_for(@item)
@@ -244,7 +249,7 @@ class GenericController < ApplicationController
         redirect_to url_for(@item)
       else
         @potential_references = @item.check_references
-        
+      
         if @potential_references.empty? || @potential_references == @item.references
           redirect_to url_for(@item)
         else

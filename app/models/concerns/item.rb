@@ -28,7 +28,7 @@ module Item
     begin
       Nokogiri::HTML(comment).search('i').map(&:text).uniq.each do |pr|
         movies = MasterMovie.where(MasterMovie.arel_table[:title].matches('%' + pr.strip.downcase + '%'))
-        if movies.size < 5
+        if movies.size < 10
           potential_references.push(movies).flatten!
         end
         music = MasterMusic.where(MasterMusic.arel_table[:title].matches('%' + pr.strip.downcase + '%'))
@@ -36,13 +36,14 @@ module Item
           potential_references.push(music.first).flatten!
         end
         books = MasterBook.where(MasterBook.arel_table[:title].matches('%' + pr.strip.downcase + '%'))
-        if books.size < 5
+        if books.size < 10
           potential_references.push(books).flatten!
         end
         tvseries = MasterTvseries.where(MasterTvseries.arel_table[:title].matches('%' + pr.strip.downcase + '%'))
-        if tvseries.size < 5
+        if tvseries.size < 10
           potential_references.push(tvseries).flatten!
         end
+        
       end
         
     rescue

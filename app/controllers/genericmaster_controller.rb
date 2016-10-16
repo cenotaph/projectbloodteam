@@ -444,7 +444,7 @@ class GenericmasterController < ApplicationController
       @singular = @category
       @master = 'master_' + @category.downcase
       item = @singular.classify.constantize.find(params[:id])
-      @item = @master.classify.constantize.includes([:comments, :agent, :references, :userimages, 
+      @item = @master.classify.constantize.includes([:comments,  :references,
         {"#{@singular.downcase.pluralize}".to_sym => [:agent, :userimages, "#{@master.tableize.singularize}".to_sym]}
         ]).find(item.master_id)
 
@@ -551,7 +551,7 @@ class GenericmasterController < ApplicationController
             redirect_to url_for(@item)
           else
             @potential_references = @item.check_references.delete_if{|x| x == @item.master}
-          
+       
             if @potential_references.empty?
               redirect_to url_for(@item)
             else
