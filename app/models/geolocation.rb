@@ -6,18 +6,22 @@ class Geolocation < ActiveRecord::Base
   after_validation :geocode, :on => :create
   # acts_as_gmappable :process_geocoding => false
   validates_presence_of :latitude, :longitude
-  has_many :activities, :dependent => :nullify 
-  has_many :bars, :dependent => :nullify 
-  has_many :brewing, :dependent => :nullify 
-  has_many :concerts, :dependent => :nullify 
-  has_many :events, :dependent => :nullify 
-  has_many :gambling, :dependent => :nullify
-  has_many :groceries, :dependent => :nullify 
-  has_many :movies, :dependent => :nullify 
-  has_many :musicplayed, :dependent => :nullify 
-  has_many :restaurants, :dependent => :nullify 
-  has_many :takeaways, :dependent => :nullify 
-  has_many :tvseries, :dependent => :nullify 
+  belongs_to :item, polymorphic: true
+  has_many :geolocation_items
+  # has_many :items, through: :geolocation_items
+  has_many :activities, through: :geolocation_items, source: :item, source_type: 'Activity', :dependent => :destroy
+  has_many :bars, through: :geolocation_items, source: :item, source_type: 'Bar', :dependent => :destroy
+  has_many :brewing, through: :geolocation_items, source: :item, source_type: 'Brewing', :dependent => :destroy
+  has_many :concerts, through: :geolocation_items, source: :item, source_type: 'Concert', :dependent => :destroy
+  has_many :events, through: :geolocation_items, source: :item, source_type: 'Event', :dependent => :destroy
+  has_many :gambling, through: :geolocation_items, source: :item, source_type: 'Gambling', :dependent => :destroy
+  has_many :groceries, through: :geolocation_items, source: :item, source_type: 'Grocery', :dependent => :destroy
+  has_many :movies, through: :geolocation_items, source: :item, source_type: 'Movie', :dependent => :destroy
+  has_many :musicplayed, through: :geolocation_items, source: :item, source_type: 'Musicplayed', :dependent => :destroy
+  has_many :restaurants, through: :geolocation_items, source: :item, source_type: 'Restaurant', :dependent => :destroy
+  has_many :takeaways, through: :geolocation_items, source: :item, source_type: 'Takeaway', :dependent => :destroy
+  has_many :tvseries, through: :geolocation_items, source: :item, source_type: 'Tvseries', :dependent => :destroy
+
 
   # after_create :update_cache
   
@@ -81,21 +85,7 @@ class Geolocation < ActiveRecord::Base
   end
   
   def pbt_entries
-    out = []
-    out += activities
-    out += bars
-    out += brewing
-    out += concerts
-    out += events
-    out += gambling
-    out += groceries
-    out += movies
-    out += musicplayed
-    out += restaurants
-    out += takeaways
-    out += tvseries
-
-    out
+    geolocation_items.map(&:item)
   end
   
   def update_cache

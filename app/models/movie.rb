@@ -12,7 +12,9 @@ class Movie < ActiveRecord::Base
  
   validates :date, :date => {  :message => 'Invalid date.' }
 
-  belongs_to :geolocation
+
+  has_one :geolocation_item, as: :item
+  delegate :geolocation, to: :geolocation_item
   geocoded_by :my_address
   
   after_validation do

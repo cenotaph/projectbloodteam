@@ -159,11 +159,11 @@ class GenericController < ApplicationController
       filter_query = filter_query.join(" OR ")
 
     end
-    filter_query = 1 if filter_query.blank?
+    filter_query = '' if filter_query.blank?
 
     if params[:agent_id]
       @agent = Agent.find(params[:agent_id])
-      @items = @category.classify.constantize.where(:agent => @agent).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").where(filter_query).includes(joins).order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
+      @items = @category.classify.constantize.where(:agent_id => @agent.id).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").where(filter_query).includes(joins).order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
 
       if request.xhr?
         render :partial => '/agent', :collection => @items
@@ -208,9 +208,9 @@ class GenericController < ApplicationController
   def show
     @item = @category.classify.constantize.find(params[:id])
     unless !@item.respond_to?('geolocation')
-      unless @item.geolocation_id.blank?
+      unless @item.geolocation.blank?
         hits = [@item]
-        hits += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", @item.geolocation.latitude - 1.5, @item.geolocation.latitude + 1.5, @item.geolocation.longitude - 1.5, @item.geolocation.longitude + 1.5]).map(&:pbt_entries).uniq.flatten
+        hits += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", @item.geolocation.latitude - 1.5, @item.geolocation.latitude + 1.5, @item.geolocation.longitude - 1.5, @item.geolocation.longitude + 1.5]).includes([{:geolocation_items => {:item => [:agent, :userimages, :comments, :references]}}]).map(&:pbt_entries).uniq.flatten
 
       end
       @json = hits.map(&:geolocation).uniq unless hits.nil?

@@ -444,7 +444,7 @@ class GenericmasterController < ApplicationController
       @singular = @category
       @master = 'master_' + @category.downcase
       item = @singular.classify.constantize.find(params[:id])
-      @item = @master.classify.constantize.includes([:comments, 
+      @item = @master.classify.constantize.includes([:comments, :agent, :references, :userimages, 
         {"#{@singular.downcase.pluralize}".to_sym => [:agent, :userimages, "#{@master.tableize.singularize}".to_sym]}
         ]).find(item.master_id)
 

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :getData
-
+  before_action :getForum
     
   def getTheme
     # if params[:agent_id]
@@ -34,7 +34,11 @@ class ApplicationController < ActionController::Base
   
   def getData
     @active_agents = Profile.where(:year => getYear).includes(:agent).sort_by {|x| x.agent.surname  }
-    @forums = Comment.paginate_with_items(params[:page], 6)
+  end
+  
+  def getForum
+      @forums = Comment.includes([:agent, :item ]).paginate_with_items(params[:page], 6)
+  
   end
   
   def getYear

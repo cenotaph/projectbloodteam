@@ -18,7 +18,7 @@ class ProfilesController < ApplicationController
   
   def edit  # edit profile
 
-    @profile = Profile.find(params[:id])
+    @profile = Profile.includes([:currency, :theme]).find(params[:id])
     if current_agent == @profile.agent
       @profile.deliciouspw = @profile.deliciouspw.tr("A-Ma-mN-Zn-z","N-Zn-zA-Ma-m") if @profile.deliciouspw
       render :template => 'shared/profiles/edit'

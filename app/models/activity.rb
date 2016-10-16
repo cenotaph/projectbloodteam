@@ -4,7 +4,9 @@ class Activity < ActiveRecord::Base
   validates_presence_of :name, :date
   validates :date, :date => {  :message => 'Invalid date.' }
   has_many :comments, -> { where('item_type = \'Activity\'')}, :foreign_key => 'foreign_id', :dependent => :delete_all
-  belongs_to :geolocation
+
+  has_one :geolocation_item, as: :item
+  delegate :geolocation, to: :geolocation_item
   geocoded_by :my_address
   after_validation do
     store_geocodes unless self.dont_geocode == '1'

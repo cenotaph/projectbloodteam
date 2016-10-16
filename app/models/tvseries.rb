@@ -2,15 +2,15 @@ class Tvseries < ActiveRecord::Base
   self.table_name = 'tvseries'
 
   belongs_to :master_tvseries
-  belongs_to :geolocation
+
+  has_one :geolocation_item, as: :item
+  delegate :geolocation, to: :geolocation_item
   include Item
   include ItemHelpers
 
   validates_presence_of :master_tvseries_id, :agent_id, :season
   has_many :comments, -> { where( 'item_type = \'MasterTvseries\'') }, :foreign_key => 'foreign_id', :primary_key => 'master_tvseries_id'                          
 
-
-  belongs_to :geolocation
   geocoded_by :my_address
   validate :at_least_one_date
   

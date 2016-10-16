@@ -1,7 +1,4 @@
-@import "foundation/functions";
-@include exports("global") {}
-@import "foundation/components/global";
-
+@import 'variables';
 #map_container, #search_map {
   width: 100%;
   height: 410px;

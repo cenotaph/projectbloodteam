@@ -1,7 +1,9 @@
 # -*- encoding : utf-8 -*-
 class Bar < ActiveRecord::Base
   include Item
-  belongs_to :geolocation
+
+  has_one :geolocation_item, as: :item
+  delegate :geolocation, to: :geolocation_item
   geocoded_by :my_address
   after_validation do
     store_geocodes unless self.dont_geocode == '1'

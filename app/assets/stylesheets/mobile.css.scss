@@ -1,8 +1,4 @@
-@import "foundation/functions";
-@include exports("global") {}
-@import "foundation/components/global";
-@import 'foundation_and_overrides';
-
+@import 'variables';
 @media #{$medium-down} { 
   #newsfeed {
     .discussion {

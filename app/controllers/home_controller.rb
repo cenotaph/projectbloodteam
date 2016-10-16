@@ -28,15 +28,8 @@ class HomeController < ApplicationController
     #         @on_this_day.uniq!
     #       end
     #
-    @json = Entry.includes([{:entry => {:geolocation => [
-                                                          {:bars => :agent}, {:concerts => :agent},
-                                                          {:movies => [:master_movie, :agent]},
-                                                           {:takeaways => :agent}, {:restaurants => :agent},
-                                                           {:events => :agent}, {:activities => :agent}, {:tvseries => :agent}
-                                                        ]
-                                        }
-                              } ]
-        ).where("entry_type not in (?)", ['Music', 'Book', 'Mile', 'Eating', 'Exercise', 'Comment', 'Forum', 'Airport', 'Videogame']).order('created_at DESC').limit(50).to_a.delete_if{|x| !x.entry.respond_to?('geolocation')}.map{|x| x.entry.geolocation}.compact.uniq
+    @json = Entry.includes(:entry => {:geolocation_item => :geolocation}).where("entry_type not in (?)", ['Music', 'Book', 'Mile', 'Eating', 'Exercise', 'Comment', 'Forum', 'Airport', 'Videogame']).order('created_at DESC').limit(50)
+                .to_a.delete_if{|x| !x.entry.respond_to?('geolocation_item')}.delete_if{|x| x.entry.geolocation_item.nil?}.map{|x| x.entry.geolocation}.compact.uniq
         
 
 
@@ -45,7 +38,7 @@ class HomeController < ApplicationController
         missing_profile
         return
       end
-      @newsfeed = Entry.includes([:agent, {:entry => [:agent]}]).group([:created_at, :entry_type, :entry_id, :action]).where('created_at <= "' + getYear + '-12-31 23:59:59"').order('created_at DESC').page(params[:page]).per(12) #, :total_entries => Entry.find(:all, :group => [:entry_type, :entry_id]).size  ) 
+      @newsfeed = Entry.includes([:agent, {:entry => [:userimages, :references, :comments, :agent]}]).group([:created_at, :entry_type, :entry_id, :action]).where('created_at <= "' + getYear + '-12-31 23:59:59"').order('created_at DESC').page(params[:page]).per(12) #, :total_entries => Entry.find(:all, :group => [:entry_type, :entry_id]).size  ) 
     else
       @newsfeed = Entry.joins(:agent).group([:created_at, :entry_type, :entry_id, :action]).where('agents.security = 0').order('created_at DESC').page(params[:page]).per(12) # , :total_entries => Entry.find(:all, :include => :agent,  :conditions => 'agents.security = 0', :group => [:entry_type, :entry_id]).size  ) 
     end

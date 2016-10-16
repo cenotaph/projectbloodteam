@@ -1,7 +1,4 @@
-@import "foundation/functions";
-@include exports("global") {}
-@import "foundation/components/global";
-
+@import 'variables';
 #new_comment {
 
   clear: both;

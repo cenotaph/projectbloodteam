@@ -1,5 +1,6 @@
 /*
  *= require_self
+
  *= require jquery-ui/datepicker
  *= require new
  *= require forum
@@ -10,11 +11,12 @@
  *= require map
  *= require punymce/editor
  *= require foundation_and_overrides
+ *= require _settings
  *= require mobile
 */
 
 @import "font-awesome";
-@import 'foundation_and_overrides';
+@import 'variables';
 
 .container {
   padding-top: 2rem;

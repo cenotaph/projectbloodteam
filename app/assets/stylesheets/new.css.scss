@@ -1,7 +1,4 @@
-@import "foundation/functions";
-@include exports("global") {}
-@import "foundation/components/global";
-
+@import 'variables';
 header { display: none;
 }
 
@@ -337,7 +334,51 @@ header { display: none;
 
 
 .top-bar {
+  height: 40px;
   margin-bottom: 0;
+
+  .top-bar-left, .top-bar-right {
+    height: 40px;
+    ul {
+
+      margin: 0; 
+      padding: 0;
+      height: 40px;
+      li {
+        &#searchform {
+          padding-left: 2.2rem;
+          input {
+            height: 30px;
+          }
+          
+        }
+        &.menu-text {
+          padding: 0;
+        }
+        height: 40px;
+        background-color: #333;
+        ul {
+          li {
+            border-bottom: 1px solid white;
+            a.agent_cat_link {
+              float: left;
+            }
+            &:hover {
+              background-color: $secondary-color;
+            }
+          }
+        }
+        a {
+         
+          color: white;
+          &:hover {
+            color: $primary-color;
+
+          }
+        }
+      }
+    }
+  }
   .agents-bar {
     width: 100%;
     clear: left;

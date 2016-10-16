@@ -1,22 +1,39 @@
+.top-bar-left
+  %ul.dropdown.menu{:"data-dropdown-menu" => ''}
+    %li.menu-text
+      = link_to 'PBT', '/'
+      %ul.menu.vertical
+        - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|
+          %li= link_to category.to_s.pluralize, "/#{category.table_name}"
+    - if agent_signed_in?
+      %li
+        = link_to "Agent #{current_agent.surname}", '#'
+        %ul.menu.vertical.agent_menu
+          - if agent_signed_in?
+            - agent_category = current_agent.categories.year(getYear).first
 
-%ul.title-area
-  %li.name
-    %h1= link_to 'PBT 5', '/'
-  %li.toggle-topbar.menu-icon
-    %a{:href => '#'}
-      %span Menu
-%section.top-bar-section
-  %ul.left
-    %li.has-form
-      .row.collapse
-        .large-8.small-9.columns#searchform
-          = form_tag "/search/simple", :method => "post" do |f|
-            = text_field_tag :search, 'Search?'
-%section.top-bar-section
-  %ul.left= render :partial => 'layouts/category_menu'
+            - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Tvseries, Videogame, Weight].each do |category|
+      
+              - this_cat = (agent_category ? agent_category.send(category.to_s.tableize).to_s : category.table_name )
+              - if this_cat == "0"
+                - next
+              %li
+                = link_to this_cat, "/agents/#{current_agent.slug.to_s}/#{category.table_name}", class: :agent_cat_link
+    
+                - if category.has_master?
+                  = link_to fa_icon("plus-square-o"), '#', :"data-open" => "prompt_#{category.table_name.singularize}"
+                -else 
+                  = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.slug.to_s}/#{category.table_name}/new"
 
-%section.top-bar-section
-  %ul.right
+    %li.has-form#searchform
+      = form_tag "/search/simple", :method => "post" do |f|
+        = text_field_tag :search, 'Search?'
+
+  / %section.top-bar-section
+  /   
+        
+.top-bar-right
+  %ul.menu
     - if controller.controller_name == 'home' && !@json.blank?
       %li= link_to fa_icon('globe lg') + " (#{@json.size})", '#', onclick: "$('.worldmap-bar').slideToggle();google.maps.event.trigger(map, 'resize'); map.setCenter(new google.maps.LatLng(0, 0));return false;"
     - unless controller.controller_name == 'forums' && controller.action_name == 'index'
@@ -24,7 +41,7 @@
     %li= link_to fa_icon("users lg"), '#', onclick: "$('.agents-bar .agents').slideToggle(); return false;", class: 'show-for-medium-up'
     %li.show-for-small-only.has-dropdown
       = link_to 'All agents', '#'
-      %ul.dropdown
+      %ul.dropdown.menu{:"data-dropdown-menu" => ''}
         - @active_agents.each do |agent|
           %li= link_to agent.surname, agent.agent
     %li= link_to fa_icon('line-chart lg'), '/stats'

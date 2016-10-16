@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class ForumsController < ApplicationController
    before_action :authenticate_agent!, :only => [:new, :edit, :add, :choose, :create, :update]
-  
+   skip_before_action :getForum, only: [:index]
   def create
     @forum = Forum.new(forum_params)
     @forum.agent = current_agent
@@ -52,8 +52,8 @@ class ForumsController < ApplicationController
   
   
   def index
-
-    @forums = Comment.paginate_with_items(params[:page], 50)
+    @forums = Comment.includes([:agent]).includes(:item).paginate_with_items(params[:page], 50)
+    # @forums = Comment.includes([:agent]).paginate_with_items(params[:page], 50)
 
     if request.xhr?
       render :partial => 'shared/forum_list', :collection => @forums
