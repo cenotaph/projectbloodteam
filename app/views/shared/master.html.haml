@@ -1,17 +1,18 @@
-.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
-  %dl.sub-nav
-    %dd= link_to @item.short_name + ": ", '#' 
-    %dd.active{:"data-magellan-arrival" => "details"}= link_to 'Details', "#details"
-    - unless @json.blank?
-      %dd{:"data-magellan-arrival" => "map"}= link_to 'Map', "#map"
-      = render :partial => 'home/front_map', locals: {json: @json, target: 'map_container', center: @json.size > 1 ? false : @json.first}
-    %dd{:"data-magellan-arrival" => "discussion"}= link_to "Comments & discussion (#{@item.discussion.size})", "#discussion"
-    - unless @item.similars.empty?
-      %dd{:"data-magellan-arrival" => "similars"}= link_to 'Possibly related items', "#similars"
+.magellan_container{:"data-sticky-container" => ''}
+  %nav.sticky{:"data-sticky" => '', :'data-options' => 'marginTop:2.5'}
+    %ul.horizontal.menu{:'data-magellan' => ''}
+      %li= link_to @item.short_name + ": ", '#' 
+      %li.active= link_to 'Details', "#details"
+      - unless @json.blank?
+        %li= link_to 'Map', "#map"
+        = render :partial => 'home/front_map', locals: {json: @json, target: 'map_container', center: @json.size > 1 ? false : @json.first}
+      %li= link_to "Comments & discussion (#{@item.discussion.size})", "#discussion"
+      - unless @item.similars.empty?
+        %li= link_to 'Possibly related items', "#similars"
 
 .row#master_container
   .small-10.columns.small-offset-1.master_head#details
-    %a{:name => "#details"}
+    %section#details
     .row
       .small-3.columns
         - if @item.class.to_s =~ /ook$/
@@ -39,7 +40,7 @@
         = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => @item}
         
 - unless @json.blank?
-  %a{:name => "#map"}
+  %seciont#map
   #map_container{:"data-magellan-destination" => "map"}
 
 
@@ -56,8 +57,8 @@
           .title= link_to raw(ref.source.name), url_for(ref.source) + "##{ref.source.class.to_s.tableize.singularize}_#{ref.source.id.to_s}", target: :_blank 
           .agent
 
-#discussion
-  %a{:name => "discussion", :"data-magellan-destination" => "discussion"}
+%section#discussion
+  
   .row
     .large-10.columns.large-offset-1.item_listing= render :partial => 'shared/new_discussion', :locals => {:discussion => @item.discussion.uniq, :json => @json, :master => false}
     
@@ -92,8 +93,8 @@
             
             = link_to raw("There are multiple entries by this artist. See all aggregated for #{@item.artist} ..."), aggregate_creators_genericmaster_path(:category => @item.class.to_s, :id => @item.id)
   - unless @item.similars.empty?
-    #similars
-      %a{:name => "similars", :"data-magellan-destination" => "similars"}
+    %section#similars
+      
       .row
         .small-12.columns.text-center 
           %h3 Possibly related entries:
