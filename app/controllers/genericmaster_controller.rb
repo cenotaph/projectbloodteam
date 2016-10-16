@@ -262,7 +262,7 @@ class GenericmasterController < ApplicationController
       filter_query = filter_query.join(" OR ")
    
     end
-    filter_query = 1 if filter_query.blank?
+    filter_query = '' if filter_query.blank?
        
  
    
