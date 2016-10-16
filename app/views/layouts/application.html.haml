@@ -27,8 +27,8 @@
 
 
   %body
-    %div{:"data-sticky-container" => ''}
-      .top-bar
+    .topmost{:"data-sticky-container" => ''}
+      .top-bar.sticky{:"data-sticky" => '', :"data-options" => "marginTop:0;", style: "width:100%"}
         = render :partial => 'layouts/top_bar'
       
         .agents-bar
@@ -141,7 +141,7 @@
           = text_field_tag :query
           = submit_tag "Search", :class => [:button, :small]
         = link_to 'create custom entry', '/genericmaster/custom/Book/new', class: [:button, :tiny, :secondary]
-      .reveal-modal#prompt_videogame{:"data-reveal" => ''}
+      .reveal#prompt_videogame{:"data-reveal" => ''}
         %h2 New videogame
         %p Enter a title to search for your videogame.
         = form_tag query_agent_videogames_path(:agent_id => current_agent.id), :method => :get do 
@@ -151,26 +151,26 @@
     - else
       .reveal#prompt_login{:"data-reveal" => true}
         .row
-          .small-8.columns
+          .small-12.columns
             %h2 Sign in to Project Blood Team
 
         = form_for(:agent, as: :agent, url: session_path(:agent)) do |f|
           .row
-            .large-3.columns.small-10
+            .large-6.columns.small-10
               = f.label :login
               = f.text_field :login
           .row
-            .large-3.columns.small-10
+            .large-6.columns.small-10
               = f.label :password
               = f.password_field :password, autocomplete: "off"
 
           - if Devise.mappings[:agent].rememberable?
             .row
-              .large-3.columns.small-1
+              .large-6.columns.small-1
                 = f.check_box :remember_me
                 = f.label :remember_me 
           .row
-            .large-3.columns
+            .large-6.columns
               = f.submit "Sign in", class: [:button, :radius, :tiny]
           .row
             .small-12.columns= render :partial =>  "devise/shared/links", locals: {:resource_name => :agent}

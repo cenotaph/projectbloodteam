@@ -25,9 +25,9 @@
         .other.small-4.columns
           = link_to image_tag(other.agent_icon(:thumb)), '#', :"data-reveal-id" => "other_" + other.id.to_s
           %br/
-          = link_to other.agent.surname, '#', :"data-reveal-id" => "other_" + other.id.to_s
+          = link_to other.agent.surname, '#', :"data-open" => "other_" + other.id.to_s
           .other_date= other.date.strftime('%b %d, %Y')
-        .reveal-modal{:id => "other_" + other.id.to_s, :"data-reveal" => ''}
+        .reveal{:id => "other_" + other.id.to_s, :"data-reveal" => ''}
           .row
             .small-5.columns
               .row

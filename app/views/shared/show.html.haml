@@ -1,17 +1,18 @@
-.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
-  %dl.sub-nav
-    %dd=  link_to raw(@item.name.to_s) + ": ", '#'
-    %dd.active{:"data-magellan-arrival" => "details"}= link_to 'Details', "#details"
-    - unless @item.userimages.empty?
-      %dd{:"data-magellan-arrival" => "images"}= link_to pluralize(@item.userimages.size, 'image'), "#images"
-    - unless @item.discussion.size == 1
-      %dd{:"data-magellan-arrival" => "discussion"}= link_to "Comments & discussion (#{@item.discussion.size - 1})", "#discussion"
+.magellan_container{:"data-sticky-container" => ''}
+  %nav.sticky{:"data-sticky" => '', :'data-options' => 'marginTop:2.5'}
+    %ul.horizontal.menu{:'data-magellan' => ''}
+      %li=  link_to raw(@item.name.to_s) + ": ", '#'
+      %li.active= link_to 'Details', "#details"
+      - unless @item.userimages.empty?
+        %li= link_to pluralize(@item.userimages.size, 'image'), "#images"
+      - unless @item.discussion.size == 1
+        %li= link_to "Comments & discussion (#{@item.discussion.size - 1})", "#discussion"
 
-    - unless @json.blank?
-      = render :partial => 'home/front_map', locals: {json: @json, target: 'map_container', center: @item.geolocation}
-      %dd{:"data-magellan-arrival" => "map"}= link_to 'Map', "#map"
-    - unless @item.similars.empty?
-      %dd{:"data-magellan-arrival" => "similars"}= link_to "Possibly related items (#{@item.similars.size})", "#similars"
+      - unless @json.blank?
+        = render :partial => 'home/front_map', locals: {json: @json, target: 'map_container', center: @item.geolocation}
+        %li= link_to 'Map', "#map"
+      - unless @item.similars.empty?
+        %li= link_to "Possibly related items (#{@item.similars.size})", "#similars"
 
 
   
@@ -19,7 +20,7 @@
 .special_container
   #outer{:style => @item.userimages.empty? ? false : "background: linear-gradient(rgba(255,255,255,0),rgba(255,255,255,0)), url(#{@item.userimages.first.image.url(:fuller)});  background-size: contain; "}
   
-    .row{:"data-magellan-destination" => "details"}
+    %section#details
       .small-8.columns.small-offset-2.forum_head{:style => @item.userimages.blank? ? "background: url(#{@item.agent_icon(:large)}) no-repeat; background-size: contain" : "background-color: white; opacity: 0.9"}
         %a{:name => "details"}
         .inner.text-center
@@ -77,14 +78,14 @@
                         = link_to raw(ref.reference.name), ref.reference, target: :_blank
                         - unless ref.comment.blank?
                           %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
-                    
-    .row#slideshow{:"data-magellan-destination" => "images"}
-      .small-8.columns.small-offset-2
-        %a{:name => "images"}        
-        = raw one_or_slideshow(@item)
+    %second#images                
+      .row#slideshow
+        .small-8.columns.small-offset-2
+          %a{:name => "images"}        
+          = raw one_or_slideshow(@item)
 
        
-  #discussion{:style => @item.userimages.blank? ? false : "background-color: white; opacity: 0.9", :"data-magellan-destination" => "discussion"}
+  %section#discussion{:style => @item.userimages.blank? ? false : "background-color: white; opacity: 0.9"}
     .row
       .large-10.columns.large-offset-1.item_listing= render :partial => 'shared/new_discussion', :locals => {:discussion => @item.discussion[1..-1], :json => @json, :master => false}
 
@@ -95,8 +96,8 @@
     
 - unless @json.blank?
   .container
-    %a{:name => "map"}
-    #map_container{:"data-magellan-destination" => "map"}
+    %section#map
+    #map_container
 
 -# cache(:action_suffix => 'similars', :action => 'show', :category => @item.class.to_s.downcase, :id =>  @item.id) do
 - unless @item.similars.empty?
@@ -105,9 +106,8 @@
       .row
         .small-12.columns.text-center
           = link_to raw("This appears to be popular. See all aggregated for #{@item.name} ..."),  aggregate_generic_path(:category => @item.class.to_s, :id => @item.id)
-  #similars
-    %a{:name => "similars", :"data-magellan-destination" => "similars"}
-  
+  %section#similars
+
     .row
       .small-8.small-offset-2.columns.text-center 
         %h3 Possibly related entries:

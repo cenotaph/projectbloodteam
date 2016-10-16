@@ -49,4 +49,4 @@
     - if agent_signed_in?
       %li= link_to fa_icon('sign-out lg'), destroy_agent_session_path, :method => :delete
     - else
-      %li= link_to fa_icon('sign-in lg'), '#', :"data-reveal-id" => "prompt_login"
+      %li= link_to fa_icon('sign-in lg'), '#', :"data-open" => "prompt_login"

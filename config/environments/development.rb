@@ -22,14 +22,14 @@ Pbt4::Application.configure do
     end
     }
 
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.alert = true
-    Bullet.bullet_logger = true
-    Bullet.console = true
-    Bullet.growl = false
-    Bullet.rails_logger = true
-  end
+  # config.after_initialize do
+  #   Bullet.enable = true
+  #   Bullet.alert = true
+  #   Bullet.bullet_logger = true
+  #   Bullet.console = true
+  #   Bullet.growl = false
+  #   Bullet.rails_logger = true
+  # end
   config.paperclip_defaults = {
     :storage => :s3,
     :bucket => 'pbt-production'
