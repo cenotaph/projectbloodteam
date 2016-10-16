@@ -12,7 +12,7 @@
   .aggregate.row{:"data-magellan-destination" => "year_#{year.first.to_s}"}
     .small-8.columns.small-offset-2
       - year.last.each do |chat|
-        = render :partial => "shared/discussion_entry", :locals => {:chat => chat}
+        = render :partial => "shared/discussion_entry", :locals => {:chat => chat, searchterm: nil}
 = content_for :jquery do
   :plain
     $('.slick_carousel').slick({autoplay: true});
