@@ -118,23 +118,27 @@ class AgentsController < ApplicationController
       @feed += cat.where(:agent => @agent).limit(55).order("date DESC")
     end
     vg = Videogame.where(:agent => @agent).select("*, updated_at AS date").limit(55).order('finished DESC, started DESC, received DESC')
-    vg.each_index do |i|
-      begin
-        vg[i].date = Date.parse(vg[i]['date'].to_s)
-      rescue ArgumentError 
-        nil
+    unless vg.empty?
+      vg.to_a.each_index do |i|
+        begin
+          vg[i].date = Date.parse(vg[i]['date'].to_s)
+        rescue ArgumentError 
+          nil
+        end
+        @feed.push(vg[i])
       end
-      @feed.push(vg[i])
     end
     books = Book.where(:agent => @agent).select("updated_at AS date, created_at, updated_at AS updated_at").limit(55).order('date DESC, finished DESC, started DESC, received dESC')
-    books.each_index do |i|
+    unless books.empty?
+      books.to_a.each_index do |i|
       # begin
       #   books[i].date = Date.parse(books[i]['date'])
       # rescue
       #   nil
       # end
-      next if i.nil?
-      @feed.push(books[i])
+        next if i.nil?
+        @feed.push(books[i])
+      end
     end
     @feed = @feed.compact.sort{|x, y|  y.updated_at  <=>  x.updated_at  }[0..54]
 

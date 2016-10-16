@@ -7,6 +7,7 @@ require 'capistrano/bundler'
 require 'capistrano/rails'
 require "capistrano/rvm"
 require 'capistrano/puma'
+
 require 'thinking_sphinx/capistrano'
 
 # Includes tasks from other gems included in your Gemfile
@@ -23,8 +24,8 @@ require 'thinking_sphinx/capistrano'
 # require 'capistrano/rbenv'
 # require 'capistrano/chruby'
 # require 'capistrano/bundler'
-# require 'capistrano/rails/assets'
-# require 'capistrano/rails/migrations'
+require 'capistrano/rails/assets'
+require 'capistrano/rails/migrations'
 
 # Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
 Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }

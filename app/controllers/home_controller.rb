@@ -38,7 +38,7 @@ class HomeController < ApplicationController
         missing_profile
         return
       end
-      @newsfeed = Entry.includes([:agent, {:entry => [:userimages, :references, :comments, :agent]}]).group([:created_at, :entry_type, :entry_id, :action]).where('created_at <= "' + getYear + '-12-31 23:59:59"').order('created_at DESC').page(params[:page]).per(12) #, :total_entries => Entry.find(:all, :group => [:entry_type, :entry_id]).size  ) 
+      @newsfeed = Entry.includes([:agent, {:entry => [:userimages, :references, :agent]}]).group([:created_at, :entry_type, :entry_id, :action]).where('created_at <= "' + getYear + '-12-31 23:59:59"').order('created_at DESC').page(params[:page]).per(12) #, :total_entries => Entry.find(:all, :group => [:entry_type, :entry_id]).size  ) 
     else
       @newsfeed = Entry.joins(:agent).group([:created_at, :entry_type, :entry_id, :action]).where('agents.security = 0').order('created_at DESC').page(params[:page]).per(12) # , :total_entries => Entry.find(:all, :include => :agent,  :conditions => 'agents.security = 0', :group => [:entry_type, :entry_id]).size  ) 
     end
