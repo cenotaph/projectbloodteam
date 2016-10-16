@@ -4,7 +4,7 @@ class Tvseries < ActiveRecord::Base
   belongs_to :master_tvseries
 
   has_one :geolocation_item, as: :item
-  delegate :geolocation, to: :geolocation_item
+  delegate :geolocation, to: :geolocation_item, allow_nil: true
   include Item
   include ItemHelpers
 

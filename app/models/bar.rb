@@ -3,7 +3,7 @@ class Bar < ActiveRecord::Base
   include Item
 
   has_one :geolocation_item, as: :item
-  delegate :geolocation, to: :geolocation_item
+  delegate :geolocation, to: :geolocation_item, allow_nil: true
   geocoded_by :my_address
   after_validation do
     store_geocodes unless self.dont_geocode == '1'

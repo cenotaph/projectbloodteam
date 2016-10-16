@@ -10,7 +10,7 @@ class Mile < ActiveRecord::Base
 
 
   has_one :geolocation_item, as: :item
-  delegate :geolocation, to: :geolocation_item
+  delegate :geolocation, to: :geolocation_item, allow_nil: true
     
   include ItemHelpers
   

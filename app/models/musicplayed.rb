@@ -7,7 +7,7 @@ class Musicplayed < ActiveRecord::Base
   has_many :comments, -> { where('item_type = \'Musicplayed\'')}, :foreign_key => 'foreign_id', :dependent => :delete_all
 
   has_one :geolocation_item, as: :item
-  delegate :geolocation, to: :geolocation_item
+  delegate :geolocation, to: :geolocation_item, allow_nil: true
   geocoded_by :my_address
   belongs_to :agent
   after_validation do
