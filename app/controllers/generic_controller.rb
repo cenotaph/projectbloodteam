@@ -132,7 +132,7 @@ class GenericController < ApplicationController
   
   def index
     joins = [:agent, :comments, :userimages]
-    joins.push(:geolocation) if @category.classify.constantize.new.respond_to?('geolocation')
+    joins.push(:geolocation_items) if @category.classify.constantize.new.respond_to?('geolocation_items')
     joins.push(:currency) if @category.classify.constantize.new.respond_to?('currency_id')
     if params[:filter].nil?
       params[:filter] = ActionController::Parameters.new
