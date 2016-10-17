@@ -150,7 +150,7 @@
       $(document).scroll(function(){     
         var opac = $(window).scrollTop() / ( ($('#outer').height() / 3) ) ;
    
-        $('#outer').css({'background': '-webkit-linear-gradient(rgba(255,255,255,' + opac + '),rgba(255,255,255,' + opac + ')), url(http://bloodteam.com#{@item.userimages.first.image.url(:fuller)})',
+        $('#outer').css({'background': '-webkit-linear-gradient(rgba(255,255,255,' + opac + '),rgba(255,255,255,' + opac + ')), url(#{@item.userimages.first.image.url(:fuller)})',
         'background-repeat':'no-repeat','background-size':'contain'});
 
         $('#outer').css({'background': 'linear-gradient(rgba(255,255,255,' + opac + '),rgba(255,255,255,' + opac + ')), url(http://bloodteam.com#{@item.userimages.first.image.url(:fuller)})', 'background-repeat':'no-repeat','background-size':'contain'});
