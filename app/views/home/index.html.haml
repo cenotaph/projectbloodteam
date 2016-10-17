@@ -6,7 +6,7 @@
       - @newsfeed.to_a.delete_if{|x| !show_entry?(x) }
       - unless rejected.blank?
         = "#{rejected.size} items are not visible in the newsfeed, because you are not logged in."
-        = link_to 'Sign in!' , '#', :"data-reveal-id" => "prompt_login"
+        = link_to 'Sign in!' , '#', :"data-open" => "prompt_login"
 
 
     - if @newsfeed.length == 0
