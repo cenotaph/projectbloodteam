@@ -1,7 +1,8 @@
-.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
-  %dl.sub-nav
-    - @all_titles.to_a.delete_if{|x| x.discussion.empty? }.each_with_index do |title, i|
-      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "title_#{title.id}"}= link_to raw("#{title.title} " + (title.respond_to?(:year) ? "(#{title.year})" : "(#{title.discussion.size})")), "#title_#{title.id}"
+.magellan_container{:"data-sticky-container" => ''}
+  %nav.sticky{:"data-sticky" => '', :'data-options' => 'marginTop:2.5'}
+    %ul.horizontal.menu{:'data-magellan' => ''}
+      - @all_titles.to_a.delete_if{|x| x.discussion.empty? }.each_with_index do |title, i|
+        %li{:class => i ==0 ? :active : false}= link_to raw("#{title.title} " + (title.respond_to?(:year) ? "(#{title.year})" : "(#{title.discussion.size})")), "#title_#{title.id}"
 
       
 .row.with_title
@@ -10,7 +11,7 @@
 
 
 - @all_titles.to_a.delete_if{|x| x.discussion.empty? }.each do |title|
-  %a{:name => "title_#{title.id}"}
+  %section{id: "title_#{title.id}"}
   .aggregate{:"data-magellan-destination" => "title_#{title.id}"}
     .row
       .small-8.columns.small-offset-2.title

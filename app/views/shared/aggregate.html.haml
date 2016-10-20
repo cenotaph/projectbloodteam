@@ -1,18 +1,19 @@
-.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
-  %dl.sub-nav
-    - @discussion.reverse.group_by{|x| x.date.year }.map(&:first).each_with_index do |year, i|
-      %dd{:class => i ==0 ? :active : false, :"data-magellan-arrival" => "year_#{year}"}= link_to year, "#year_#{year}"
+.magellan_container{:"data-sticky-container" => ''}
+  %nav.sticky{:"data-sticky" => '', :'data-options' => 'marginTop:2.5'}
+    %ul.horizontal.menu{:'data-magellan' => ''}
+      - @discussion.reverse.group_by{|x| x.date.year }.map(&:first).each_with_index do |year, i|
+        %li{:class => i ==0 ? :active : false}= link_to year, "#year_#{year}"
 
 .row.with_title
   .small-10.columns.small-offset-1
     %h2= raw "Aggregated entries for #{@item.name}"
     
 - @discussion.reverse.group_by{|x| x.date.year }.map.each do |year|
-  %a{:name => "year_#{year.first.to_s}"}
-  .aggregate.row{:"data-magellan-destination" => "year_#{year.first.to_s}"}
-    .small-8.columns.small-offset-2
-      - year.last.each do |chat|
-        = render :partial => "shared/discussion_entry", :locals => {:chat => chat, searchterm: nil}
+  %section{id: "year_#{year.first.to_s}"}
+    .aggregate.row
+      .small-8.columns.small-offset-2
+        - year.last.each do |chat|
+          = render :partial => "shared/discussion_entry", :locals => {:chat => chat, searchterm: nil}
 = content_for :jquery do
   :plain
     $('.slick_carousel').slick({autoplay: true});

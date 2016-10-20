@@ -50,7 +50,7 @@
                     -#= key.humanize + ":"
                     %span.item_metadata_value
 
-                      = highlight(display_metadata(key, value), searchterm) unless  searchterm.nil?
+                      = highlight(display_metadata(key, value), searchterm) 
                       - if key == 'format'
                         = link_to fa_icon('external-link'), chat.linkto, :target => "_blank"
                       - if key == 'label' && master == true

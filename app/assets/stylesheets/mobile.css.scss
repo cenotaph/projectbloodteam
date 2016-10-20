@@ -1,5 +1,20 @@
 @import 'variables';
-@media #{$medium-down} { 
+
+@media only screen and (max-width: 43em) {
+  .top-bar ul li {
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 64em) {
+  .top-bar-left ul li#searchform input {
+     width: 120px !important;
+   }
+}
+
+
+@media #{$medium-down} {
+
   #newsfeed {
     .discussion {
       .side_comment {
