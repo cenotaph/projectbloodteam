@@ -1,13 +1,14 @@
-.magellan_container{:"data-magellan-expedition" => "", :"data-options"  => "threshold:80;destination_threshold:80;throttle_delay:50;fixed_top:40;"}
-  %dl.sub-nav
-    %dd= link_to @item.short_name + ": ", '#' 
-    %dd.active{:"data-magellan-arrival" => "details"}= link_to 'Details', "#details"
-    - unless @json.blank?
-      %dd{:"data-magellan-arrival" => "map"}= link_to 'Map', "#map"
-      = render :partial => 'home/front_map', locals: {json: @json, target: 'map_container', center: @json.size > 1 ? false : @json.first}
-    %dd{:"data-magellan-arrival" => "discussion"}= link_to "Entries & comments (#{@item.all_versions.map(&:discussion).flatten.size})", "#discussion"
-    - unless @item.similars.empty?
-      %dd{:"data-magellan-arrival" => "similars"}= link_to 'Possibly related items', "#similars"
+.magellan_container{:"data-sticky-container" => ''}
+  %nav.sticky{:"data-sticky" => '', :'data-options' => 'marginTop:2.5'}
+    %ul.horizontal.menu{:'data-magellan' => ''}
+      %li= link_to @item.short_name + ": ", '#' 
+      %li.active= link_to 'Details', "#details"
+      - unless @json.blank?
+        %li= link_to 'Map', "#map"
+        = render :partial => 'home/front_map', locals: {json: @json, target: 'map_container', center: @json.size > 1 ? false : @json.first}
+      %li= link_to "Entries & comments (#{@item.all_versions.map(&:discussion).flatten.size})", "#discussion"
+      - unless @item.similars.empty?
+        %li= link_to 'Possibly related items', "#similars"
 
 .row#master_container
   .small-10.columns.small-offset-1.master_head#details

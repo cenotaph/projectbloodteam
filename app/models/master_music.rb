@@ -23,7 +23,7 @@ class MasterMusic < ActiveRecord::Base
   end
   
   def all_versions
-    (other_versions << self).map(&:musics).flatten.compact.sort_by(&:date)
+    (other_versions.to_a << self).map(&:musics).flatten.compact.sort_by(&:date)
   end
 
   def resync_discogs_image(token = nil)
