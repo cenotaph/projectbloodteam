@@ -3,7 +3,7 @@ class Activity < ActiveRecord::Base
   include Item
   validates_presence_of :name, :date
   validates :date, :date => {  :message => 'Invalid date.' }
-  has_many :comments, -> { where('item_type = \'Activity\'')}, :foreign_key => 'foreign_id', :dependent => :delete_all
+  has_many :comments, -> { where('item_type = \'Activity\'')}, :foreign_key => 'foreign_id', :dependent => :destroy
 
   has_one :geolocation_item, as: :item
   delegate :geolocation, to: :geolocation_item, allow_nil: true
