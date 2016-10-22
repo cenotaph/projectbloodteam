@@ -88,7 +88,7 @@
             = ff.input :image
             -#= render :partial => 'shared/userimage_fields', :locals => { :ff => ff }      
           = form.link_to_add "+ Add an image", :userimages, class: "button tiny secondary"
-          = form.link_to_remove, 'Remove this image', class: [:button, :tiny]
+          = form.link_to_remove 'Remove this image', class: [:button, :tiny]
       .row
         .small-12.columns.form_wrapper{:class => :add_to_newsfeed}= form.input :add_to_newsfeed, :as => :boolean, :label => 'Post this entry to the public newsfeed', :checked => true
       .row
