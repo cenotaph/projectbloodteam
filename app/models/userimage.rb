@@ -8,7 +8,7 @@ class Userimage < ActiveRecord::Base
     :styles => {:thumb => "150x150>", :full => "1024x768>", :fuller => "1920x1440>"}, 
     # :path =>  ":rails_root/public/images/:entry_type/:entry_id/:mystyle:basename.:extension",
     :path => "/:entry_type/:entry_id/:mystyle:basename.:extension"
-    
+  process_in_background :image  
   after_save :set_original_userimage
   # after_save :destroy_original
   attr_accessor :image_url
