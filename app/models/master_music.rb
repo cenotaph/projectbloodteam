@@ -32,20 +32,22 @@ class MasterMusic < ActiveRecord::Base
     else
       m = Discogs::Wrapper.new('Project Blood Team', token).get_release(discogscode)
       unless m.images.blank?
-        system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/thumb")
-        system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/full")
-        self.filename_file_name = CGI.escape(discogscode.to_s + '.jpg')
-        begin
-          open("#{Rails.root.to_s}/public/images/master_musics/#{id.to_s}/full/#{CGI.escape(discogscode.to_s + '.jpg') }", "wb").write(token.get(m.images.first.uri).body) 
-        rescue
-          filename_file_name = nil
-         end
-        begin
-          open("#{Rails.root.to_s}/public/images/master_musics/#{id.to_s}/thumb/#{CGI.escape(discogscode.to_s + '.jpg') }", "wb").write(token.get(m.images.first.uri150).body) 
-        rescue
-          filename_file_name = nil
-        end
+        self.filename_from_url = m.images.first.uri
+        # system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/thumb")
+        # system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/full")
+        # self.filename_file_name = CGI.escape(discogscode.to_s + '.jpg')
+        # begin
+        #   open("#{Rails.root.to_s}/public/images/master_musics/#{id.to_s}/full/#{CGI.escape(discogscode.to_s + '.jpg') }", "wb").write(token.get(m.images.first.uri).body)
+        # rescue
+        #   filename_file_name = nil
+        #  end
+        # begin
+        #   open("#{Rails.root.to_s}/public/images/master_musics/#{id.to_s}/thumb/#{CGI.escape(discogscode.to_s + '.jpg') }", "wb").write(token.get(m.images.first.uri150).body)
+        # rescue
+        #   filename_file_name = nil
+        # end
         save!
+        
       end
     end
   end
@@ -68,20 +70,21 @@ class MasterMusic < ActiveRecord::Base
           if mynew.save
             
             unless m.images.blank?
-              mynew.filename_file_name = CGI.escape(mynew.discogscode.to_s + '.jpg')
-              system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/thumb")
-               system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/full")
-
-               begin
-                 open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/full/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri).body) 
-               rescue
-                 mynew.filename_file_name = nil
-                end
-              begin
-                open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/thumb/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri150).body) 
-              rescue
-              mynew.filename_file_name = nil
-              end
+              mynew.filename_from_url = m.images.first.uri
+              # mynew.filename_file_name = CGI.escape(mynew.discogscode.to_s + '.jpg')
+              # system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/thumb")
+   #             system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/full")
+   #
+   #             begin
+   #               open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/full/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri).body)
+   #             rescue
+   #               mynew.filename_file_name = nil
+   #              end
+   #            begin
+   #              open(Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + '/thumb/' + mynew.filename_file_name, "wb").write(token.get(m.images.first.uri150).body)
+   #            rescue
+   #            mynew.filename_file_name = nil
+   #            end
               mynew.save!
             end
           end
