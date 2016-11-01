@@ -32,7 +32,7 @@ class MasterMusic < ActiveRecord::Base
     else
       m = Discogs::Wrapper.new('Project Blood Team', token).get_release(discogscode)
       unless m.images.blank?
-        self.filename_from_url = m.images.first.uri
+        self.filename = m.images.first.uri
         # system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/thumb")
         # system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + id.to_s + "/full")
         # self.filename_file_name = CGI.escape(discogscode.to_s + '.jpg')
@@ -70,7 +70,7 @@ class MasterMusic < ActiveRecord::Base
           if mynew.save
             
             unless m.images.blank?
-              mynew.filename_from_url = m.images.first.uri
+              mynew.filename = m.images.first.uri
               # mynew.filename_file_name = CGI.escape(mynew.discogscode.to_s + '.jpg')
               # system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/thumb")
    #             system("mkdir -p " + Rails.root.to_s + '/public/images/master_musics/' + mynew.id.to_s + "/full")
