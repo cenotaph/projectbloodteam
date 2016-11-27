@@ -28,7 +28,7 @@ module Pbt4
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
     # config.i18n.default_locale = :de
-
+    config.cache_store = :redis_store, "redis://localhost:6379/0/cache", { expires_in: 10.hours }
     # Configure generators values. Many other options are available, be sure to check the documentation.
     config.generators do |g|
        g.orm             :active_record

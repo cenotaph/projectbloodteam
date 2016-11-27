@@ -1,7 +1,11 @@
 module EntryHelper
   
   def entry_agent_icon(entry)
-    image_tag entry.entry.agent_icon(:small)
+    if entry.entry.nil?
+      ''
+    else
+      image_tag entry.entry.agent_icon(:small)
+    end
   end
   
   def entry_title(entry)

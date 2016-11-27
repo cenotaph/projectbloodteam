@@ -215,7 +215,7 @@ class GenericController < ApplicationController
     unless !@item.respond_to?('geolocation')
       unless @item.geolocation.blank?
         hits = [@item]
-        hits += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", @item.geolocation.latitude - 0.5, @item.geolocation.latitude + 0.5, @item.geolocation.longitude - 0.5, @item.geolocation.longitude + 0.5]).includes([{:geolocation_items => {:item => [:agent, :userimages, :comments, :references]}}]).map(&:pbt_entries).uniq.flatten
+        hits += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", @item.geolocation.latitude - 0.25, @item.geolocation.latitude + 0.25, @item.geolocation.longitude - 0.2, @item.geolocation.longitude + 0.2]).includes([{:geolocation_items => {:item => [:agent, :userimages, :comments, :references]}}]).map(&:pbt_entries).uniq.flatten
 
       end
       @json = hits.compact.map(&:geolocation).uniq unless hits.nil?

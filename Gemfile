@@ -75,6 +75,8 @@ gem 'paperclip', :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523b
 # gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'
 gem 'randumb'
+gem 'redis-rails', '~> 5.0.1'
+gem 'redis'
 # gem 'responders', '2.0.2'
 
 gem 'themes_for_rails', github: 'cenotaph/themes_for_rails', branch: 'master'

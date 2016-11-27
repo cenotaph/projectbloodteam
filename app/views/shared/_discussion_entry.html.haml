@@ -1,99 +1,100 @@
-- if show_entry?(chat)
-  - view = View.where(:agent_id => chat.agent_id).where(:year => chat.date.strftime("%Y")).first
-  .row
-    - if chat.class == Comment
-      - unless chat.references.empty?
-        .references.small-12.columns.large-2.text-right
-          .heading References:
-          %ul
-            - chat.references.each do |ref|
-              %li
-                = link_to raw(ref.reference.name), ref.reference, target: :_blank
-                - unless ref.comment.blank?
-                  %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
-      .columns.large-7.comment{class: chat.references.empty? ? "small-12 large-offset-2" : "small-10 small-offset-1 large-offset-0" }
-        .row
-          .small-1.columns.text-right.big= raw('&ldquo;')
-          .small-11.columns.comment_body
-            = raw highlight(display_comment(chat), searchterm)
-            - unless chat.userimages.empty?
-              = raw one_or_slideshow(chat)
-            .newsfeed_entry_link= raw "comment posted " + time_ago_in_words(chat.created_at) + " ago"
+- cache [chat, current_agent] do
+  - if show_entry?(chat)
+    - view = View.where(:agent_id => chat.agent_id).where(:year => chat.date.strftime("%Y")).first
+    .row
+      - if chat.class == Comment
+        - unless chat.references.empty?
+          .references.small-12.columns.large-2.text-right
+            .heading References:
+            %ul
+              - chat.references.each do |ref|
+                %li
+                  = link_to raw(ref.reference.name), ref.reference, target: :_blank
+                  - unless ref.comment.blank?
+                    %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
+        .columns.large-7.comment{class: chat.references.empty? ? "small-12 large-offset-2" : "small-10 small-offset-1 large-offset-0" }
+          .row
+            .small-1.columns.text-right.big= raw('&ldquo;')
+            .small-11.columns.comment_body
+              = raw highlight(display_comment(chat), searchterm)
+              - unless chat.userimages.empty?
+                = raw one_or_slideshow(chat)
+              .newsfeed_entry_link= raw "comment posted " + time_ago_in_words(chat.created_at) + " ago"
         
 
-    - else
-      .left.large-2.medium-2.small-12.columns.text-right
-        .row
-          .small-6.medium-12.columns.index_image= image_tag chat.agent_icon(:large) unless chat.class == Comment
-          .medium-12.columns.small-6.small-text-left.medium-text-right
-            .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
-
-            - if agent_signed_in? && chat.class != Comment
-              = link_to fa_icon('eye'), chat
-              - if chat.agent == current_agent
-                = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
-                = link_to fa_icon('trash'), chat, method: :delete, data: {:confirm => 'Are you sure you wish to delete this item?' }
-            - if chat.respond_to?('metadata')
-              .metadata
-                - if chat.class != Comment
-                  .item_title
-                - else
-                  Comment
-                = chat.formatted_date
-                - chat.metadata['metadata'].each_pair do |key, value|
-                  - next if value.blank?
-                  - next if view.nil?
-                  - next if view.agent_column_name(chat, key).blank?
-                  - next if key == 'season' 
-                  .item_metadata
-                    %span.item_metadata_category= chat.column_name(key) + ": "
-                    -#= key.humanize + ":"
-                    %span.item_metadata_value
-
-                      = highlight(display_metadata(key, value), searchterm) 
-                      - if key == 'format'
-                        = link_to fa_icon('external-link'), chat.linkto, :target => "_blank"
-                      - if key == 'label' && master == true
-                        = link_to  edit_master_genericmaster_path(:category => chat.master.class.to_s, :id => chat.master_id) do
-                          %span.has-tip{"aria-haspopup" => "true", "data-tooltip" => "", :title => "Edit the master record for #{chat.name}!"}= fa_icon(chat.master.icon_name)
-    - if chat.class == Comment
-      .large-2.columns.text-left.medium-2
-        .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
-        .newsfeed_icon= image_tag chat.agent_icon(:large)
-        - if agent_signed_in?
-          - if current_agent == chat.agent
-            = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
-
-    - else
-      .medium-10.columns
-        - unless display_comment(chat).blank?
+      - else
+        .left.large-2.medium-2.small-12.columns.text-right
           .row
-            .comment.columns.large-offset-0{class: chat.references.empty? ? "small-12" : "small-10 small-offset-1" }
-              - if chat.class == Tvseries
+            .small-6.medium-12.columns.index_image= image_tag chat.agent_icon(:large) unless chat.class == Comment
+            .medium-12.columns.small-6.small-text-left.medium-text-right
+              .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
+
+              - if agent_signed_in? && chat.class != Comment
+                = link_to fa_icon('eye'), chat
+                - if chat.agent == current_agent
+                  = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
+                  = link_to fa_icon('trash'), chat, method: :delete, data: {:confirm => 'Are you sure you wish to delete this item?' }
+              - if chat.respond_to?('metadata')
+                .metadata
+                  - if chat.class != Comment
+                    .item_title
+                  - else
+                    Comment
+                  = chat.formatted_date
+                  - chat.metadata['metadata'].each_pair do |key, value|
+                    - next if value.blank?
+                    - next if view.nil?
+                    - next if view.agent_column_name(chat, key).blank?
+                    - next if key == 'season' 
+                    .item_metadata
+                      %span.item_metadata_category= chat.column_name(key) + ": "
+                      -#= key.humanize + ":"
+                      %span.item_metadata_value
+
+                        = highlight(display_metadata(key, value), searchterm) 
+                        - if key == 'format'
+                          = link_to fa_icon('external-link'), chat.linkto, :target => "_blank"
+                        - if key == 'label' && master == true
+                          = link_to  edit_master_genericmaster_path(:category => chat.master.class.to_s, :id => chat.master_id) do
+                            %span.has-tip{"aria-haspopup" => "true", "data-tooltip" => "", :title => "Edit the master record for #{chat.name}!"}= fa_icon(chat.master.icon_name)
+      - if chat.class == Comment
+        .large-2.columns.text-left.medium-2
+          .agent_name= raw "Agent #{link_to chat.agent_surname, chat.agent}"
+          .newsfeed_icon= image_tag chat.agent_icon(:large)
+          - if agent_signed_in?
+            - if current_agent == chat.agent
+              = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
+
+      - else
+        .medium-10.columns
+          - unless display_comment(chat).blank?
+            .row
+              .comment.columns.large-offset-0{class: chat.references.empty? ? "small-12" : "small-10 small-offset-1" }
+                - if chat.class == Tvseries
+                  .row
+                    .small-12.columns.season_marker
+                      Season:
+                      = chat.season
                 .row
-                  .small-12.columns.season_marker
-                    Season:
-                    = chat.season
-              .row
-                .small-1.columns.text-right.big
-                  = raw('&ldquo;') unless chat.comment.blank?
-                .small-11.columns.comment_body
+                  .small-1.columns.text-right.big
+                    = raw('&ldquo;') unless chat.comment.blank?
+                  .small-11.columns.comment_body
                   
-                  = raw highlight(display_comment(chat), searchterm)
-            - unless chat.references.empty?
-              .references.small-12.columns.large-2
-                .heading References:
-                %ul
-                  - chat.references.each do |ref|
-                    %li
-                      = link_to raw(ref.reference.name), ref.reference, target: :_blank
-                      - unless ref.comment.blank?
-                        %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
-          - unless chat.userimages.empty?
-            .images= raw one_or_slideshow(chat)
-          .entered_date
-            = "entered " + time_ago_in_words(chat.created_at) + " ago in "
-            = link_to chat.agent_category, "/agents/#{chat.agent.slug}/#{chat.class.table_name}"
-- else
-  %h6
-    %em You must be logged in to view this entry.
+                    = raw highlight(display_comment(chat), searchterm)
+              - unless chat.references.empty?
+                .references.small-12.columns.large-2
+                  .heading References:
+                  %ul
+                    - chat.references.each do |ref|
+                      %li
+                        = link_to raw(ref.reference.name), ref.reference, target: :_blank
+                        - unless ref.comment.blank?
+                          %span{:"data-tooltip" =>  true, :"aria-haspopup" => true, title: ref.comment}= fa_icon('file-text')
+            - unless chat.userimages.empty?
+              .images= raw one_or_slideshow(chat)
+            .entered_date
+              = "entered " + time_ago_in_words(chat.created_at) + " ago in "
+              = link_to chat.agent_category, "/agents/#{chat.agent.slug}/#{chat.class.table_name}"
+  - else
+    %h6
+      %em You must be logged in to view this entry.

@@ -28,10 +28,14 @@ class HomeController < ApplicationController
     #         @on_this_day.uniq!
     #       end
     #
-    @json = Entry.includes(:entry => {:geolocation_item => :geolocation}).where("entry_type not in (?)", ['Music', 'Book', 'Mile', 'Eating', 'Exercise', 'Comment', 'Forum', 'Airport', 'Videogame']).order('created_at DESC').limit(50)
-                .to_a.delete_if{|x| !x.entry.respond_to?('geolocation_item')}.delete_if{|x| x.entry.geolocation_item.nil?}.map{|x| x.entry.geolocation}.compact.uniq
+    @json = Entry.includes(entry: {geolocation_item: {geolocation: [ {movies: :master_movie}, {tvseries: :master_tvseries} ] } 
+          }).where("entry_type not in (?)", ['Music', 'Book', 'Mile', 'Eating', 'Exercise', 'Comment', 'Forum', 'Airport',
+             'Videogame']).order('created_at DESC').limit(20).to_a.delete_if{|x| !x.entry.respond_to?('geolocation_item')}.delete_if{|x|
+                x.entry.geolocation_item.nil?}.map{|x| x.entry.geolocation}.compact.uniq
+        
         
 
+                
 
     if agent_signed_in?
       if current_agent.profile.nil?

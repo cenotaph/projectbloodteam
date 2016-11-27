@@ -32,7 +32,7 @@
           });
           bounds.extend(new google.maps.LatLng(<%= m.latitude.to_s %>,<%= m.longitude.to_s %>));
           var infowindow_<%= m.id %>  = new google.maps.InfoWindow({
-                content: '<%= escape_javascript(raw(m.infowindow)) %>'
+                 content: '<%= escape_javascript(raw(m.infowindow)) %>'
             });
             
           google.maps.event.addListener(marker_<%= m[:id] %>, 'click', function() {
