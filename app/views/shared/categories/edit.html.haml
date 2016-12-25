@@ -1,7 +1,9 @@
 .container
   .row
     .large-6.columns.large-offset-3.small-10.small-offset-1
-      %h2= "Agent #{@category.agent.surname}'s categories for #{@category.year}"
+      %h2= "Agent #{@category.agent.surname}'s categories for #{@category.year}" 
+      id 
+      = @category.id.to_s
       = form_for @category do |cat| 
 
         %p You may edit your categories here. The checkbox enables the category, and you may customise the name of the category.
