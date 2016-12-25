@@ -9,6 +9,8 @@ require "capistrano/rvm"
 require 'capistrano/puma'
 
 require 'thinking_sphinx/capistrano'
+require "capistrano/scm/git"
+install_plugin Capistrano::SCM::Git
 
 # Includes tasks from other gems included in your Gemfile
 #

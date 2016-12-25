@@ -63,7 +63,7 @@ class CategoriesController < ApplicationController
   private
   
   def category_params
-    params.require(:category).permit(:movies, :musics, :books, :bars, :restaurants, :concerts, :events, :eating, :exercise, :weight, :musicplayed, :activities, :airports, :videogames, :groceries, :brewing, :takeaway, :gambling, :tvseries, :year, :miles, :has_movies, :has_musics, :has_books, :has_activities, :has_airports, :has_brewing, :has_concerts, :has_eating, :has_events, :has_exercise, :has_gambling, :has_groceries, :has_miles, :has_musicplayed, :has_restaurants, :has_takeaway, :has_bars, :has_weight, :has_videogames, :has_tvseries)
+    params.require(:category).permit(:movies, :musics, :books, :bars, :restaurants, :concerts, :events, :eating, :exercise, :weight, :musicplayed, :activities, :airports, :videogames, :groceries, :brewing, :takeaway, :gambling, :tvseries, :year, :miles, :has_movies, :has_musics, :has_books, :has_activities, :has_airports, :has_brewing, :has_concerts, :has_eating, :has_events, :has_exercise, :has_gambling, :has_groceries, :has_miles, :has_musicplayed, :has_restaurants, :has_takeaway, :has_bars, :has_movies, :has_weight, :has_videogames, :has_tvseries)
   end
   
 end
