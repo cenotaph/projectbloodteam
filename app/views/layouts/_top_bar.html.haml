@@ -1,4 +1,4 @@
-- cache ['top-bar',  current_agent.categories.year(getYear).first ] do
+- cache ['top-bar',  agent_signed_in? ? current_agent.categories.year(getYear).first : 'no-user'] do
   .top-bar-left
     %ul.dropdown.menu{:"data-dropdown-menu" => ''}
       %li.menu-text
