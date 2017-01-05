@@ -44,7 +44,9 @@ Pbt4::Application.configure do
   # end
   config.paperclip_defaults = {
     :storage => :s3,
-    :bucket => 'pbt-development'
+    :bucket => 'pbt-development',
+    :s3_permissions => 'public-read',
+    :s3_region => 'us-east-1'
   }
   # Don't care if the mailer can't send
   config.active_record.raise_in_transactional_callbacks = true

@@ -30,7 +30,7 @@ group :development do
   gem 'spring'
 end
     
-gem 'aws-sdk', '< 2'
+gem 'aws-sdk', '~> 2.3.0'
 gem "bullet", :group => "development"
 #gem 'rails4_upgrade'
 

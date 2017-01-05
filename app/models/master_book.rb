@@ -7,7 +7,8 @@ class MasterBook < ActiveRecord::Base
   has_attached_file :filename, :default_url => '/img/no_image.png',
   :styles => {:thumb => "150x150>", :full => "600x450>"},
    # :path => ":rails_root/public/images/master_books/:id/:style/:basename.:extension",
-   :default_style => :original, path: "/master_books/:id/:style/:basename.:extension"
+   #:default_style => :original,
+    path: "/master_books/:id/:style/:basename.:extension"
   validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed?
   include ItemHelpers
   attr_accessor :followup, :resync_image
@@ -17,10 +18,9 @@ class MasterBook < ActiveRecord::Base
     return if amazoncode.blank?
     book = Amazon::Ecs.item_search(self.amazoncode, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
     require 'open-uri'
-
     unless book.get_hash('LargeImage').blank?
       self.filename = URI.parse(book.get_hash('LargeImage')['URL'])
-      # self.save
+      self.save
     end
   end
 
