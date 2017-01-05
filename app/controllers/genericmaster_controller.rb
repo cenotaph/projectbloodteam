@@ -520,6 +520,7 @@ class GenericmasterController < ApplicationController
           end
         elsif @category == 'MasterBook'
           unless @item.amazoncode.blank?
+        
             if params[:master_book][:resync_image] == "1"
 
               @item.syncimage

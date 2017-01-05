@@ -17,6 +17,7 @@ class MasterBook < ActiveRecord::Base
     return if amazoncode.blank?
     book = Amazon::Ecs.item_search(self.amazoncode, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
     require 'open-uri'
+    die
     unless book.get_hash('LargeImage').blank?
       self.filename = URI.parse(book.get_hash('LargeImage')['URL'])
       # self.save

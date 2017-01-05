@@ -35,7 +35,7 @@
             %span.link_to
               = link_to fa_icon('external-link'), @item.linkto, :target => "_blank"
               = link_to  edit_master_genericmaster_path(:category => @item.class.to_s, :id => @item.master_id) do
-                %span.has-tip{"aria-haspopup" => "true", "data-tooltip" => "", :title => "Edit the master record for #{@item.name}!"}= fa_icon(@item.icon_name)
+                %span.has-tip{"aria-haspopup" => "true", "data-tooltip" => "", :title => raw("Edit the master record for #{strip_tags @item.name}!")}= fa_icon(@item.icon_name)
                 
         = render :partial => "shared/#{@item.class.to_s.downcase}", :locals => {:item => @item}
         
