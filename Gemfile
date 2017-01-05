@@ -21,7 +21,7 @@ gem 'execjs', :group => [:staging, :production]
 
 # gem 'activerecord', '3.0.3'
 # gem 'buntine-discogs'
-gem 'amazon-ecs'#, github: 'jugend/amazon-ecs' #, '2.3.0'
+gem 'amazon-ecs', '2.5.0'
 gem 'ruby-hmac'
 group :development do
   gem 'better_errors'

@@ -33,19 +33,22 @@ class ViewsController < ApplicationController
      @view = View.find(params[:id])
      @view.agent = current_agent
     # @view.year = params[:view][:year]
-    logger.warn('before : ' + params.inspect)
+    #die
      params[:view].each do |p|
-       if p[0] =~ /^has/
-         if p[1] == '0'
-            params['view'][p[0].sub(/^has/,'')] = '0'
+
+ 
+       if p =~ /^has/
+         if params[:view][p] == '0'
+            params['view'][p.sub(/^has/,'')] = '0'
          else
-            params['view'][p[0].sub(/^has/, '')] = params[:view][p[0].sub(/^has/, '')]
+            params['view'][p.sub(/^has/, '')] = params[:view][p.sub(/^has/, '')]
          end
-         params[:view].delete(p[0])
+
+         params[:view].delete(p)
         end
      end
  
-   logger.warn('after : ' + params.inspect)
+  
    
      if @view.update_attributes(params[:view].permit!)
        flash[:notice] = 'Edited ' + @view.year.to_s + ' view.'

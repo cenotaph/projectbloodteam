@@ -11,18 +11,14 @@ class MasterBook < ActiveRecord::Base
   validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed?
   include ItemHelpers
   attr_accessor :followup, :resync_image
-  # before_update :syncimage
+  #before_create :syncimage
   
   def syncimage
     return if amazoncode.blank?
-    book = Amazon::Ecs.item_search(self.amazoncode, {:response_group => 'Medium'}).items[0]
+    book = Amazon::Ecs.item_search(self.amazoncode, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
     require 'open-uri'
     unless book.get_hash('LargeImage').blank?
-      self.filename_file_name = self.amazoncode.to_s + '.jpg'
-      system('mkdir -p ' + Rails.root.to_s + '/public/images/master_books/' + self.id.to_s + '/thumb')
-      self.filename_content_type = 'image/jpeg'
-      open("#{Rails.root.to_s}/public/images/master_books/#{self.id.to_s}/thumb/#{self.amazoncode}.jpg",
-            "wb").write(open(book.get_hash('LargeImage')['URL']).read)
+      self.filename = URI.parse(book.get_hash('LargeImage')['URL'])
       # self.save
     end
   end
@@ -34,18 +30,15 @@ class MasterBook < ActiveRecord::Base
     else
       existing = self.where(:amazoncode => key)
       if existing.empty?
-        book = Amazon::Ecs.item_search(key, {:response_group => 'Medium'}).items[0]
+        book = Amazon::Ecs.item_search(key, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
+
         new_master = MasterBook.new(:amazoncode => key, :title => book.get('ItemAttributes/Title'), 
                           :author => book.get('ItemAttributes/Author'))
         require 'open-uri'
+        unless book.get_hash('LargeImage').blank?
+          new_master.filename = URI.parse(book.get_hash('LargeImage')['URL'])
+        end
         if new_master.save
-          unless book.get_hash('MediumImage').blank?
-            new_master.filename_file_name = new_master.amazoncode.to_s + '.jpg'
-            system('mkdir -p ' + Rails.root.to_s + '/public/images/master_books/' + new_master.id.to_s + '/original')
-            new_master.filename_content_type = 'image/jpeg'
-            open("#{Rails.root.to_s}/public/images/master_books/#{new_master.id.to_s}/original/#{key}.jpg","wb").write(open(book.get_hash('MediumImage')['URL']).read)
-            new_master.save!
-          end
           new_master.id
         end
       else

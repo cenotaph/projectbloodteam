@@ -363,7 +363,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store!
-  amazon-ecs
+  amazon-ecs (= 2.5.0)
   aws-sdk (< 2)
   better_errors
   binding_of_caller

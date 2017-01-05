@@ -9,9 +9,6 @@
     
 
     %script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS']}&callback=initMap", :type => "text/javascript"}
-
-    
-
     = yield :head
     = stylesheet_link_tag   "application" 
     = javascript_include_tag "application"
@@ -27,7 +24,7 @@
 
 
   %body
-    .topmost{:"data-sticky-container" => ''}
+    .topmsost{:"data-sticky-container" => ''}
       .top-bar.sticky{:"data-sticky" => '', :"data-options" => "marginTop:0;", style: "width:100%"}
         = render :partial => 'layouts/top_bar'
       
@@ -158,7 +155,7 @@
           .row
             .large-6.columns.small-10
               = f.label :login
-              = f.text_field :login
+              = f.text_field :login, :autocorrect => :off, autocapitalize: :off
           .row
             .large-6.columns.small-10
               = f.label :password

@@ -6,7 +6,7 @@ members only!
   = form_tag session_path do 
     .row
       .label Login:
-      .formw= text_field_tag 'username'
+      .formw= text_field_tag 'username', :autocorrect => :off, autocapitalize: :off
 
     .row
       .label Password:

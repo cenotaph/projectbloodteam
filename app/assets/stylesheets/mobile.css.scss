@@ -1,6 +1,9 @@
 @import 'variables';
 
 @media only screen and (max-width: 43em) {
+  .reveal {
+    padding-top: 7rem;
+  }
   .top-bar ul li {
     font-size: 0.9rem;
   }
