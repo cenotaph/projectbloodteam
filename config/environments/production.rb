@@ -32,7 +32,9 @@ Pbt4::Application.configure do
   # config.assets.digest = true
   config.paperclip_defaults = {
     :storage => :s3,
-    :bucket => 'pbt-production'
+    :bucket => 'pbt-production',
+    :s3_permissions => 'public-read',
+    :s3_region => 'us-east-1'
   }
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
