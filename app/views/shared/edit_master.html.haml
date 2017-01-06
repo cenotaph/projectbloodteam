@@ -13,11 +13,19 @@
         = semantic_form_for(@item, :html => {:multipart => true}) do |f|
           .form_wrapper
             = f.input :title, :as => :string
+            = f.input :english_title, as: :string
             = f.input :director, :as => :string
             = f.input :country, :as => :string
             = f.input :year, :as => :string
             = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
-            = f.input :filename    
+   
+            .row
+              .large-6.columns
+                - if f.object.filename?
+                  = image_tag f.object.filename.url(:full)
+                = f.input :filename, label: 'Replace image:'
+            .row
+              .large-6.columns= f.input :resync_image, label: 'Attempt to re-sync the image from IMDB', hint: 'If there is an image for this object it will be overwritten', as: :boolean            
             - if @followup == 'new'
               = f.input :followup, :as => :hidden, :value => @followup
             = f.submit 'Save', class: [:button, :small]
@@ -30,7 +38,13 @@
             = f.input :title, :as => :string
             = f.input :year, :as => :string
             = f.input :imdbcode, :as => :string, :input_html => {:maxlength => 16 }
-            = f.input :image    
+            .row
+              .large-6.columns
+                - if f.object.image?
+                  = image_tag f.object.image.url(:full)
+                = f.input :image, label: 'Replace image:'
+            .row
+              .large-6.columns= f.input :resync_image, label: 'Attempt to re-sync the image from IMDB', hint: 'If there is an image for this object it will be overwritten', as: :boolean                     
             - if @followup == 'new'
               = f.input :followup, :as => :hidden, :value => @followup
             = f.submit 'Save', class: [:button, :small]

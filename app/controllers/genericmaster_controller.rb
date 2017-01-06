@@ -510,11 +510,16 @@ class GenericmasterController < ApplicationController
       if @item.update_attributes(params[@category.tableize.singularize].permit!)
 
         if @category == 'MasterMovie'
-          if @item.filename_file_name.blank? && !@item.imdbcode.blank?
+          if (@item.filename_file_name.blank? && !@item.imdbcode.blank?) || params[:master_movie][:resync_image] == "1"
             i = Imdb::Movie.new(@item.imdbcode)
             big_poster = i.poster
             unless big_poster.blank?
               @item.filename = URI.parse(big_poster)
+            end
+            if @item.english_title.blank?
+              unless i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
+                @item.english_title = HTMLEntities.new.decode  i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }[:title]
+              end
             end
             @item.save!
           end
@@ -532,8 +537,16 @@ class GenericmasterController < ApplicationController
               @item.resync_discogs_image(session[:discogs_token])
             end
           end
-        end
-        
+        elsif @category == 'MasterTvseries'
+          if (@item.image_file_name.blank? && !@item.imdbcode.blank?) || params[:master_tvseries][:resync_image] == "1"
+            i = Imdb::Movie.new(@item.imdbcode)
+            big_poster = i.poster
+            unless big_poster.blank?
+              @item.image = URI.parse(big_poster)
+            end
+            @item.save!
+          end
+        end        
   
         expire_fragment(/genericmaster\/#{Regexp.escape(@item.master_id.to_s)}\?(.*)category\=master#{Regexp.escape(@item.class.to_s.downcase)}/)
         expire_fragment(/.*newsfeed_front.*/)       

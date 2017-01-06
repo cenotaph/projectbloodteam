@@ -8,7 +8,7 @@ class MasterTvseries < ActiveRecord::Base
       # :path => ":rails_root/public/images/master_tvseries/:id/:style/:basename.:extension",
       :default_style => :full, path: "/master_tvseries/:id/:style/:basename.:extension"
  
-  attr_accessor :followup
+  attr_accessor :followup, :resync_image
   include ItemHelpers
   extend FriendlyId
   friendly_id :title_and_year, use: [:slugged, :finders]
