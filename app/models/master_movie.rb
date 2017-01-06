@@ -8,7 +8,7 @@ class MasterMovie < ActiveRecord::Base
       :styles => {:thumb => "150x150>", :full => "600x450>"},
       # :path => ":rails_root/public/images/master_movies/:id/:style/:basename.:extension",
       :default_style => :full, path: "/master_movies/:id/:style/:basename.:extension"
-
+  process_in_background :filename  
   attr_accessor :followup
   include ItemHelpers
   validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed?

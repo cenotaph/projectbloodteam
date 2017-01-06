@@ -164,7 +164,7 @@ class AgentsController < ApplicationController
       theme 'classic'
 
       @newsfeed = Entry.where(:agent => @agent).joins(:agent).group([:entry_type, :entry_id]).order('created_at DESC').page(params[:page]).per(10)
-      @json = Entry.where(:agent => @agent).order('created_at DESC').limit(150).to_a.delete_if{|x| !x.entry.respond_to?('geolocation_id')}.delete_if{|x| x.entry.geolocation_id.nil? }.map{|x| x.entry.geolocation }
+      @json = Entry.where(:agent => @agent).order('created_at DESC').limit(150).to_a.delete_if{|x| !x.entry.respond_to?('geolocation_id')}.delete_if{|x| x.entry.geolocation_id.nil? }.map{|x| x.entry.geolocation }.compact
 
       if request.xhr?
         render :partial => 'shared/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => false }
