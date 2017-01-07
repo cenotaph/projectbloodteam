@@ -54,6 +54,9 @@ class ApplicationController < ActionController::Base
    protected
    
    def after_sign_in_path_for(resource)
+     unless current_agent.discogs_token.blank?
+       session[:discogs_token] = Marshal.load(current_agent.discogs_token)
+     end
      session[:forum_unread] = Comment.chatter_since_last(resource.last_sign_in_at)
      '/'
    end

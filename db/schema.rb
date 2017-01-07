@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161016085022) do
+ActiveRecord::Schema.define(version: 20170107103707) do
 
   create_table "activities", force: :cascade, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8" do |t|
     t.integer  "agent_id"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 20161016085022) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.integer  "sign_in_count"
+    t.binary   "discogs_token",          limit: 65535
   end
 
   create_table "airports", force: :cascade, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8" do |t|
@@ -797,14 +798,14 @@ ActiveRecord::Schema.define(version: 20161016085022) do
     t.text     "defaultcss",  limit: 65535
   end
 
-  create_table "tvseries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  create_table "tvseries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "agent_id"
     t.integer  "master_tvseries_id"
     t.date     "started"
     t.date     "finished"
     t.integer  "season"
     t.float    "rating",             limit: 24
-    t.text     "comment",            limit: 65535
+    t.text     "comment",            limit: 16777215
     t.boolean  "first"
     t.string   "userimage"
     t.string   "location"

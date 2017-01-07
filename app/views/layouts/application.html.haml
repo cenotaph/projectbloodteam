@@ -110,7 +110,7 @@
                     
       .reveal#prompt_music{:"data-reveal" => ''}
         %h2 New music
-        - if !session[:discogs_token].blank?
+        - unless session[:discogs_token].blank? || current_agent.discogs_token.blank?
           .row
             .small-4.columns
               %p Enter a title to search for your music entry.

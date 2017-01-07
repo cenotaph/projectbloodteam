@@ -3,7 +3,7 @@ class GenericmasterController < ApplicationController
   respond_to :html, :xml
   before_action :getView
   before_action :getCategory
-  before_action :authenticate_agent!, :only => [:new, :edit, :edit_master, :update, :create, :destroy, :directid,  :unreviewed]
+  before_action :authenticate_agent!, :only => [:new, :edit, :edit_master, :update, :create, :destroy, :directid, :authenticate, :callback, :unreviewed]
   theme :getTheme
   autocomplete :movie, :location
   
@@ -92,9 +92,12 @@ class GenericmasterController < ApplicationController
 
     session[:request_token] = nil
     session[:discogs_token]  = access_token
-    logger.warn('access_token token is ' + session[:discogs_token].inspect)
+    # logger.warn('access_token token is ' + session[:discogs_token].inspect)
     @discogs.access_token = access_token
-    logger.warn('@discogs.access_token is ' + @discogs.access_token.inspect)
+    encrypt_access_token = Marshal.dump(access_token)
+    current_agent.update_attribute(:discogs_token, encrypt_access_token)
+    
+    # logger.warn('@discogs.access_token is ' + @discogs.access_token.inspect)
     if session[:my_previous_url].nil?
       redirect_to '/'
     else
@@ -336,10 +339,14 @@ class GenericmasterController < ApplicationController
         end
       end      
       begin
-         if @master == "MasterMusic"\
-           # OK so this fucker won't work as a model method right now.... grrr......
-           @discogs = Discogs::Wrapper.new("PBT development", session[:discogs_token])
-           search =  @discogs.search(params[:query], :type => :release)
+        if @master == "MasterMusic"\
+          # OK so this fucker won't work as a model method right now.... grrr......
+          if session[:discogs_token]
+            @discogs = Discogs::Wrapper.new("PBT development", session[:discogs_token])
+          elsif !current_agent.discogs_token.blank?
+            @discogs = Discogs::Wrapper.new("PBT development", Marshal.load(current_agent.discogs_token))
+          end
+          search =  @discogs.search(params[:query], :type => :release)
           #  = @discogs.search(params[:query].gsub(/\s/, '%20'), :type => :release)
           @choices = []
           search.results.each do |hit|
