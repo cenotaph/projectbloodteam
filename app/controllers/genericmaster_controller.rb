@@ -206,7 +206,7 @@ class GenericmasterController < ApplicationController
   end
   
   def directid
-    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:directid].gsub(/^tt/, '')), :add_to_newsfeed => true)
+    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:directid].gsub(/^tt/, ''), session[:discogs_token].nil? ? (current_agent.discogs_token.blank? ? nil : current_agent.discogs_token) : session[:discogs_token]), :add_to_newsfeed => true)
     @item.userimages << Userimage.new(:primary => true)
     if @item.respond_to?('currency_id')
       @item.currency_id = current_agent.default_currency
@@ -370,7 +370,7 @@ class GenericmasterController < ApplicationController
 
     
   def select
-    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id], session[:discogs_token]), :add_to_newsfeed => true)
+    @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:id], session[:discogs_token].nil? ? (current_agent.discogs_token.blank? ? nil : current_agent.discogs_token) : session[:discogs_token]), :add_to_newsfeed => true)
 
     @item.userimages << Userimage.new(:primary => true)
     if @item.respond_to?('currency_id')
