@@ -1,5 +1,5 @@
 .magellan_container{:"data-sticky-container" => ''}
-  %nav.sticky{:"data-sticky" => '', :'data-options' => 'marginTop:2.5'}
+  %nav.sticky{:"data-sticky" => '', :'data-options' => "marginTop: #{@agent.nil? ? 2.5 : 4.75}"}
     %ul.horizontal.menu{:'data-magellan' => ''}
       %li=  link_to raw(@item.name.to_s) + ": ", '#'
       %li.active= link_to 'Details', "#details"

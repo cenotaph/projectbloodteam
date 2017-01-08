@@ -1,5 +1,5 @@
 .magellan_container{:"data-sticky-container" => ''}
-  %nav.sticky{:"data-sticky" => '', :'data-options' => 'marginTop:2.5'}
+  %nav.sticky{:"data-sticky" => '', :'data-options' => "marginTop: #{@agent.nil? ? 2.5 : 4.75}"}
     %ul.horizontal.menu{:'data-magellan' => ''}
       %li= link_to @item.short_name + ": ", '#' 
       %li.active= link_to 'Details', "#details"
@@ -14,12 +14,13 @@
   .small-10.columns.small-offset-1.master_head#details
     %section#details
     .row
-      .small-3.columns
-        - if @item.class.to_s =~ /ook$/
-          = image_tag @item.icon(:original)
-        - else
-          = image_tag @item.icon(:full)
-      .small-9.columns.text-center
+      - unless @item.icon.blank?
+        .medium-3.small-10.columns
+          - if @item.class.to_s =~ /ook$/
+            = image_tag @item.icon(:original)
+          - else
+            = image_tag @item.icon(:full)
+      .medium-9.small-10.columns.text-center
         .main_title{:"data-magellan-destination" => "details"}
           = raw @item.name
         

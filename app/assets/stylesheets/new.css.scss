@@ -338,7 +338,7 @@ header { display: none;
   }
 }
 
-.topmost.sticky-container {
+#topmost.sticky-container {
   z-index: 9999;
 }
 
@@ -355,9 +355,10 @@ header { display: none;
       height: 40px;
       li {
         &#searchform {
-          padding-left: 2.2rem;
+          padding-left: 0.3rem;
           input {
             height: 30px;
+            font-size: 0.8em;
           }
           
         }
@@ -954,5 +955,81 @@ a.anchor {
   font-size: 0.9rem;
   &.even {
     background-color: #efefef
+  }
+}
+
+.agent_bar.sticky-container {
+  z-index: 5000;
+      
+}
+
+.is-drilldown {
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+#agent_menu {
+  .is-drilldown-submenu-parent > a {
+    padding-right: 2.2rem;
+    &::after {
+      transform: rotate(90deg);
+      border-color: transparent transparent transparent $secondary-color;
+    }
+      
+  }
+  padding: 0;
+
+  ul.is-drilldown-submenu.is-active  {
+    li {
+      a {
+        color: $secondary-color;
+      }
+    }
+  }
+  background-color: $tertiary-color;
+  li {
+    background-color: $tertiary-color;
+    font-size: 0.875em;
+    a { color: $secondary-color;
+    }
+    &.title {
+      font-weight: bold;
+    }
+    &.js-drilldown-back {
+      a {
+        color: $secondary-color !important;
+        &::before {
+              border-color: transparent $secondary-color transparent transparent;
+        }
+      }
+    }
+    &:hover {
+      background-color: $secondary-color;
+      &.js-drilldown-back {
+        a {
+          color: $tertiary-color !important;
+          &::before {
+            border-color: transparent $tertiary-color transparent transparent;
+          }
+        }
+      }
+      a { color: $tertiary-color; }
+
+      a {
+        //color: $primary-color;
+        &::after {
+          border-color: transparent transparent transparent $primary-color;
+        }
+      }
+    }
+    ul {
+      li:hover {
+  
+        a { color: $tertiary-color; }
+      }
+    }
+    a {
+
+    }
   }
 }

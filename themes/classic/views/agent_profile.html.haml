@@ -1,8 +1,9 @@
 .profile.container
-  .row
-    .large-6.columns.small-12
+  .row.expanded.expanded
+    .large-4.columns.small-12
       .agent_image= image_tag @agent.agent_icon(:large)
       %div
+        %br/
         %u agent details 
         .profile_details= "Mission name: #{@profile.missionname}"
         .profile_details= "Name: #{@profile.surname}"
@@ -22,8 +23,8 @@
       - unless @json.blank?
         #master_map
           .profile_details Recent locations:
-          = render :partial => 'home/front_map', locals: {json: @json, center: nil, target: "master_map" }
-    .large-6.columns.small-12
+          = render :partial => 'home/front_map', locals: {json: @json, center: nil, target: "master_map", center: @json.size > 1 ? false : @json.first }
+    .large-8.columns.small-12
       - if @agent.security > 0
         - if !agent_signed_in?
           %p This user protects their information only for other PBT agents.
@@ -36,4 +37,4 @@
         .newsfeed_profile
           #results= render :partial => 'agents/newsfeed', :collection => @newsfeed, :locals => {:no_agent_icon => true}
         = paginate @newsfeed
-        = pageless(@newsfeed.total_pages, '/agents/' + @agent.id.to_s)
+

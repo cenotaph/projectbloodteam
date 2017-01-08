@@ -445,7 +445,17 @@ class GenericmasterController < ApplicationController
       @item = @master.classify.constantize.includes([:comments, 
         {"#{@singular.downcase.pluralize}".to_sym => [:agent, :userimages, "#{@master.tableize.singularize}".to_sym]}
         ]).find(params[:id])      
-        item = @item
+      item = @item
+      if @item.items.map(&:agent_id).uniq.compact.size == 1
+        @agent = Agent.find(@item.items.map(&:agent_id).uniq.compact.first)
+        if @category =~ /Movie$/
+          @stats = {"yearcount" => @singular.classify.constantize.where(agent: @agent).where("date >= '#{@item.items.first.date.year}-01-01' and date <= '#{@item.items.first.date.year}-12-31'").count,
+           "alltimecount" => @singular.classify.constantize.where(agent: @agent).count,  "year" => @item.items.first.date.year,
+           "position" => @singular.classify.constantize.where(agent: @agent).where("date >= '#{@item.items.first.date.year}-01-01' and date <= '#{@item.items.first.date.year}-12-31'").index(@item.items.first),
+           "alltimeposition" => @singular.classify.constantize.where(agent: @agent).index(@item.items.first)
+         } 
+        end
+      end
     else
  
       @singular = @category
@@ -454,7 +464,17 @@ class GenericmasterController < ApplicationController
       @item = @master.classify.constantize.includes([:comments,  :references,
         {"#{@singular.downcase.pluralize}".to_sym => [:agent, :userimages, "#{@master.tableize.singularize}".to_sym]}
         ]).find(item.master_id)
-
+        
+      if @item.others.map(&:agent_id).delete_if{|x| x == item.agent_id }.compact.empty?
+        @agent = item.agent
+        if item.respond_to?(:date)
+          @stats = {"yearcount" => item.class.where(agent: @agent).where("date >= '#{item.date.year}-01-01' and date <= '#{item.date.year}-12-31'").count,
+           "alltimecount" => item.class.where(agent: @agent).count, "position" =>  item.class.where(agent: @agent).where("date >= '#{item.date.year}-01-01' and date <= '#{item.date.year}-12-31'").index(item),
+           "alltimeposition" => item.class.where(agent: @agent).index(item),
+           "year" => item.date.year} 
+        end
+          
+      end
     end
 
 
@@ -473,9 +493,10 @@ class GenericmasterController < ApplicationController
       render :template => 'shared/ajaxshow_master', :layout => false
     else
       # this a total mess; clean up later
-
+      
       if @master == 'master_music' || @master == 'MasterMusic'
         if !@item.other_versions.empty?
+          @agent = nil
           render :template => 'shared/different_records'
         else
           render :template => 'shared/master'

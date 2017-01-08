@@ -1,0 +1,40 @@
+.sticky{:"data-sticky" => '', :'data-stick-to' => 'top',  :'data-top-anchor' => 'topmost:bottom', style: "width:100%", :"data-options" => "marginTop:2.5;", :'data-bottom-anchor' => 'master_container:top'}
+  .title-bar{:'data-responsive-toggle' => 'agent_menu', :'data-hide-for' => 'medium'}
+    %button.menu-icon{type: :button, :'data-toggle' => 'agent_menu'}
+    .title-bar-title= 'Agent ' + @agent.surname
+  - agent_category = @agent.categories.year(getYear).first
+  .title-bar#agent_menu
+    .title-bar-left
+      %ul.dropdown.menu
+        %li.title.hide-for-small-only= link_to 'Agent ' + @agent.surname + ": ", @agent
+        %li.status 
+          - if @item
+            = agent_category.send(@item.class.to_s.tableize.gsub(/^master_/, '')).to_s
+            - if @stats
+              = " : "
+              %small
+                = "#{@stats['position']} of "
+                = "#{@stats['yearcount']} in #{@stats['year']} / #{@stats['alltimeposition']} of #{@stats['alltimecount']} all-time"
+    - cache [@agent, 'right_dev_menu' ] do
+      .title-bar-right
+        %ul.horizontal.menu{:'data-drilldown' => ''}
+
+          %li.title
+            = link_to 'Categories', '#'
+            %ul.vertical.menu{ :'data-auto-height' => true}
+              
+              - unless agent_category.nil?      
+                - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Tvseries, Videogame, Weight].each do |category|
+                  - this_cat = agent_category.send(category.to_s.tableize).to_s
+                  -  if this_cat == "0"
+                    - next
+                  %li
+                    = link_to this_cat, "/agents/#{@agent.slug.to_s}/#{category.table_name}"
+          %li.title
+            = link_to 'Other years', '#'
+            %ul.vertical.menu{:'data-auto-height' => true}
+              - (2017.downto(2002)).each do |year|
+                - if Profile.find_by(agent: @agent, year: year).nil?
+                  - next
+                - else
+                  %li= link_to year, "http://#{year.to_s}.bloodteam.com/agents/#{@agent.slug}"

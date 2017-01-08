@@ -66,7 +66,7 @@
               = link_to fa_icon('pencil'), "/agents/#{current_agent.id.to_s}/#{chat.class.table_name}/#{chat.id.to_s}/edit"
 
       - else
-        .medium-10.columns
+        .medium-10.columns.comment
           - unless display_comment(chat).blank?
             .row
               .comment.columns.large-offset-0{class: chat.references.empty? ? "small-12" : "small-10 small-offset-1" }

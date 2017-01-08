@@ -5,12 +5,13 @@
       %li.menu-text
         = link_to 'PBT', '/'
         %ul.menu.vertical
+          %li.show-for-small-only= link_to 'Homepage', '/'
           - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|
             %li= link_to category.to_s.pluralize, "/#{category.table_name}"
       - if agent_signed_in?
         %li{style: 'min-width: 135px'}
           = link_to "Agent #{current_agent.surname}", '#'
-          %ul.menu.vertical.agent_menu
+          %ul.menu.vertical.agent_menu{:'data-auto-height' => true}
             - if agent_signed_in?
               - agent_category = current_agent.categories.year(getYear).first
 
@@ -34,8 +35,8 @@
     / %section.top-bar-section
     /   
         
-  .top-bar-right
-    %ul.horizontal.menu{:'data-accordion-menu' => ''}
+  .top-bar-right.hide-for-small-only
+    %ul.horizontal.menu{:'data-drilldown' => ''}
       - if controller.controller_name == 'home' && !@json.blank?
         %li= link_to fa_icon('globe lg') + " (#{@json.size})", '#', onclick: "$('.worldmap-bar').slideToggle();google.maps.event.trigger(map, 'resize'); map.setCenter(new google.maps.LatLng(0, 0));return false;"
       - unless controller.controller_name == 'forums' && controller.action_name == 'index'
@@ -43,7 +44,7 @@
       %li.hide-for-small-only= link_to fa_icon("users lg"), '#', onclick: "$('.agents-bar .agents').slideToggle(); return false;"
       %li.show-for-small-only
         = link_to 'All agents', '#'
-        %ul.vertical.menu.nested
+        %ul.vertical.menu{ :'data-auto-height' => true}
           - @active_agents.each do |agent|
             %li= link_to agent.surname, agent.agent
       %li= link_to fa_icon('line-chart lg'), '/stats'

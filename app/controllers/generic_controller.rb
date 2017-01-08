@@ -220,7 +220,14 @@ class GenericController < ApplicationController
       end
       @json = hits.compact.map(&:geolocation).uniq unless hits.nil?
     end
-    @view = View.find_by(:agent => @item.agent, :year => @item.date.year)
+    @agent = @item.agent
+    if @item.respond_to?(:date)
+      @stats = {"yearcount" => @item.class.where(agent: @agent).where("date >= '#{@item.date.year}-01-01' and date <= '#{@item.date.year}-12-31'").count,
+       "alltimecount" => @item.class.where(agent: @agent).count, "year" => @item.date.year} 
+    end
+    # get stats
+
+    @view = View.find_by(:agent => @agent, :year => @item.date.year)
     
     if @item.class == Comment
       redirect_to @item.child

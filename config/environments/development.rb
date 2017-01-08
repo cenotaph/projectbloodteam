@@ -44,7 +44,7 @@ Pbt4::Application.configure do
   # end
   config.paperclip_defaults = {
     :storage => :s3,
-    :bucket => 'pbt-development',
+    :bucket => 'pbt-production',
     :s3_permissions => 'public-read',
     :s3_region => 'us-east-1'
   }

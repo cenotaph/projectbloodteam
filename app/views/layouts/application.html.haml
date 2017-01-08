@@ -8,7 +8,7 @@
     %link{ :rel => "shortcut icon", :href => "/images/favicon.ico", :type => "image/x-icon"}/
     
 
-    %script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS']}&callback=initMap", :type => "text/javascript"}
+    %script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS']}&callback=initialize", :type => "text/javascript"}
     = yield :head
     = stylesheet_link_tag   "application" 
     = javascript_include_tag "application"
@@ -24,7 +24,7 @@
 
 
   %body
-    .topmsost{:"data-sticky-container" => ''}
+    #topmost{:"data-sticky-container" => ''}
       .top-bar.sticky{:"data-sticky" => '', :"data-options" => "marginTop:0;", style: "width:100%"}
         = render :partial => 'layouts/top_bar'
       
@@ -49,6 +49,9 @@
               = link_to 'See all', geolocations_path
             #front_map
             = render :partial => 'front_map', locals: {json: @json , target: 'front_map', center: nil}
+    - if @agent
+      .agent_bar{:"data-sticky-container" => ''}
+        = render partial: 'layouts/agent_bar'
             
     - if flash[:notice]
       .flash_notice
