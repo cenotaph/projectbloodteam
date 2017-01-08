@@ -10,6 +10,9 @@
 }
 
 @media only screen and (max-width: 64em) {
+  .close-button {
+    top: 100px;
+  }
   .top-bar .top-bar-left ul li ul li {
     float: left;
   }

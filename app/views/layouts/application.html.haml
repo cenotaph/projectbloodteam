@@ -8,7 +8,7 @@
     %link{ :rel => "shortcut icon", :href => "/images/favicon.ico", :type => "image/x-icon"}/
     
 
-    %script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS']}&callback=initialize", :type => "text/javascript"}
+    %script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS']}", :type => "text/javascript"}
     = yield :head
     = stylesheet_link_tag   "application" 
     = javascript_include_tag "application"
@@ -80,20 +80,23 @@
       .reveal#prompt_movie{:"data-reveal" => ''}
         %h2 New movie
         .row
-          .small-4.columns
+          .small-6.medium-4.columns
             = form_tag query_agent_movies_path(:agent_id => current_agent.id), :method => :get do 
               %p Enter a title to search for your movie.
               = text_field_tag :query
               = submit_tag 'Search', :class => [:button, :small]
-          .small-4.columns
+          .small-6.medium-4.columns
             = form_tag directid_agent_movies_path(:agent_id => current_agent.id), :method => :get do 
               %p or enter the IMDB code
               = text_field_tag :directid
               = submit_tag 'Create', :class => [:button, :small]
-          .small-4.columns.end
+          .small-12.medium-4.columns.end
             %p or
             = link_to 'create custom entry', '/genericmaster/custom/Movie/new', class: [:button, :tiny, :secondary]
-            
+        .row
+          .small-12.columns
+            %button.close-button{"aria-label" => "Close modal", "data-close" => "", :type => "button"}
+              %span{"aria-hidden" => "true"} × 
       .reveal#prompt_tvseries{:"data-reveal" => ''}
         %h2 New TV series
         .row
@@ -110,7 +113,8 @@
           .small-4.columns.end
             %p or
             = link_to 'create custom entry', '/genericmaster/custom/Tvseries/new', class: [:button, :tiny, :secondary]
-                    
+          %button.close-button{"aria-label" => "Close modal", "data-close" => "", :type => "button"}
+            %span{"aria-hidden" => "true"} ×          
       .reveal#prompt_music{:"data-reveal" => ''}
         %h2 New music
         - unless session[:discogs_token].blank? || current_agent.discogs_token.blank?
@@ -128,6 +132,8 @@
             .small-4.columns
               %p or
               = link_to 'create custom entry', '/genericmaster/custom/Music/new', class: [:button, :tiny, :secondary]
+            %button.close-button{"aria-label" => "Close modal", "data-close" => "", :type => "button"}
+              %span{"aria-hidden" => "true"} ×
         - else
           .row
             .small-12.columns
@@ -141,6 +147,8 @@
           = text_field_tag :query
           = submit_tag "Search", :class => [:button, :small]
         = link_to 'create custom entry', '/genericmaster/custom/Book/new', class: [:button, :tiny, :secondary]
+        %button.close-button{"aria-label" => "Close modal", "data-close" => "", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
       .reveal#prompt_videogame{:"data-reveal" => ''}
         %h2 New videogame
         %p Enter a title to search for your videogame.
@@ -148,6 +156,8 @@
           = text_field_tag :query
           = submit_tag "Search", :class => [:button, :small]
         = link_to 'create custom entry', '/genericmaster/custom/Videogame/new', class: [:button, :tiny, :secondary]  
+        %button.close-button{"aria-label" => "Close modal", "data-close" => "", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
     - else
       .reveal#prompt_login{:"data-reveal" => ''}
         .row

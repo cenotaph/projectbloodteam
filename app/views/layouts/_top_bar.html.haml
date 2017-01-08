@@ -8,6 +8,18 @@
           %li.show-for-small-only= link_to 'Homepage', '/'
           - [Activity, Airport, Bar, Book, Brewing, Concert, Eating, Event, Exercise, Gambling, Grocery, Mile, Movie, Music, Musicplayed, Restaurant, Takeaway, Videogame, Weight].each do |category|
             %li= link_to category.to_s.pluralize, "/#{category.table_name}"
+          %li.show-for-small-only= link_to fa_icon('comment lg') + (session[:forum_unread].blank? ? '' : (session[:forum_unread] > 0 ? " (#{session[:forum_unread]})" : '' )), '#', onclick: "$('.forum-bar').slideToggle(); return false;"
+          %li.show-for-small-only
+            = link_to 'All agents', '#'
+            %ul.vertical.menu{ :'data-auto-height' => true}
+              - @active_agents.each do |agent|
+                %li= link_to agent.surname, agent.agent
+          %li.show-for-small-only= link_to fa_icon('line-chart lg'), '/stats'
+          %li.show-for-small-only= link_to fa_icon('gear lg'), '/settings'
+          - if agent_signed_in?
+            %li.show-for-small-only= link_to fa_icon('sign-out lg'), destroy_agent_session_path, :method => :delete
+          - else
+            %li.show-for-small-only= link_to fa_icon('sign-in lg'), '#', :"data-open" => "prompt_login"             
       - if agent_signed_in?
         %li{style: 'min-width: 135px'}
           = link_to "Agent #{current_agent.surname}", '#'
@@ -20,14 +32,19 @@
                 - this_cat = (agent_category ? agent_category.send(category.to_s.tableize).to_s : category.table_name )
                 - if this_cat == "0"
                   - next
-                %li
+                %li.hide-for-small-only
                   = link_to this_cat, "/agents/#{current_agent.slug.to_s}/#{category.table_name}", class: :agent_cat_link
     
                   - if category.has_master?
                     = link_to fa_icon("plus-square-o"), '#', :"data-open" => "prompt_#{category.table_name.singularize}"
                   -else 
                     = link_to fa_icon("plus-square-o"), "/agents/#{current_agent.slug.to_s}/#{category.table_name}/new"
-
+                %li.show-for-small-only                    
+                  - if category.has_master?
+                    = link_to "New " + this_cat.singularize, '#', :"data-open" => "prompt_#{category.table_name.singularize}" 
+                  - else 
+                    = link_to "New " + this_cat.singularize, "/agents/#{current_agent.slug.to_s}/#{category.table_name}/new"
+                    
       %li.has-form#searchform
         = form_tag "/search/simple", :method => "post" do |f|
           = text_field_tag :search, 'Search?'
