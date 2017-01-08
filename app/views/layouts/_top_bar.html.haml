@@ -21,7 +21,7 @@
           - else
             %li.show-for-small-only= link_to fa_icon('sign-in lg'), '#', :"data-open" => "prompt_login"             
       - if agent_signed_in?
-        %li{style: 'min-width: 135px'}
+        %li{style: 'min-width: 210px'}
           = link_to "Agent #{current_agent.surname}", '#'
           %ul.menu.vertical.agent_menu{:'data-auto-height' => true}
             - if agent_signed_in?
