@@ -224,8 +224,8 @@ class GenericController < ApplicationController
     if @item.respond_to?(:date)
       @stats = {"yearcount" => @item.class.where(agent: @agent).where("date >= '#{@item.date.year}-01-01' and date <= '#{@item.date.year}-12-31'").count,
        "alltimecount" => @item.class.where(agent: @agent).count, "year" => @item.date.year,
-        "position" => @item.class.where(agent: @agent).where("date >= '#{@item.date.year}-01-01' and date <= '#{@item.date.year}-12-31'").index(@item),
-      "alltimeposition" => @item.class.where(agent: @agent).index(@item)
+        "position" => @item.class.where(agent: @agent).where("date >= '#{@item.date.year}-01-01' and date <= '#{@item.date.year}-12-31'").index(@item) + 1,
+      "alltimeposition" => @item.class.where(agent: @agent).index(@item)  + 1
     }
                   
     end

@@ -451,8 +451,8 @@ class GenericmasterController < ApplicationController
         if @category =~ /Movie$/
           @stats = {"yearcount" => @singular.classify.constantize.where(agent: @agent).where("date >= '#{@item.items.first.date.year}-01-01' and date <= '#{@item.items.first.date.year}-12-31'").count,
            "alltimecount" => @singular.classify.constantize.where(agent: @agent).count,  "year" => @item.items.first.date.year,
-           "position" => @singular.classify.constantize.where(agent: @agent).where("date >= '#{@item.items.first.date.year}-01-01' and date <= '#{@item.items.first.date.year}-12-31'").index(@item.items.first),
-           "alltimeposition" => @singular.classify.constantize.where(agent: @agent).index(@item.items.first)
+           "position" => @singular.classify.constantize.where(agent: @agent).where("date >= '#{@item.items.first.date.year}-01-01' and date <= '#{@item.items.first.date.year}-12-31'").index(@item.items.first) + 1,
+           "alltimeposition" => @singular.classify.constantize.where(agent: @agent).index(@item.items.first) + 1
          } 
         end
       end
@@ -475,8 +475,8 @@ class GenericmasterController < ApplicationController
         elsif !item[:started].nil?
           @stats = {"yearcount" => item.class.where(agent: @agent).where("finished is not null").where("started >= '#{item.date.year}-01-01' and finished <= '#{item.date.year}-12-31'").count,
            "alltimecount" => item.class.where(agent: @agent).count, 
-           "position" =>  item.class.where(agent: @agent).where("started >= '#{item.date.year}-01-01'").index(item),
-           "alltimeposition" => item.class.where(agent: @agent).index(item),
+           "position" =>  item.class.where(agent: @agent).where("started >= '#{item.date.year}-01-01'").index(item) + 1,
+           "alltimeposition" => item.class.where(agent: @agent).index(item) + 1,
            "year" => item.date.year} 
          end
           
