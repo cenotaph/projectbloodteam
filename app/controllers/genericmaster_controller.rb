@@ -467,12 +467,18 @@ class GenericmasterController < ApplicationController
         
       if @item.others.map(&:agent_id).delete_if{|x| x == item.agent_id }.compact.empty?
         @agent = item.agent
-        if item.respond_to?(:date)
+        if !item[:date].nil?
           @stats = {"yearcount" => item.class.where(agent: @agent).where("date >= '#{item.date.year}-01-01' and date <= '#{item.date.year}-12-31'").count,
            "alltimecount" => item.class.where(agent: @agent).count, "position" =>  item.class.where(agent: @agent).where("date >= '#{item.date.year}-01-01' and date <= '#{item.date.year}-12-31'").index(item),
            "alltimeposition" => item.class.where(agent: @agent).index(item),
            "year" => item.date.year} 
-        end
+        elsif !item[:started].nil?
+          @stats = {"yearcount" => item.class.where(agent: @agent).where("finished is not null").where("started >= '#{item.date.year}-01-01' and finished <= '#{item.date.year}-12-31'").count,
+           "alltimecount" => item.class.where(agent: @agent).count, 
+           "position" =>  item.class.where(agent: @agent).where("started >= '#{item.date.year}-01-01'").index(item),
+           "alltimeposition" => item.class.where(agent: @agent).index(item),
+           "year" => item.date.year} 
+         end
           
       end
     end
