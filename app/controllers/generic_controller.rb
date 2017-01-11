@@ -169,6 +169,10 @@ class GenericController < ApplicationController
     if params[:agent_id]
       @agent = Agent.find(params[:agent_id])
       @items = @category.classify.constantize.where(:agent_id => @agent.id).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").where(filter_query).includes(joins).order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
+      @stats = {      
+           "alltimecount" => @category.constantize.where(agent: @agent).count, 
+           "year" => @start_date.match(/^\d\d\d\d/)[0] == @end_date.match(/^\d\d\d\d/)[0] ? @end_date.match(/^\d\d\d\d/)[0] : nil
+         } 
 
       if request.xhr?
         render :partial => '/agent', :collection => @items
