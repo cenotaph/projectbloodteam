@@ -290,6 +290,10 @@ class GenericmasterController < ApplicationController
             "master_#{@category.downcase}".to_sym]).where(:agent => @agent).where(filter_query).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
        
       end
+      @stats = {      
+           "alltimecount" => @category.constantize.where(agent: @agent).count, 
+           "year" => @start_date.match(/^\d\d\d\d/)[0] == @end_date.match(/^\d\d\d\d/)[0] ? @end_date.match(/^\d\d\d\d/)[0] : nil
+         } 
       
       
       
