@@ -485,8 +485,8 @@ class GenericmasterController < ApplicationController
         @agent = item.agent
         if !item[:date].nil?
           @stats = {"yearcount" => item.class.where(agent: @agent).where("date >= '#{item.date.year}-01-01' and date <= '#{item.date.year}-12-31'").count,
-           "alltimecount" => item.class.where(agent: @agent).count, "position" =>  item.class.where(agent: @agent).where("date >= '#{item.date.year}-01-01' and date <= '#{item.date.year}-12-31'").index(item),
-           "alltimeposition" => item.class.where(agent: @agent).index(item),
+           "alltimecount" => item.class.where(agent: @agent).count, "position" =>  item.class.where(agent: @agent).where("date >= '#{item.date.year}-01-01' and date <= '#{item.date.year}-12-31'").index(item) + 1,
+           "alltimeposition" => item.class.where(agent: @agent).index(item) + 1,
            "year" => item.date.year} 
         elsif !item[:started].nil?
           @stats = {"yearcount" => item.class.where(agent: @agent).where("finished is not null").where("(started >= '#{item.date.year}-01-01' and finished <= '#{item.date.year}-12-31') OR (finished >= '#{item.date.year}')").count,
