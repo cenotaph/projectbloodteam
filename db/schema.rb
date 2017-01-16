@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170107103707) do
+ActiveRecord::Schema.define(version: 20170116172029) do
 
   create_table "activities", force: :cascade, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8" do |t|
     t.integer  "agent_id"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20170107103707) do
     t.string   "username",               limit: 24
     t.string   "imageurl"
     t.boolean  "active",                               default: false
-    t.datetime "created"
+    t.datetime "created_at"
     t.string   "headingsize",            limit: 5,     default: "0.9em"
     t.string   "rowsize",                limit: 5,     default: "0.8em"
     t.string   "defaultsort",            limit: 4,     default: "DESC",                     null: false
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20170107103707) do
     t.string   "defaultcurrency",        limit: 7,     default: "$"
     t.float    "ratingscale",            limit: 24,    default: 10.0
     t.string   "dateformat",             limit: 16,    default: "Y-m-d"
-    t.datetime "modified",                                                                  null: false
+    t.datetime "updated_at"
     t.string   "email",                  limit: 80
     t.string   "lastfm",                 limit: 24
     t.integer  "theme_id",                             default: 1
