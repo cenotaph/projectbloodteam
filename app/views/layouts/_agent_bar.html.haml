@@ -2,7 +2,7 @@
   .title-bar{:'data-responsive-toggle' => 'agent_menu', :'data-hide-for' => 'medium'}
     %button.menu-icon{type: :button, :'data-toggle' => 'agent_menu'}
     .title-bar-title= 'Agent ' + @agent.surname
-  - agent_category = @agent.categories.year(@stats['year'].nil? ? getYear : @stats['year']).first
+  - agent_category = @agent.categories.year(@stats.nil? ? getYear : @stats['year']).first
   .title-bar#agent_menu
     .title-bar-left
       %ul.dropdown.menu
