@@ -46,11 +46,11 @@ class SearchController < ApplicationController
     scope = []
     case params[:search_scope]
       when 'all'
-        scope = [Movie, Book, Music, Concert, Event, Restaurant, Bar, Takeaway, Activity, Comment, Forum, Airport, Brewing, Eating,  Grocery, Videogame]
+        scope = [Movie, Book, Music, Concert, Tvseries, Event, Restaurant, Bar, Takeaway, Activity, Comment, Forum, Airport, Brewing, Eating,  Grocery, Videogame]
       when 'forums'
         scope = [Forum, Comment]
       else
-        scope = [Movie, Book, Music, Concert, Event, Restaurant, Bar, Takeaway, Activity, Airport, Brewing, Eating,  Grocery,   Videogame]
+        scope = [Movie, Book, Music, Concert, Tvseries, Event, Restaurant, Bar, Takeaway, Activity, Airport, Brewing, Eating,  Grocery,   Videogame]
     end
     
     # @movies = Movie.search(ThinkingSphinx::Query.escape(params[:search]), :per_page => 40)

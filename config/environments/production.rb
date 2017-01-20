@@ -10,14 +10,14 @@ Pbt4::Application.configure do
   config.action_controller.perform_caching = true
   
   config.eager_load = true
-  config.static_cache_control = "public, max-age=2592000"
+  config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=2592000'
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
 
   config.assets.precompile += %w( .svg .eot .woff .ttf)
   # See everything in the log (default is :info)
   config.log_level = :info
-  config.active_record.raise_in_transactional_callbacks = true
+  # config.active_record.raise_in_transactional_callbacks = true
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
