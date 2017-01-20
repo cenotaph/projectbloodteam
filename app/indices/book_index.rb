@@ -1,5 +1,5 @@
  # -*- encoding : utf-8 -*-
-ThinkingSphinx::Index.define :book, :with => :active_record do
+ThinkingSphinx::Index.define :book, :with => :active_record, delta: true do
   indexes source, comment
   indexes master_book(:author), :as => :author
   indexes master_book(:title), :as => :title
