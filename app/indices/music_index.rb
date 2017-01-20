@@ -1,5 +1,5 @@
  # -*- encoding : utf-8 -*-
-ThinkingSphinx::Index.define :music, :with => :active_record do
+ThinkingSphinx::Index.define :music, :with => :active_record, delta: true do
   indexes source, comment
   indexes master_music(:artist), :as => :artist
   indexes master_music(:title), :as => :title

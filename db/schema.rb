@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170116172029) do
+ActiveRecord::Schema.define(version: 20170120030446) do
 
   create_table "activities", force: :cascade, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8" do |t|
     t.integer  "agent_id"
@@ -813,6 +813,7 @@ ActiveRecord::Schema.define(version: 20170116172029) do
     t.integer  "geolocation_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "delta"
     t.index ["agent_id"], name: "index_tvseries_on_agent_id", using: :btree
     t.index ["geolocation_id"], name: "index_tvseries_on_geolocation_id", using: :btree
     t.index ["master_tvseries_id"], name: "index_tvseries_on_master_tvseries_id", using: :btree
