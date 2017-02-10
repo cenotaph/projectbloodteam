@@ -27,7 +27,7 @@ Pbt4::Application.configure do
 
   # Disable Rails's static asset server
   # In production, Apache or nginx will already do this
-  config.serve_static_files = true
+  config.public_file_server.enabled = true
   config.static_cache_control = "public, max-age=2592000"
   # config.assets.digest = true
   config.paperclip_defaults = {

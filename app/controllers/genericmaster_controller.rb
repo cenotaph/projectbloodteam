@@ -459,7 +459,7 @@ class GenericmasterController < ApplicationController
            "alltimeposition" => @singular.classify.constantize.where(agent: @agent).index(@item.items.first) + 1
            } 
         elsif @category =~ /Book$/ 
-          unless @item.items.first.started.nil?
+          unless @item.items.first.started.nil?  || @item.items.first.finished.nil?
            @stats = {"yearcount" => @singular.classify.constantize.where(agent: @agent).where("started >= '#{@item.items.first.started.year}-01-01' and finished <= '#{@item.items.first.finished.year}-12-31'").count,
             "alltimecount" => @singular.classify.constantize.where(agent: @agent).count,  "year" => @item.items.first.started.year,
             "position" => @singular.classify.constantize.where(agent: @agent).where("started >= '#{@item.items.first.started.year}-01-01' and finished <= '#{@item.items.first.finished.year}-12-31'").index(@item.items.first) + 1,
