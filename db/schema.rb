@@ -502,7 +502,7 @@ ActiveRecord::Schema.define(version: 20170120030446) do
     t.text     "author",                limit: 65535
     t.text     "title",                 limit: 65535
     t.integer  "uses",                                default: 0
-    t.datetime "created",                             default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at",                          default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.string   "filename_file_name"
     t.integer  "filename_file_size"
     t.string   "filename_content_type"

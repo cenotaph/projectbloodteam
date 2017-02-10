@@ -80,6 +80,6 @@ gem 'redis'
 # gem 'responders', '2.0.2'
 
 gem 'themes_for_rails', github: 'cenotaph/themes_for_rails', branch: 'master'
-gem 'thinking-sphinx', '3.1.4'
+gem 'thinking-sphinx', '3.3.0'
 
 gem 'truncate_html'
