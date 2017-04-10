@@ -62,7 +62,7 @@ class AgentsController < ApplicationController
     @agent = Agent.find(params[:id])
     @history = Hash.new
     @current_year = Time.now.strftime('%Y').to_i
-    [Movie, Book, Music, Concert, Event, Restaurant, Bar, Takeaway, Activity, Airport, Brewing, Eating, Gambling, Grocery, Mile, Musicplayed, Videogame].each do |category|
+    [Movie, Book, Music, Tvseries, Concert, Event, Restaurant, Bar, Takeaway, Activity, Airport, Brewing, Eating, Gambling, Grocery, Mile, Musicplayed, Videogame].each do |category|
       if @history[category.to_s].nil?
         @history[category.to_s] = Hash.new 
         (2002..@current_year).each do |year|

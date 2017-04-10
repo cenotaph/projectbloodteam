@@ -3,21 +3,23 @@
 %h4 Number of entries by category, by year
 #history
 - xs = []
-- 17.times.each{xs.push((0..(2017-2002)).to_a)}
+- 18.times.each{xs.push((0..(2017-2002)).to_a)}
 - ys = []
-- (17.downto(1)).each{|x| 15.times.each{ ys.push(x)}}
+- (18.downto(1)).each{|x| 16.times.each{ ys.push(x)}}
 - data = @data.flatten
-
+= " data size is #{data.size}"
+= " ys size is #{ys.size }"
+= " xs size is #{xs.size}"
 
 = content_for :jquery do
   :plain
-    var r = Raphael("history", 1200, 1200),
+    var r = Raphael("history", 1240, 1240),
       xs = #{xs.flatten},
       ys =  #{ys},
       data = #{data},
       axisy = #{@history.keys.reverse},
       axisx = #{(2002).upto(@current_year).to_a.map(&:to_s)};
-    r.dotchart(0,0, 1200, 1200, xs, ys, data, {max:18, heat: true, axis: "1 0 1 1", axisxstep: 14, axisystep: 16, gutter: 10, axisxlabels: axisx, axisxtype: "+", href: #{@href.flatten.inspect}, axisytype: "+",       axisylabels: axisy}).hover(function () {
+    r.dotchart(0,0, 1240, 1240, xs, ys, data, {max:18, heat: true, axis: "1 0 1 1", axisxstep: 15, axisystep: 17, gutter: 10, axisxlabels: axisx, axisxtype: "+", href: #{@href.flatten.inspect}, axisytype: "+",       axisylabels: axisy}).hover(function () {
       this.marker = this.marker || r.tag(this.x, this.y, this.value, 0, this.r + 2).insertBefore(this);
       this.marker.show();
       }, function () {
