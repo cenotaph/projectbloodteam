@@ -62,6 +62,7 @@ gem 'haml-rails'
 gem 'hpricot'
 gem 'htmlentities'
 gem 'imdb', github: 'cenotaph/imdb'
+
 #gem 'inherited_resources'
 gem 'kaminari'
 gem 'meta-tags', require: 'meta_tags'

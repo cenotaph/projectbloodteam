@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/cenotaph/imdb.git
-  revision: 2d468f8d42567c4a99aa6b6e131cc7aba60a4287
+  revision: 7e4bc1779e48124f9814d6492b725a2f1de7d5e9
   specs:
     imdb (0.8.2)
       nokogiri (= 1.6.4.1)
