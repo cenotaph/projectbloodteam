@@ -49,7 +49,7 @@
               = link_to 'See all', geolocations_path
             #front_map
             = render :partial => 'front_map', locals: {json: @json , target: 'front_map', center: nil}
-    - if @agent
+    - unless @agent.new_record?
       .agent_bar{:"data-sticky-container" => ''}
         = render partial: 'layouts/agent_bar'
             
