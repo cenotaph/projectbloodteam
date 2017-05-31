@@ -53,11 +53,12 @@ class GenericController < ApplicationController
     
       if @category == 'Comment'
         if @item.item.class.to_s =~ /^Master/
-          expire_fragment(/genericmaster\/#{Regexp.escape(@item.item.id.to_s)}\?(.*)category\=#{Regexp.escape(@item.item.class.to_s.downcase)}/)
+          # expire_fragment(/genericmaster\/#{Regexp.escape(@item.item.id.to_s)}\?(.*)category\=#{Regexp.escape(@item.item.class.to_s.downcase)}/)
         end
-        expire_fragment(/.*forum_front.*/)
+        # expire_fragment(/.*forum_front.*/)
         unless @item.entries.empty?
-          expire_fragment(/.*newsfeed_front.*/)
+          # this appears to be doing nothing
+          # expire_fragment(/.*newsfeed_front.*/)  
         end  
         if request.xhr?
           render :partial => 'shared/ajax_comment', :locals => {:comment => @item}
@@ -66,7 +67,8 @@ class GenericController < ApplicationController
         end
       else
         unless @item.entries.empty?
-          expire_fragment(/.*newsfeed_front.*/)
+          # this appears to be doing nothing
+          # expire_fragment(/.*newsfeed_front.*/)
         end
         
         # new references code
@@ -111,10 +113,10 @@ class GenericController < ApplicationController
           expire_fragment(/genericmaster\/#{Regexp.escape(@item.item.id.to_s)}\?(.*)category\=#{Regexp.escape(@item.item.class.to_s.downcase)}/)
         end
         unless @item.entries.empty?
-          expire_fragment(/.*newsfeed_front.*/)
+          # expire_fragment(/.*newsfeed_front.*/)
         end  
       else
-        expire_fragment(/.*newsfeed_front.*/)
+        # expire_fragment(/.*newsfeed_front.*/)
       end
     end
 
@@ -256,7 +258,7 @@ class GenericController < ApplicationController
     if @item.agent == current_agent
       if @item.update_attributes(params[@category.downcase].permit!)
         unless @item.entries.empty?
-          expire_fragment(/.*newsfeed_front.*/)
+          # expire_fragment(/.*newsfeed_front.*/)
         end        
         flash[:notice] = 'Entry updated.'
       end

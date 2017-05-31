@@ -109,8 +109,8 @@ class GenericmasterController < ApplicationController
     @item = @category.classify.constantize.new(params[@category.downcase].permit!)
     if @item.save 
       flash[:notice] = 'Entry created'
-      expire_fragment(/genericmaster\/#{Regexp.escape(@item.master.id.to_s)}\?(.*)category\=#{Regexp.escape(@item.master.class.to_s.downcase)}/)
-      expire_fragment(/.*newsfeed_front.*/)
+      # expire_fragment(/genericmaster\/#{Regexp.escape(@item.master.id.to_s)}\?(.*)category\=#{Regexp.escape(@item.master.class.to_s.downcase)}/)
+      # expire_fragment(/.*newsfeed_front.*/)
       
       # new references code
       if @item.comment.blank?
@@ -600,8 +600,8 @@ class GenericmasterController < ApplicationController
           end
         end        
   
-        expire_fragment(/genericmaster\/#{Regexp.escape(@item.master_id.to_s)}\?(.*)category\=master#{Regexp.escape(@item.class.to_s.downcase)}/)
-        expire_fragment(/.*newsfeed_front.*/)       
+        # expire_fragment(/genericmaster\/#{Regexp.escape(@item.master_id.to_s)}\?(.*)category\=master#{Regexp.escape(@item.class.to_s.downcase)}/)
+        # expire_fragment(/.*newsfeed_front.*/)       
         flash[:notice] = 'Entry updated.'
       else
         flash[:error] = 'ERror'
@@ -610,8 +610,8 @@ class GenericmasterController < ApplicationController
     else
       if @item.agent == current_agent
         if @item.update_attributes(params[@category.downcase].permit!)
-          expire_fragment(/genericmaster\/#{Regexp.escape(@item.master_id.to_s)}\?(.*)category\=master#{Regexp.escape(@item.class.to_s.downcase)}/)
-          expire_fragment(/.*newsfeed_front.*/)
+          # expire_fragment(/genericmaster\/#{Regexp.escape(@item.master_id.to_s)}\?(.*)category\=master#{Regexp.escape(@item.class.to_s.downcase)}/)
+          # expire_fragment(/.*newsfeed_front.*/)
           # new references code
           if @item.comment.blank?
             redirect_to url_for(@item)
