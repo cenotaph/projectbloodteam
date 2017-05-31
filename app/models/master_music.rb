@@ -141,7 +141,8 @@ class MasterMusic < ActiveRecord::Base
   end
   
   def other_versions
-    masterdiscogs_id.nil? ? [] :  MasterMusic.where(:masterdiscogs_id => self.masterdiscogs_id).where.not(id: self.id)
+
+    masterdiscogs_id.nil? ? [] :  ::MasterMusic.where(:masterdiscogs_id => self.masterdiscogs_id).where.not(id: self.id)
   end
   
   def self.query(searchterm, token =  nil)

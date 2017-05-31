@@ -30,9 +30,10 @@
 
 
 #discussion
+
   %a{:name => "discussion", :"data-magellan-destination" => "discussion"}
   .row
-    .large-10.columns.large-offset-1.item_listing= render :partial => 'shared/new_discussion', :locals => {:discussion => @item.all_versions.map(&:discussion).flatten.sort_by(&:date), :json => @json, :master => true}
+    .large-10.columns.large-offset-1.item_listing= render :partial => 'shared/new_discussion', :locals => {:discussion => @item.all_versions.map(&:discussion).flatten.uniq.sort_by(&:date), :json => @json, :master => true}
     
   - if agent_signed_in?
     .row

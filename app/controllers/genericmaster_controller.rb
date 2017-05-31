@@ -471,7 +471,8 @@ class GenericmasterController < ApplicationController
             "alltimecount" => @singular.classify.constantize.where(agent: @agent).count,  "year" => @item.items.first.date.year,
             "position" => @singular.classify.constantize.where(agent: @agent).where("date >= '#{@item.items.first.date.year}-01-01' and date <= '#{@item.items.first.date.year}-12-31'").index(@item.items.first) + 1,
             "alltimeposition" => @singular.classify.constantize.where(agent: @agent).index(@item.items.first) + 1
-            } 
+            }
+    
         end
       end
     else
@@ -519,7 +520,9 @@ class GenericmasterController < ApplicationController
       # this a total mess; clean up later
       
       if @master == 'master_music' || @master == 'MasterMusic'
+   
         if !@item.other_versions.empty?
+     
           @agent = nil
           render :template => 'shared/different_records'
         else
