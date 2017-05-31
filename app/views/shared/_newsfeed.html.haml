@@ -1,6 +1,6 @@
 - entry = newsfeed
 - unless entry.entry.nil?
-  - cache [entry, current_agent] do
+  - cache [entry, entry.entry, current_agent] do
     .newsfeed_entry{:class => cycle('odd', 'even', :name => "outer_cycle")}[entry]
       - if entry.entry.class == Comment
         = render :partial => 'comment', :locals => {:entry => entry}
