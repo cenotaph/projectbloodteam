@@ -6,7 +6,7 @@
       - unless @json.blank?
         %li= link_to 'Map', "#map"
         = render :partial => 'home/front_map', locals: {json: @json, target: 'map_container', center: @json.size > 1 ? false : @json.first}
-      %li= link_to "Entries & comments (#{@item.all_versions.map(&:discussion).flatten.size})", "#discussion"
+      %li= link_to "Entries & comments (#{@item.all_versions.map(&:discussion).flatten.uniq.size})", "#discussion"
       - unless @item.similars.empty?
         %li= link_to 'Possibly related items', "#similars"
 
