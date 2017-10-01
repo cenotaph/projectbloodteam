@@ -22,7 +22,7 @@ class Concert < ActiveRecord::Base
   
   
   def name
-    self.new_record? ? "" :  self.try(:artists) + "<div class=\"secondary_title\">#{secondary_title}</div>"
+    self.new_record? ? "" :  self.try(:artists) + "; <div class=\"secondary_title\">#{secondary_title}</div>"
   end
   
   def title

@@ -70,7 +70,7 @@ class MasterBook < ActiveRecord::Base
   end
   
   def linkto
-    "http://www.amazon.com/exec/obidos/ASIN/#{self.amazoncode}?tag=problotea-20"
+    "http://www.amazon.com/exec/obidos/ASIN/#{self.amazoncode}?tag=bloodteam-20"
   end
   
   def items
