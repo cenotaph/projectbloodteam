@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class HomeController < ApplicationController
   before_action :login_required, :only => [:missing_profile]
-    
+
   def index
     # @random_agents = Profile.where(:year => getYear).includes(:agent).sort_by {|x| x.agent.lastlogin }.reverse[0..11]
     #
@@ -28,28 +28,28 @@ class HomeController < ApplicationController
     #         @on_this_day.uniq!
     #       end
     #
-    @json = Entry.includes(entry: {geolocation_item: {geolocation: [ {movies: :master_movie}, {tvseries: :master_tvseries} ] } 
+    @json = Entry.includes(entry: {geolocation_item: {geolocation: [ {movies: :master_movie}, {tvseries: :master_tvseries} ] }
           }).where("entry_type not in (?)", ['Music', 'Book', 'Mile', 'Eating', 'Exercise', 'Comment', 'Forum', 'Airport',
              'Videogame']).order('created_at DESC').limit(50).to_a.delete_if{|x| !x.entry.respond_to?('geolocation_item')}.delete_if{|x|
                 x.entry.geolocation_item.nil?}.map{|x| x.entry.geolocation}.compact.uniq
-        
-        
 
-                
+
+
+
 
     if agent_signed_in?
       if current_agent.profile.nil?
         missing_profile
         return
       end
-      @newsfeed = Entry.includes([:agent, {:entry => [:userimages, :references, :agent]}]).group([:created_at, :entry_type, :entry_id, :action]).where('created_at <= "' + getYear + '-12-31 23:59:59"').order('created_at DESC').page(params[:page]).per(12) #, :total_entries => Entry.find(:all, :group => [:entry_type, :entry_id]).size  ) 
+      @newsfeed = Entry.includes([:agent, {:entry => [:userimages,  :agent]}]).group([:created_at, :entry_type, :entry_id, :action]).where('created_at <= "' + getYear + '-12-31 23:59:59"').order('created_at DESC').page(params[:page]).per(12) #, :total_entries => Entry.find(:all, :group => [:entry_type, :entry_id]).size  ) 
     else
-      @newsfeed = Entry.joins(:agent).group([:created_at, :entry_type, :entry_id, :action]).where('agents.security = 0').order('created_at DESC').page(params[:page]).per(12) # , :total_entries => Entry.find(:all, :include => :agent,  :conditions => 'agents.security = 0', :group => [:entry_type, :entry_id]).size  ) 
+      @newsfeed = Entry.joins(:agent).group([:created_at, :entry_type, :entry_id, :action]).where('agents.security = 0').order('created_at DESC').page(params[:page]).per(12) # , :total_entries => Entry.find(:all, :include => :agent,  :conditions => 'agents.security = 0', :group => [:entry_type, :entry_id]).size  )
     end
     set_meta_tags :title => 'Home'
-    
+
   end
-  
+
   def missing_profile
     check_first = Profile.where(:agent_id => current_agent.id).where(:year => getYear)
     if check_first.empty?
@@ -65,5 +65,5 @@ class HomeController < ApplicationController
       redirect_to '/'
     end
   end
-  
+
 end

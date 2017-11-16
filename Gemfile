@@ -1,7 +1,7 @@
 # Edit this Gemfile to bundle your application's dependencies.
 # source 'http://gemcutter.org'
 source 'https://rubygems.org'
-ruby '2.3.3'
+# ruby '2.3.3'
 gem 'rails', '5.0.1'
 gem 'mysql2'
 gem 'puma'
@@ -29,7 +29,7 @@ group :development do
   # gem 'quiet_assets'
   gem 'spring'
 end
-    
+
 gem 'aws-sdk', '~> 2.3.0'
 gem "bullet", :group => "development"
 #gem 'rails4_upgrade'
