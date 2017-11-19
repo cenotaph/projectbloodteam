@@ -24,8 +24,8 @@ Pbt4::Application.configure do
 
     config.cache_store = :null_store
   end
-  
-  config.active_support.deprecation = :log 
+
+  config.active_support.deprecation = :log
   config.asset_host = Proc.new { |source|
     if source.starts_with?('/images')
       "http://bloodteam.com"
@@ -46,10 +46,12 @@ Pbt4::Application.configure do
     :storage => :s3,
     :bucket => 'pbt-production',
     :s3_permissions => 'public-read',
-    :s3_region => 'us-east-1'
+    :s3_region => 'us-east-1',
+    :s3_host_name => "s3.amazonaws.com", # Added entry
+    :url => ":s3_host_name"
   }
   # Don't care if the mailer can't send
-  config.active_record.raise_in_transactional_callbacks = true
+  # config.active_record.raise_in_transactional_callbacks = true
   config.action_mailer.raise_delivery_errors = false
 end
 # ActionController::Base.asset_host = Proc.new { |source|

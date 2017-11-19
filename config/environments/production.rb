@@ -5,10 +5,10 @@ Pbt4::Application.configure do
   # Code is not reloaded between requests
   config.cache_classes = true
   config.cache_store = :file_store , "tmp/cache/"
-  
+
   # config.cache_store = :dalli_store
   config.action_controller.perform_caching = true
-  
+
   config.eager_load = true
   config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=2592000' }
   # Full error reports are disabled and caching is turned on
@@ -34,7 +34,9 @@ Pbt4::Application.configure do
     :storage => :s3,
     :bucket => 'pbt-production',
     :s3_permissions => 'public-read',
-    :s3_region => 'us-east-1'
+    :s3_region => 'us-east-1',
+    :s3_host_name => "s3.amazonaws.com", # Added entry
+    :url => ":s3_host_name"
   }
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"

@@ -2,10 +2,11 @@
 class ForumsController < ApplicationController
    before_action :authenticate_agent!, :only => [:new, :edit, :add, :choose, :create, :update]
    skip_before_action :getForum, only: [:index]
+   
   def create
     @forum = Forum.new(forum_params)
     @forum.agent = current_agent
-    if @forum.save 
+    if @forum.save
       flash[:notice] = 'Entry created'
       expire_fragment(/.*forum_front.*/)
       unless @forum.entries.empty?
@@ -16,7 +17,7 @@ class ForumsController < ApplicationController
         redirect_to url_for(@forum)
       else
         @potential_references = @forum.check_references
-        
+
         if @potential_references.empty?
           redirect_to url_for(@forum)
         else
@@ -39,7 +40,7 @@ class ForumsController < ApplicationController
     redirect_to  '/forums'
   end
 
-  
+
   def edit
     @forum = Forum.find(params[:id])
     if @forum.agent != current_agent
@@ -49,8 +50,8 @@ class ForumsController < ApplicationController
       render :template => 'shared/new_forum'
     end
   end
-  
-  
+
+
   def index
     @forums = Comment.includes([:agent]).includes(:item).paginate_with_items(params[:page], 50)
     # @forums = Comment.includes([:agent]).paginate_with_items(params[:page], 50)
@@ -63,22 +64,22 @@ class ForumsController < ApplicationController
       render :template => 'shared/forum'
     end
   end
-  
-    
+
+
   def new
    @forum = Forum.new(:agent => current_agent, :add_to_newsfeed => true)
    set_meta_tags :title => 'New forum post'
    render :template => 'shared/new_forum'
   end
-  
+
   def show
     @item = Forum.find(params[:id])
     set_meta_tags :title => @item.name
     session.delete(:forum_unread)
     render :template => 'shared/show'
   end
-  
-  
+
+
   def update
     @forum = Forum.find(params[:id])
     if @forum.agent == current_agent
@@ -88,11 +89,11 @@ class ForumsController < ApplicationController
     end
     redirect_to @forum
   end
-  
+
   private
-  
+
   def forum_params
     params.require(:forum).permit(:subject, :agent_id, :body, :add_to_newsfeed, userimages_attributes: [:id, :_destroy, :image])
   end
-  
+
 end

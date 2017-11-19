@@ -1,8 +1,8 @@
 # Edit this Gemfile to bundle your application's dependencies.
 # source 'http://gemcutter.org'
 source 'https://rubygems.org'
-# ruby '2.3.3'
-gem 'rails', '5.0.1'
+ruby '2.4.2'
+gem 'rails', '5.1.4'
 gem 'mysql2'
 gem 'puma'
 
@@ -13,7 +13,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-ui-themes'
 # gem 'jquery-validation-rails'
-gem 'jbuilder', '~> 1.2'
+# gem 'jbuilder', '~> 1.2'
 
 gem 'execjs', :group => [:staging, :production]
 
@@ -21,7 +21,7 @@ gem 'execjs', :group => [:staging, :production]
 
 # gem 'activerecord', '3.0.3'
 # gem 'buntine-discogs'
-gem 'amazon-ecs', '2.5.0'
+gem 'amazon-ecs'#, '2.5.0'
 gem 'ruby-hmac'
 group :development do
   gem 'better_errors'
@@ -53,7 +53,7 @@ gem 'discogs-wrapper'
 gem 'figaro'
 gem 'font-awesome-rails'
 gem 'formtastic' , :git => 'git://github.com/justinfrench/formtastic.git'
-gem 'foundation-rails' #, '5.5.3.2'
+gem 'foundation-rails', '6.3.0.0' #, '5.5.3.2'
 gem 'friendly_id', branch: :master, github: 'norman/friendly_id'
 gem 'geocoder'
 # gem 'gmaps4rails'
