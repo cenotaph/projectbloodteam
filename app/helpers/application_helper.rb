@@ -1,15 +1,15 @@
 module ApplicationHelper
-  
+
   def getYear
     year = request.domain(2)
-    
+
     if !year.nil? && year.split('.').first =~ /^\d\d\d\d$/
       return year.split('.').first
     else
       return Time.now.strftime('%Y')
     end
   end
-  
+
 
   def display_column(item, column, agent = nil)
     unless ['id', 'created_at', 'updated_at', 'agent_id', 'venue_address'].include?(column)
@@ -39,10 +39,10 @@ module ApplicationHelper
         else
           raw(item.send(column)) #[column.to_sym])
         end
-      end  
+      end
     end
   end
-  
+
   def display_comment(item)
     if item.class == Comment
        sanitize item.content , tags:  %w{b i em italic embed iframe div bold strong a u  br p src ol li ul img}, attributes: %w{href src height class width}
@@ -50,7 +50,7 @@ module ApplicationHelper
       item.comment.blank? ? '<em>No comment yet.</em>' :  sanitize(item.comment.gsub(/\<br\/*\>/, '<br /><br />').gsub(/^<p>/i, '').gsub(/\n/, '<br />'), tags:  %w{b i em italic bold strong a u br p ol li ul img}, attributes: %w{href})
     end
   end
-  
+
   def display_metadata(key, value)
 
     if key == 'cost'
@@ -67,19 +67,19 @@ module ApplicationHelper
       "no"
     elsif value.class == Date
       if agent_signed_in?
-        value.strftime(current_agent.profile.dateformat)
-      else 
+        value.strftime(current_agent.profile.dateformat) rescue value.strftime('%B %e, %Y')
+      else
         value.strftime('%B %e, %Y')
       end
     else
       value.to_s
     end
   end
-  
-  
+
+
   def show_entry?(entry)
     case entry.agent.security
-      when 0  
+      when 0
         return true
       when 1
         return true
@@ -99,16 +99,16 @@ module ApplicationHelper
         return false
     end
   end
-  
+
   def link_to_add_fields(name, f, association)
     new_object = f.object.class.reflect_on_association(association).klass.new
     fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|
       render('shared/' + association.to_s.singularize + "_fields", :ff => builder)
     end
-    link_to(name, ("add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")"), :remote => true) 
+    link_to(name, ("add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")"), :remote => true)
   end
-  
-  
+
+
   def pageless(total_pages, url=nil)
       opts = {
         :totalPages => total_pages,
@@ -119,7 +119,7 @@ module ApplicationHelper
 
       javascript_tag("$('#results').pageless(#{opts.to_json});")
     end
-  
+
 
 
 end

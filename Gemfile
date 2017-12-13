@@ -81,6 +81,6 @@ gem 'redis'
 # gem 'responders', '2.0.2'
 gem "skylight"
 gem 'themes_for_rails', github: 'cenotaph/themes_for_rails', branch: 'master'
-gem 'thinking-sphinx', '3.3.0'
+gem 'thinking-sphinx'#
 
 gem 'truncate_html'
