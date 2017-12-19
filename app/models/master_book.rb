@@ -13,7 +13,7 @@ class MasterBook < ActiveRecord::Base
   include ItemHelpers
   attr_accessor :followup, :resync_image
   #before_create :syncimage
-  
+
   def syncimage
     return if amazoncode.blank?
     book = Amazon::Ecs.item_search(self.amazoncode, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
@@ -24,7 +24,7 @@ class MasterBook < ActiveRecord::Base
     end
   end
 
-  
+
   def self.choose(key, token = nil)
     if key =~ /^local_/
       key.gsub(/^local_/, '')
@@ -33,7 +33,7 @@ class MasterBook < ActiveRecord::Base
       if existing.empty?
         book = Amazon::Ecs.item_search(key, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
 
-        new_master = MasterBook.new(:amazoncode => key, :title => book.get('ItemAttributes/Title'), 
+        new_master = MasterBook.new(:amazoncode => key, :title => book.get('ItemAttributes/Title'),
                           :author => book.get('ItemAttributes/Author'))
         require 'open-uri'
         unless book.get_hash('LargeImage').blank?
@@ -47,16 +47,16 @@ class MasterBook < ActiveRecord::Base
       end
     end
   end
-  
+
   def creator
     self.author
   end
-  
+
   def discussion
     agg = self.books + self.comments
     agg.sort{|x,y| x.created_at <=> y.created_at}
   end
-  
+
   def external_index
     self.amazoncode
   end
@@ -68,27 +68,27 @@ class MasterBook < ActiveRecord::Base
       self.filename.url(style)
     end
   end
-  
+
   def linkto
-    "http://www.amazon.com/exec/obidos/ASIN/#{self.amazoncode}?tag=bloodteam-20"
+    "http://www.amazon.com/exec/obidos/ASIN/#{self.amazoncode}?tag=#{ENV['AMAZON_ASSOC']}"
   end
-  
+
   def items
     books
   end
-  
+
   def master_id
     self.id
   end
-  
+
   def short_name
     title
   end
-  
+
   def icon_name
     'book'
   end
-  
+
   def linked_name
     if amazoncode.blank?
       "#{self.title} by #{self.author}"
@@ -98,23 +98,23 @@ class MasterBook < ActiveRecord::Base
       return out
     end
   end
-  
+
   def name
-   
+
    "<div class='main_title'>#{title.strip}</div>" + (!self.author.nil? ? "<div class='secondary_title'>#{secondary_title}</div>" : '').html_safe
 
   end
-  
+
   def secondary_title
     " <span class='small_meta'>by</span> " + self.author rescue 'no author'
   end
-  
+
   def self.query(searchterm, token = nil)
     hits = Amazon::Ecs.item_search(searchterm, {:response_group => 'Medium'}).items
     results = []
     hits.each do |hit|
       results << {"title" => hit.get('ItemAttributes/Title').to_s + '<div class="secondary_title">' + hit.get('ItemAttributes/Author').to_s + '</div>',
-                  "key" => hit.get('ASIN'), 
+                  "key" => hit.get('ASIN'),
                   'image' => hit.get('SmallImage').nil? ? nil : hit.get('SmallImage').gsub(/\<\/url\>.*/i, '').sub(/\<url\>/i, '')
                 }
     end
@@ -125,5 +125,5 @@ class MasterBook < ActiveRecord::Base
     MasterBook.where(:author => self.author).to_a.delete_if{|x| x == self}
   end
 
-  
+
 end
