@@ -61,7 +61,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'hpricot'
 gem 'htmlentities'
-gem 'imdb', path: "../imdb"#, github: 'cenotaph/imdb'
+# gem 'imdb', path: "../imdb"#, github: 'cenotaph/imdb'
 
 #gem 'inherited_resources'
 gem 'kaminari'

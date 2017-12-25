@@ -52,12 +52,6 @@ GIT
       mime-types
       mimemagic (= 0.3.0)
 
-PATH
-  remote: ../imdb
-  specs:
-    imdb (0.8.2)
-      nokogiri (= 1.6.4.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -410,7 +404,6 @@ DEPENDENCIES
   haml-rails
   hpricot
   htmlentities
-  imdb!
   jquery-rails
   jquery-ui-rails
   jquery-ui-themes
