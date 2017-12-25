@@ -33,6 +33,7 @@
 
 
   - unless @choices.blank?
+
     .row
       .small-12.columns
         %a{:name => "choices"}
@@ -42,8 +43,9 @@
             .choice
               .choice_title
                 = link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.imdb_id.gsub(/\D*/, ''), :category => @category)
-                %small
-                  = "(#{choice.director}, #{choice.country}, #{choice.year})"
+                - if @choices.size == 1
+                  %small
+                    = "(#{choice.director}, #{choice.country}, #{choice.year})"
         - else @category == "Book" || @category == "Music"
           - @choices.in_groups_of(4).each do |group|
             .row.choice_row
