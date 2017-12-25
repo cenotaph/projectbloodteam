@@ -14,7 +14,7 @@ class MasterMovie < ActiveRecord::Base
   validates_attachment_content_type :filename, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] ,  if: :filename_file_name_changed?
 
   def resync_imdb_image
-    m = OMDB.id(imdbcode)
+    m = OMDB.id("tt#{sprintf("%07d", imdbcode)}")
     unless m.poster.blank?
       self.filename = URI.parse(m.poster)
       save!
@@ -28,7 +28,7 @@ class MasterMovie < ActiveRecord::Base
     else
       existing = self.where(:imdbcode => key)
       if existing.empty?
-        m = OMDB.id("tt#{key}")
+        m = OMDB.id("tt#{sprintf("%07d", key)}")
         big_poster = m.poster # rescue nil
         mynew = self.new(:title => HTMLEntities.new.decode(m.title), :imdbcode => key, :director => m.director, :country => m.country.gsub(/, /, ' / '), :year => m.year)
         unless big_poster.blank?
@@ -63,7 +63,7 @@ class MasterMovie < ActiveRecord::Base
   def self.grabimage(key, new_master)
     require 'open-uri'
     if key.class != OMDB
-      key = OMDB.id("tt#{key}")
+      key = OMDB.id("tt#{sprintf("%07d", key)}")
     end
     big_poster = key.poster
     unless big_poster.blank?
