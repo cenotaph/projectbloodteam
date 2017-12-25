@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/cenotaph/imdb.git
-  revision: 7e4bc1779e48124f9814d6492b725a2f1de7d5e9
-  specs:
-    imdb (0.8.2)
-      nokogiri (= 1.6.4.1)
-
-GIT
   remote: git://github.com/cenotaph/themes_for_rails.git
   revision: 813d84fe8673b375ceb3b4d4b2acbb9c4b74c1df
   branch: master
@@ -29,6 +22,14 @@ GIT
       activerecord (>= 4.0.0)
 
 GIT
+  remote: git://github.com/phallstrom/omdbapi.git
+  revision: 715493318cd2bf6d7fb4e1587166909477f5cdba
+  branch: api-key
+  specs:
+    omdbapi (0.3.0)
+      httparty (~> 0.13)
+
+GIT
   remote: git://github.com/rails/activerecord-session_store.git
   revision: b5e7da210c937c0aa580b8094b64019cef20e95a
   specs:
@@ -50,6 +51,12 @@ GIT
       cocaine (~> 0.5.5)
       mime-types
       mimemagic (= 0.3.0)
+
+PATH
+  remote: ../imdb
+  specs:
+    imdb (0.8.2)
+      nokogiri (= 1.6.4.1)
 
 GEM
   remote: https://rubygems.org/
@@ -415,6 +422,7 @@ DEPENDENCIES
   nested_form
   non-stupid-digest-assets
   oauth2
+  omdbapi!
   paperclip!
   puma
   rails (= 5.1.4)

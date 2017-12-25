@@ -61,7 +61,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'hpricot'
 gem 'htmlentities'
-gem 'imdb', github: 'cenotaph/imdb'
+gem 'imdb', path: "../imdb"#, github: 'cenotaph/imdb'
 
 #gem 'inherited_resources'
 gem 'kaminari'
@@ -72,6 +72,7 @@ gem 'monetize'
 gem "nested_form"
 gem "non-stupid-digest-assets"
 gem "oauth2"
+gem 'omdbapi', github: 'phallstrom/omdbapi', branch: 'api-key'
 gem 'paperclip', :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
 # gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'

@@ -2,33 +2,37 @@
 class ForumsController < ApplicationController
    before_action :authenticate_agent!, :only => [:new, :edit, :add, :choose, :create, :update]
    skip_before_action :getForum, only: [:index]
-   
+
   def create
     @forum = Forum.new(forum_params)
     @forum.agent = current_agent
-    if @forum.save
-      flash[:notice] = 'Entry created'
-      expire_fragment(/.*forum_front.*/)
-      unless @forum.entries.empty?
-        expire_fragment(/.*newsfeed_front.*/)
-      end
-      # new references code
-      if @forum.body.blank?
-        redirect_to url_for(@forum)
-      else
-        @potential_references = @forum.check_references
-
-        if @potential_references.empty?
+    begin
+      if @forum.save
+        flash[:notice] = 'Entry created'
+        expire_fragment(/.*forum_front.*/)
+        unless @forum.entries.empty?
+          expire_fragment(/.*newsfeed_front.*/)
+        end
+        # new references code
+        if @forum.body.blank?
           redirect_to url_for(@forum)
         else
-          flash[:notice] = 'Did you mention these other items in your comment?'
-          @item = @forum
-          render :template => 'shared/add_references'
+          @potential_references = @forum.check_references
+
+          if @potential_references.empty?
+            redirect_to url_for(@forum)
+          else
+            flash[:notice] = 'Did you mention these other items in your comment?'
+            @item = @forum
+            render :template => 'shared/add_references'
+          end
         end
+      else
+        flash[:error] = 'Error creating entry: '  + @forum.errors.full_messages.join('; ')
+        render :template => 'shared/new_forum'
       end
-    else
-      flash[:error] = 'Error creating entry: '  + @forum.errors.full_messages.join('; ')
-      render :template => 'shared/new_forum'
+    rescue Riddle::CommandFailedError => error
+      puts "Command Result: #{error.command_result}, #{error.inspect}"
     end
   end
 
