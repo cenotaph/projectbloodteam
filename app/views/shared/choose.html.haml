@@ -42,7 +42,7 @@
           - @choices.each do |choice|
             .choice
               .choice_title
-                = link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.imdb_id.gsub(/\D*/, ''), :category => @category)
+                = link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.imdb_id.gsub(/\D*/, '').sub!(/^[0]+/,''), :category => @category)
                 - if @choices.size == 1
                   %small
                     = "(#{choice.director}, #{choice.country}, #{choice.year})"
