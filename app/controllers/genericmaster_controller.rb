@@ -570,16 +570,16 @@ class GenericmasterController < ApplicationController
 
         if @category == 'MasterMovie'
           if (@item.filename_file_name.blank? && !@item.imdbcode.blank?) || params[:master_movie][:resync_image] == "1"
-            i = Imdb::Movie.new(@item.imdbcode)
+            i = OMDB.id("tt#{sprintf('%07d', @item.imdbcode)}")
             big_poster = i.poster
-            unless big_poster.blank?
-              @item.filename = URI.parse(big_poster)
+            unless big_poster.blank? || big_poster == 'N/A'
+              @item.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
             end
-            if @item.english_title.blank?
-              unless i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
-                @item.english_title = HTMLEntities.new.decode  i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }[:title]
-              end
-            end
+            # if @item.english_title.blank?
+            #   unless i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
+            #     @item.english_title = HTMLEntities.new.decode  i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }[:title]
+            #   end
+            # end
             @item.save!
           end
         elsif @category == 'MasterBook'
@@ -598,10 +598,10 @@ class GenericmasterController < ApplicationController
           end
         elsif @category == 'MasterTvseries'
           if (@item.image_file_name.blank? && !@item.imdbcode.blank?) || params[:master_tvseries][:resync_image] == "1"
-            i = Imdb::Movie.new(@item.imdbcode)
+            i = OMDB.id("tt#{sprintf("%07d", @item.imdbcode)}")
             big_poster = i.poster
-            unless big_poster.blank?
-              @item.image = URI.parse(big_poster)
+            unless big_poster.blank? || big_poster == 'N/A'
+              @item.image = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
             end
             @item.save!
           end
