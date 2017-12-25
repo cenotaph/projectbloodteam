@@ -4,7 +4,7 @@
       %dd.active{:"data-magellan-arrival" => "localhits"}= link_to "Existing PBT entries (#{@localhits.size})", "#localhits"
       %dd{:"data-magellan-arrival" => "choices"}= link_to "Search results (#{@choices.size})", "#choices"
 
-        
+
 .container.chooser
   .row
     .small-8.columns.small-2-offset
@@ -29,9 +29,9 @@
                     = link_to raw(hit.name), select_genericmaster_path(:agent_id => current_agent.id, :id => "local_#{hit.id}", :category => @category)
                     .metadata
                       = "Agents: #{hit.items.map{|x| x.agent.surname }.uniq.join(', ')}"
-                
 
-    
+
+
   - unless @choices.blank?
     .row
       .small-12.columns
@@ -40,7 +40,10 @@
         - if @category == "Movie" || @category == "Tvseries"
           - @choices.each do |choice|
             .choice
-              .choice_title= link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.id, :category => @category)
+              .choice_title
+                = link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.imdb_id.gsub(/\D*/, ''), :category => @category)
+                %small
+                  = "(#{choice.director}, #{choice.country}, #{choice.year})"
         - else @category == "Book" || @category == "Music"
           - @choices.in_groups_of(4).each do |group|
             .row.choice_row
@@ -54,9 +57,7 @@
                         = link_to image_tag(choice['image']), select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category)
                     .small-9.columns
                       .choice_title= link_to raw(choice['title'].gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category)
-                      - unless choice['label'].blank? 
+                      - unless choice['label'].blank?
                         .metadata= choice['label'].join(" / ")
                       - unless choice['format'].blank?
                         .metadata= choice['format'].join(' ')
-                      
-          

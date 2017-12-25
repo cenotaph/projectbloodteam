@@ -15,7 +15,7 @@ class MasterMovie < ActiveRecord::Base
 
   def resync_imdb_image
     m = OMDB.id("tt#{sprintf("%07d", imdbcode)}")
-    unless m.poster.blank?
+    unless m.poster.blank? || m.poster == 'N/A'
       self.filename = URI.parse(m.poster)
       save!
     end
@@ -31,7 +31,7 @@ class MasterMovie < ActiveRecord::Base
         m = OMDB.id("tt#{sprintf("%07d", key)}")
         big_poster = m.poster # rescue nil
         mynew = self.new(:title => HTMLEntities.new.decode(m.title), :imdbcode => key, :director => m.director, :country => m.country.gsub(/, /, ' / '), :year => m.year)
-        unless big_poster.blank?
+        unless big_poster.blank? || big_poster == 'N/A'
           mynew.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
         end
         # unless m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
@@ -66,7 +66,7 @@ class MasterMovie < ActiveRecord::Base
       key = OMDB.id("tt#{sprintf("%07d", key)}")
     end
     big_poster = key.poster
-    unless big_poster.blank?
+    unless big_poster.blank? || big_poster == 'N/A'
       imdbcode = sprintf("%07d",  key.movie_name.to_i)
       new_master.filename_file_name = imdbcode  + '.jpg'
       new_master.filename_content_type = 'image/jpeg'
@@ -134,7 +134,16 @@ class MasterMovie < ActiveRecord::Base
   end
 
   def self.query(searchterm, token = nil)
-    imdbhits = Imdb::Search.new(searchterm, {:ttype => :ft}).movies
+    imdbhits = OMDB.search(searchterm)
+    if imdbhits.class == Hash
+      if imdbhits.has_key?(:error)
+        return imdbhits[:error]
+      else
+        return [imdbhits]
+      end
+    else
+      return imdbhits
+    end
 
   end
 
