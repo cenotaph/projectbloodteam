@@ -48,7 +48,7 @@
                   - else
                     = image_tag '/img/no_image.png'
                 .choice_title
-                  = link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.imdb_id.gsub(/\D*/, '').gsub(/^[0]+/,''), :category => @category)
+                  = link_to raw(choice.title.gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice.imdb_id.gsub(/\D*/, '').gsub(/^[0]+/,''), :category => choice.type == 'series' ? 'Tvseries' : 'Movie')
                   - if @choices.size == 1
                     %small
                       = choice.type.capitalize

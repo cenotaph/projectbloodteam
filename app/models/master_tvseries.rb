@@ -119,14 +119,14 @@ class MasterTvseries < ActiveRecord::Base
     if imdbcode.blank?
       self.title
     else
-      out = '<a class="popup" href="http://www.imdb.com/title/tt'+ imdbcode.to_s + '"  target="_blank">' + title
+      out = '<a class="popup" href="http://www.imdb.com/title/tt'+ sprintf('%07d', imdbcode).to_s + '"  target="_blank">' + title
       out += "</a>"
       return out
     end
   end
 
   def linkto
-    "http://www.imdb.com/title/tt#{imdbcode.to_s}/"
+    "http://www.imdb.com/title/tt#{sprintf('%07d', imdbcode).to_s}/"
   end
 
   def master_id
