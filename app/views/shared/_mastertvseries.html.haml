@@ -1,17 +1,17 @@
 - cache(:id => item.id.to_s, :action => "show", :category => 'mastermovie', :action_suffix => 'imdbdata') do
-  - m = Imdb::Serie.new(item.imdbcode) unless item.imdbcode.blank?
+  - m = OMDB.id("tt#{sprintf("%07d", item.imdbcode)}") unless item.imdbcode.blank?
   .row
     .small-12.columns
       - unless item.imdbcode.blank?
         .master_metadata
-          .metadata= m.tagline
+          -#.metadata= m.tagline
           .metadata
             %blockquote= m.plot
           .metadata.text-left
-            %p= "First year: #{m.release_date}"
+            %p= "First year: #{m.released}"
           .metadata.text-left
             Featuring:
-            .metadata_small.cast= raw m.cast_members_characters.join(' &sdot; ').gsub(/=\>/, 'as')
+            .metadata_small.cast= raw m.actors
 
 = content_for :jquery do
   :plain
