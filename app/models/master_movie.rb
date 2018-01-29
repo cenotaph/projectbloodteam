@@ -106,7 +106,7 @@ class MasterMovie < ActiveRecord::Base
   end
 
   def linkto
-    "http://www.imdb.com/title/tt#{sprintf('%07d', imdbcode.to_s)}/"
+    "http://www.imdb.com/title/tt#{sprintf('%07d', imdbcode.to_s)}/" rescue ''
   end
 
   def master_id
