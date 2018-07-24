@@ -29,15 +29,20 @@ class MasterBook < ActiveRecord::Base
     if key =~ /^local_/
       key.gsub(/^local_/, '')
     else
-      existing = self.where(:amazoncode => key)
+      existing = self.where(["amazoncode =? OR open_library=  ?", key, key])
       if existing.empty?
-        book = Amazon::Ecs.item_search(key, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
+        client = Openlibrary::Client.new
+        data = Openlibrary::Data
+        book = data.find_by_olid(key)
+        new_master = MasterBook.new(amazoncode: nil, open_library: key, title: book.title,
+          author: book&.authors&.map(&:name)&.join(', ').to_s)
+        # book = Amazon::Ecs.item_search(key, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
 
-        new_master = MasterBook.new(:amazoncode => key, :title => book.get('ItemAttributes/Title'),
-                          :author => book.get('ItemAttributes/Author'))
+        # new_master = MasterBook.new(:amazoncode => key, :title => book.get('ItemAttributes/Title'),
+        # :author => book.get('ItemAttributes/Author'))
         require 'open-uri'
-        unless book.get_hash('LargeImage').blank?
-          new_master.filename = URI.parse(book.get_hash('LargeImage')['URL'])
+        unless book&.cover&.large.nil?
+          new_master.filename = URI.parse(book.cover.large)
         end
         if new_master.save
           new_master.id
@@ -110,13 +115,24 @@ class MasterBook < ActiveRecord::Base
   end
 
   def self.query(searchterm, token = nil)
-    hits = Amazon::Ecs.item_search(searchterm, {:response_group => 'Medium'}).items
+    client = Openlibrary::Client.new
+    data = Openlibrary::Data
+    hits = client.search({q: searchterm, mode: 'everything'}, 250)
+    # hits = Amazon::Ecs.item_search(searchterm, {:response_group => 'Medium'}).items
     results = []
     hits.each do |hit|
-      results << {"title" => hit.get('ItemAttributes/Title').to_s + '<div class="secondary_title">' + hit.get('ItemAttributes/Author').to_s + '</div>',
-                  "key" => hit.get('ASIN'),
-                  'image' => hit.get('SmallImage').nil? ? nil : hit.get('SmallImage').gsub(/\<\/url\>.*/i, '').sub(/\<url\>/i, '')
-                }
+
+        this_isbn = data.find_by_olid(hit.edition_key.first)
+
+        results << { "title" => this_isbn.title  + '<div class="secondary_title">' + this_isbn&.authors&.map{|x| x['name']}&.join(', ').to_s + "</div>",
+                    "key" => this_isbn.identifiers.openlibrary,
+                    "image" => this_isbn&.cover&.medium }
+
+      # results << {"title" => hit.get('ItemAttributes/Title').to_s + '<div class="secondary_title">' + hit.get('ItemAttributes/Author').to_s + '</div>',
+      #             "key" => hit.get('ASIN'),
+      #             'image' => hit.get('SmallImage').nil? ? nil : hit.get('SmallImage').gsub(/\<\/url\>.*/i, '').sub(/\<url\>/i, '')
+      #           }
+      # end
     end
     results
   end

@@ -60,19 +60,18 @@
 
 
           - else @category == "Book" || @category == "Music"
-            - @choices.in_groups_of(4).each do |group|
-              .row.choice_row
-                - group.each_with_index do |choice, i|
-                  - next if choice.nil?
-                  .small-3.columns{class: choice[i+1].nil? ? :end : false }
+            - @choices.each do |choice|
+              - next if choice.nil?
+              = link_to select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category), class: [:choice, :column] do
 
-                    .row
-                      .small-3.columns
-                        - if choice['image']
-                          = link_to image_tag(choice['image']), select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category)
-                      .small-9.columns
-                        .choice_title= link_to raw(choice['title'].gsub(/\((\d+)$/, '(\1)')), select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category)
-                        - unless choice['label'].blank?
-                          .metadata= choice['label'].join(" / ")
-                        - unless choice['format'].blank?
-                          .metadata= choice['format'].join(' ')
+                .choice_poster
+                  - if choice['image']
+                    = image_tag(choice['image'])
+                  - else
+                    = image_tag 'system/no_image.png'
+                .choice_title
+                  = raw(choice['title'].gsub(/\((\d+)$/, '(\1)'))
+                  - unless choice['label'].blank?
+                    .metadata= choice['label'].join(" / ")
+                  - unless choice['format'].blank?
+                    .metadata= choice['format'].join(' ')

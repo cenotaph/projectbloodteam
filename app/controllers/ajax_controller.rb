@@ -10,7 +10,7 @@ class AjaxController < ApplicationController
     elsif cat == Concert
       items = cat.where('venue like "%' + params[:term] + '%" and geolocation_id IS NOT NULL').group(:geolocation_id, :venue_address)
     else
-      items = cat.where('name like "%' + params[:term] + '%" and geolocation_id IS NOT NULL').group(:geolocation_id)
+      items = cat.where('name like "%' + params[:term] + '%" and geolocation_id IS NOT NULL') #.group(:geolocation_id)
     end
     list = items.map{|u| Hash["id" => u.id, "label" => (va.include?(cat) ? u.location + " [" + u.geolocation.address.to_s + "]" : (cat == Concert ? u.venue + " [" + u.geolocation.address.to_s + "]" : u.name + " [" + u.location + "]")), "name" =>  (va.include?(cat) ? u.location  : (cat == Concert ? u.venue : ((cat == Movie || cat == Activity || cat == Event  || cat == Tvseries || cat == Musicplayed) ? u.location : u.name))), "lat" => u.geolocation.latitude, "lng" => u.geolocation.longitude, "geolocation_id" => u.geolocation_id, "address" => u.geolocation.address]}
 

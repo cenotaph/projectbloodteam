@@ -54,7 +54,8 @@ class Book < ActiveRecord::Base
     if self.userimages.empty?
       self.master_book.icon
     else
-      self.userimages.first.image.url(:thumb)
+
+      self.userimages.first.new_record? ? self.master_book.icon : self.userimages.first.image.url(:thumb)
     end
   end
   
