@@ -35,7 +35,7 @@ Pbt4::Application.configure do
     :bucket => 'pbt-production',
     :s3_permissions => 'public-read',
     :s3_region => 'us-east-1',
-    :s3_host_name => "s3.amazonaws.com", # Added entry
+    :s3_host_name => "s3.wasabisys.com", # Added entry
     :url => ":s3_host_name"
   }
   # Enable serving of images, stylesheets, and javascripts from an asset server
