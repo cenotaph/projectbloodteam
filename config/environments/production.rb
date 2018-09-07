@@ -43,6 +43,7 @@ Pbt4::Application.configure do
       endpoint: "https://s3.wasabisys.com"
     },
     :s3_host_name => "s3.wasabisys.com"
+  }
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
 
