@@ -218,13 +218,16 @@ class GenericController < ApplicationController
   
   def show
     @item = @category.classify.constantize.find(params[:id])
-    unless !@item.respond_to?('geolocation')
+    if @category.classify.constantize.first.respond_to?('geolocation')
+      @item = @category.classify.constantize.includes([:geolocation_item]).where(id: params[:id]).first
       unless @item.geolocation.blank?
         hits = [@item]
         hits += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", @item.geolocation.latitude - 0.25, @item.geolocation.latitude + 0.25, @item.geolocation.longitude - 0.2, @item.geolocation.longitude + 0.2]).includes([{:geolocation_items => {:item => [:agent, :userimages, :comments, :references]}}]).map(&:pbt_entries).uniq.flatten
 
       end
       @json = hits.compact.map(&:geolocation).uniq unless hits.nil?
+    else
+      @item = @category.classify.constantize.find(params[:id])
     end
     @agent = @item.agent
     if !@item[:date].nil?

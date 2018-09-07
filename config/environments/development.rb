@@ -24,6 +24,8 @@ Pbt4::Application.configure do
 
     config.cache_store = :null_store
   end
+  config.log_level = :debug
+
 
   config.active_support.deprecation = :log
   config.asset_host = Proc.new { |source|
@@ -44,11 +46,17 @@ Pbt4::Application.configure do
   # end
   config.paperclip_defaults = {
     :storage => :s3,
-    :bucket => 'pbt-production',
-    :s3_permissions => 'public-read',
-    :s3_region => 'us-east-1',
-    :s3_host_name => "s3.wasabisys.com", # Added entry
-    :url => ":s3_host_name"
+    s3_credentials: {
+      :bucket => 'pbt-production',
+      :s3_region => 'us-east-1',
+      access_key_id: ENV.fetch('WASABI_ACCESS_KEY'),
+      secret_access_key: ENV.fetch('WASABI_SECRET'),
+      s3_host_name: "s3.wasabisys.com"
+    },
+    s3_options: {
+      endpoint: "https://s3.wasabisys.com"
+    },
+    :s3_host_name => "s3.wasabisys.com"
   }
   # Don't care if the mailer can't send
   # config.active_record.raise_in_transactional_callbacks = true

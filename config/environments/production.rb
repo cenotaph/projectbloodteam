@@ -32,11 +32,17 @@ Pbt4::Application.configure do
   # config.assets.digest = true
   config.paperclip_defaults = {
     :storage => :s3,
-    :bucket => 'pbt-production',
-    :s3_permissions => 'public-read',
-    :s3_region => 'us-east-1',
+    s3_credentials: {
+      :bucket => 'pbt-production',
+      :s3_region => 'us-east-1',
+      access_key_id: ENV.fetch('WASABI_ACCESS_KEY'),
+      secret_access_key: ENV.fetch('WASABI_SECRET'),
+      s3_host_name: "s3.wasabisys.com"
+    },
+    s3_options: {
+      endpoint: "https://s3.wasabisys.com"
+    },
     :s3_host_name => "s3.wasabisys.com"
-  }
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
 

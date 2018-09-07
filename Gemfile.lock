@@ -51,18 +51,6 @@ GIT
       rack (>= 1.5.2, < 3)
       railties (>= 4.0)
 
-GIT
-  remote: https://github.com/thoughtbot/paperclip
-  revision: 523bd46c768226893f23889079a7aa9c73b57d68
-  ref: 523bd46c768226893f23889079a7aa9c73b57d68
-  specs:
-    paperclip (4.3.1)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-      cocaine (~> 0.5.5)
-      mime-types
-      mimemagic (= 0.3.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -109,12 +97,21 @@ GEM
       nokogiri (~> 1.4)
       ruby-hmac (~> 0.3)
     arel (8.0.0)
-    aws-sdk (2.3.22)
-      aws-sdk-resources (= 2.3.22)
-    aws-sdk-core (2.3.22)
+    aws-eventstream (1.0.1)
+    aws-partitions (1.103.0)
+    aws-sdk-core (3.27.0)
+      aws-eventstream (~> 1.0)
+      aws-partitions (~> 1.0)
+      aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.3.22)
-      aws-sdk-core (= 2.3.22)
+    aws-sdk-kms (1.9.0)
+      aws-sdk-core (~> 3, >= 3.26.0)
+      aws-sigv4 (~> 1.0)
+    aws-sdk-s3 (1.19.0)
+      aws-sdk-core (~> 3, >= 3.26.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.0)
+    aws-sigv4 (1.0.3)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -149,8 +146,6 @@ GEM
       capistrano-bundler
       puma (~> 3.4)
     climate_control (0.2.0)
-    cocaine (0.5.8)
-      climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
     crass (1.0.4)
@@ -249,7 +244,7 @@ GEM
     method_source (0.9.0)
     middleware (0.1.0)
     mime-types (2.99.3)
-    mimemagic (0.3.0)
+    mimemagic (0.3.2)
     mini_magick (4.8.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
@@ -280,6 +275,12 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     orm_adapter (0.5.0)
+    paperclip (6.1.0)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      mime-types
+      mimemagic (~> 0.3.0)
+      terrapin (~> 0.6.0)
     puma (3.12.0)
     rack (2.0.5)
     rack-test (1.1.0)
@@ -371,6 +372,8 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     temple (0.8.0)
+    terrapin (0.6.0)
+      climate_control (>= 0.0.3, < 1.0)
     thinking-sphinx (4.0.0)
       activerecord (>= 3.1.0)
       builder (>= 2.1.2)
@@ -402,7 +405,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-session_store!
   amazon-ecs
-  aws-sdk (~> 2.3.0)
+  aws-sdk-s3 (~> 1)
   better_errors
   binding_of_caller
   bullet
@@ -440,7 +443,7 @@ DEPENDENCIES
   oauth2
   omdbapi!
   openlibrary!
-  paperclip!
+  paperclip
   puma
   rails (= 5.1.6)
   rails4-autocomplete

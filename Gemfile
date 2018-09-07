@@ -30,7 +30,7 @@ group :development do
   gem 'spring'
 end
 
-gem 'aws-sdk', '~> 2.3.0'
+gem 'aws-sdk-s3', '~> 1'
 gem "bullet", :group => "development"
 #gem 'rails4_upgrade'
 
@@ -74,7 +74,7 @@ gem "non-stupid-digest-assets"
 gem "oauth2"
 gem 'omdbapi', github: 'phallstrom/omdbapi', branch: 'api-key'
 gem 'openlibrary', github: 'jayfajardo/openlibrary', branch: :master
-gem 'paperclip', :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
+gem 'paperclip'#, :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
 # gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'
 gem 'randumb'
