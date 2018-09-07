@@ -1,3 +1,4 @@
+Aws::VERSION =  Gem.loaded_specs["aws-sdk"].version
 Paperclip.interpolates :entry_type do |attachment, style|
   attachment.instance.entry_type.constantize.table_name
 end
@@ -27,4 +28,4 @@ Paperclip.interpolates :mystyle  do |attachment, style|
     return style.to_s + '/'
   end
 end
-Paperclip::DataUriAdapter.register
+# Paperclip::DataUriAdapter.register
