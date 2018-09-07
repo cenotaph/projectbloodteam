@@ -27,3 +27,4 @@ Paperclip.interpolates :mystyle  do |attachment, style|
     return style.to_s + '/'
   end
 end
+Paperclip::DataUriAdapter.register
