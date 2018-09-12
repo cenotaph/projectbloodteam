@@ -46,6 +46,7 @@
         .form_wrapper
           = f.input :author, :as => :string
           = f.input :title, :as => :string
+          = f.input :open_library, as: :string
           = f.input :amazoncode, :as => :string
           - if @followup == 'new'
             = f.input :followup, :as => :hidden, input_html: {  :value => @followup }

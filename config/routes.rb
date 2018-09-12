@@ -89,6 +89,7 @@ Pbt4::Application.routes.draw do
     resources :books, :controller => :genericmaster, :category => 'Book' do
       collection do
         get :query
+        get :directid
       end
     end
     resources :master_books, :controller => :genericmaster, :category => 'MasterBook'

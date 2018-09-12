@@ -143,11 +143,23 @@
         
       .reveal#prompt_book{:"data-reveal" => ''}
         %h2 New book
-        %p Enter a title to search for your book.
-        = form_tag query_agent_books_path(:agent_id => current_agent.id), :method => :get do 
-          = text_field_tag :query
-          = submit_tag "Search", :class => [:button, :small]
-        = link_to 'create custom entry', '/genericmaster/custom/Book/new', class: [:button, :tiny, :secondary]
+        .row
+          .small-4.columns
+            %p Enter a title to search for your book.
+            = form_tag query_agent_books_path(:agent_id => current_agent.id), :method => :get do 
+              = text_field_tag :query
+              = submit_tag "Search", :class => [:button, :small]
+          .small-4.columns
+            %p or enter the OpenLibrary ID #
+            = form_tag directid_agent_books_path(:agent_id => current_agent.id), :method => :get do
+              = text_field_tag :directid
+              = submit_tag 'Create', :class => [:button, :small]
+        .row
+          .small-12.columns
+            Not in the OpenLibrary database? Not much is. Please create an account on 
+            = link_to 'OpenLibrary.org', 'https://openlibrary.org/', target: :_blank
+            and add the book. Then add it to PBT by adding the OpenLibrary ID # (something like OLxxxxxxxM) above.
+
         %button.close-button{"aria-label" => "Close modal", "data-close" => "", :type => "button"}
           %span{"aria-hidden" => "true"} ×
       .reveal#prompt_videogame{:"data-reveal" => ''}

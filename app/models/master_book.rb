@@ -121,12 +121,12 @@ class MasterBook < ActiveRecord::Base
     # hits = Amazon::Ecs.item_search(searchterm, {:response_group => 'Medium'}).items
     results = []
     hits.each do |hit|
+      next if hit.edition_key.nil?
+      this_isbn = data.find_by_olid(hit.edition_key.first)
 
-        this_isbn = data.find_by_olid(hit.edition_key.first)
-
-        results << { "title" => this_isbn.title  + '<div class="secondary_title">' + this_isbn&.authors&.map{|x| x['name']}&.join(', ').to_s + "</div>",
-                    "key" => this_isbn.identifiers.openlibrary,
-                    "image" => this_isbn&.cover&.medium }
+      results << { "title" => this_isbn.title  + '<div class="secondary_title">' + this_isbn&.authors&.map{|x| x['name']}&.join(', ').to_s + "</div>",
+        "key" => this_isbn.identifiers.openlibrary,
+        "image": this_isbn&.cover&.medium }
 
       # results << {"title" => hit.get('ItemAttributes/Title').to_s + '<div class="secondary_title">' + hit.get('ItemAttributes/Author').to_s + '</div>',
       #             "key" => hit.get('ASIN'),
