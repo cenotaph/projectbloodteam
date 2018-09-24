@@ -120,8 +120,24 @@ module ItemHelpers
     end
   end
   
+  # def my_latitude=(lat)
+  #   if geolocation.nil?
+  #     return false
+  #   else
+  #     self.geolocation.latitude = lat
+  #   end
+  # end
+
+  # def my_longitude=(lng)
+  #   if geolocation.nil?
+  #     return false
+  #   else
+  #     self.geolocation.longitude = lng
+  #   end
+  # end
+
   def my_latitude
-    self.geolocation.latitude
+    self.geolocation.latitude 
   end
   
   def my_longitude
@@ -167,7 +183,6 @@ module ItemHelpers
 
   def store_geocodes
     if self.geolocation_item.nil?
-   
       if self.respond_to?('venue_address')
         g = Geolocation.where(:address => self.venue_address).first_or_create unless self.venue_address.blank?
       else
