@@ -3,7 +3,7 @@ class Geolocation < ActiveRecord::Base
   geocoded_by :address
   # reverse_geocoded_by :latitude, :longitude
   before_validation :geocode_if_blank, on: :update
-  after_validation :geocode, :on => :create
+  after_validation :geocode, on: :create
   # acts_as_gmappable :process_geocoding => false
   validates_presence_of :latitude, :longitude
   belongs_to :item, polymorphic: true
@@ -22,9 +22,8 @@ class Geolocation < ActiveRecord::Base
   has_many :takeaways, through: :geolocation_items, source: :item, source_type: 'Takeaway', :dependent => :destroy
   has_many :tvseries, through: :geolocation_items, source: :item, source_type: 'Tvseries', :dependent => :destroy
 
-
   # after_create :update_cache
-  
+ 
   def address_or_coordinates
     if self.latitude.blank? || self.longitude.blank?
       geocode
@@ -32,13 +31,13 @@ class Geolocation < ActiveRecord::Base
       reverse_geocode
     end
   end
-  
+
   def geocode_if_blank
     if self.latitude.blank? || self.longitude.blank?
       geocode
     end
   end
-  
+ 
   def infowindow
     out = '<a href="/geolocations/' + self.id.to_s + '/edit"><i class="fa fa-globe" style="margin-right: 5px; float: left"></i></a>'
       if self.pbt_entries.size == 1
@@ -62,8 +61,6 @@ class Geolocation < ActiveRecord::Base
       end
   end
 
-  
-
   def gmaps4rails_marker_picture
     {
      "width" => "20",
@@ -74,7 +71,7 @@ class Geolocation < ActiveRecord::Base
      "shadow_height" => "110",
      "shadow_anchor" => [ 5, 10],
     }
-  end     
+  end
 
   def gmaps4rails_title
     if self.pbt_entries.size == 1
@@ -83,15 +80,15 @@ class Geolocation < ActiveRecord::Base
       "#{self.pbt_entries.size.to_s} entries here!"
     end
   end
-  
+ 
   def pbt_entries
     geolocation_items.map(&:item).compact
   end
-  
+ 
   def update_cache
     File.open("#{Rails.root}/tmp/cache/pbt_world.json", 'w') do |f|
       f.puts Geolocation.all.to_gmaps4rails
     end
   end
-    
+   
 end

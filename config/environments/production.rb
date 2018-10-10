@@ -16,7 +16,7 @@ Pbt4::Application.configure do
 
   config.assets.precompile += %w( .svg .eot .woff .ttf)
   # See everything in the log (default is :info)
-  config.log_level = :info
+  config.log_level = :error
   # config.active_record.raise_in_transactional_callbacks = true
 
   # Use a different logger for distributed setups

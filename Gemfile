@@ -1,7 +1,7 @@
 # Edit this Gemfile to bundle your application's dependencies.
 # source 'http://gemcutter.org'
 source 'https://rubygems.org'
-ruby '2.4.2'
+ruby '2.5.1'
 gem 'rails', '5.1.6'
 gem 'mysql2'
 gem 'puma'
@@ -53,7 +53,7 @@ gem 'devise-encryptable'
 gem 'discogs-wrapper'
 gem 'figaro'
 gem 'font-awesome-rails'
-gem 'formtastic' , :git => 'git://github.com/justinfrench/formtastic.git'
+gem 'formtastic', :git => 'git://github.com/justinfrench/formtastic.git'
 gem 'foundation-rails', '6.3.0.0' #, '5.5.3.2'
 gem 'friendly_id', branch: :master, github: 'norman/friendly_id'
 gem 'geocoder'
@@ -82,7 +82,7 @@ gem 'randumb'
 gem 'redis-rails', '~> 5.0.1'
 gem 'redis'
 # gem 'responders', '2.0.2'
-gem "skylight"
+# gem "skylight"
 gem 'themes_for_rails', github: 'cenotaph/themes_for_rails', branch: 'master'
 gem 'thinking-sphinx'#
 
