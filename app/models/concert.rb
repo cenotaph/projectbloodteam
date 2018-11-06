@@ -8,10 +8,10 @@ class Concert < ActiveRecord::Base
   has_one :geolocation_item, as: :item
   delegate :geolocation, to: :geolocation_item, allow_nil: true
   geocoded_by :my_address
-  after_save do
+  after_validation do
     store_geocodes unless self.dont_geocode == '1'
   end
-  reverse_geocoded_by :my_latitude, :my_longitude
+  # reverse_geocoded_by :my_latitude, :my_longitude
   
   belongs_to :currency
   

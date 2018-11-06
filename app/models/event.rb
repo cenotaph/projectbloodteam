@@ -9,11 +9,11 @@ class Event < ActiveRecord::Base
   delegate :geolocation, to: :geolocation_item, allow_nil: true
   
   geocoded_by :my_address
-  after_save do
+  after_validation do
     store_geocodes unless self.dont_geocode == '1'
   end
   
-  reverse_geocoded_by :my_latitude, :my_longitude
+  # reverse_geocoded_by :my_latitude, :my_longitude
   has_many :comments, -> { where('item_type = \'Event\'')}, :foreign_key => 'foreign_id', :dependent => :destroy
   belongs_to :currency
   
