@@ -5,7 +5,7 @@ class Geolocation < ActiveRecord::Base
   before_validation :geocode_if_blank, on: :update
   after_validation :geocode, on: :create
   # acts_as_gmappable :process_geocoding => false
-  validates_presence_of :latitude, :longitude
+  # validates_presence_of :latitude, :longitude
   belongs_to :item, polymorphic: true
   has_many :geolocation_items
   # has_many :items, through: :geolocation_items

@@ -9,10 +9,11 @@ class Restaurant < ActiveRecord::Base
 
   # delegate :geolocation, :geolocation_id, to: :geolocation_item, allow_nil: true
   geocoded_by :my_address
-  after_save do
-    store_geocodes unless self.dont_geocode == '1'
+  after_validation do
+    geocode unless self.dont_geocode == '1'
+    # store_geocodes unless self.dont_geocode == '1'
   end
-  reverse_geocoded_by :my_latitude, :my_longitude
+  # reverse_geocoded_by :my_latitude, :my_longitude
 
   include ItemHelpers
 
