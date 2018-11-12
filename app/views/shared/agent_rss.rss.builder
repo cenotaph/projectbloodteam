@@ -4,7 +4,7 @@ xml.rss :version => "2.0" do
   xml.channel do
     xml.title 'Project Blood Team : Agent ' + @agent.surname 
     xml.description " "
-    xml.link 'http://bloodteam.com' + agent_path(@agent, :format => :rss)
+    xml.link 'https://bloodteam.com' + agent_path(@agent, :format => :rss)
 
     for article in @feed do
       next if article.id.nil?

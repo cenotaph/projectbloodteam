@@ -18,7 +18,7 @@
       = javascript_include_tag 'raphael'
  
     - if agent_signed_in?
-      = stylesheet_link_tag "http://#{request.host}#{request.port  != 80 ? ':' + request.port.to_s : ''}/css/#{current_agent.slug.to_s}.css"
+      = stylesheet_link_tag "https://#{request.host}#{request.port  != 80 ? ':' + request.port.to_s : ''}/css/#{current_agent.slug.to_s}.css"
      
     = csrf_meta_tag
 
@@ -75,12 +75,12 @@
           .small-8.columns.past_years.small-centered.text-center
             %p
               - 2014.downto(2002).map(&:to_s).each do |y|
-                = link_to image_tag("/img/logos/#{y}_small.jpg"), "http://#{y}.bloodteam.com"
+                = link_to image_tag("/img/logos/#{y}_small.jpg"), "https://#{y}.bloodteam.com"
     - if current_agent
     
       .reveal#prompt_movie{:"data-reveal" => ''}
         %h2 New movie
-        .row
+        .row§
           .small-6.medium-4.columns
             = form_tag query_agent_movies_path(:agent_id => current_agent.id), :method => :get do 
               %p Enter a title to search for your movie.

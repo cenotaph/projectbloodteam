@@ -39,4 +39,4 @@
                 - if Profile.find_by(agent: @agent, year: year).nil?
                   - next
                 - else
-                  %li= link_to year, "http://#{year.to_s}.bloodteam.com/agents/#{@agent.slug}"
+                  %li= link_to year, "https://#{year.to_s}.bloodteam.com/agents/#{@agent.slug}"
