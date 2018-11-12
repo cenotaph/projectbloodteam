@@ -80,7 +80,7 @@
     
       .reveal#prompt_movie{:"data-reveal" => ''}
         %h2 New movie
-        .row§
+        .row
           .small-6.medium-4.columns
             = form_tag query_agent_movies_path(:agent_id => current_agent.id), :method => :get do 
               %p Enter a title to search for your movie.
