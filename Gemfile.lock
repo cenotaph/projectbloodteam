@@ -920,6 +920,8 @@ GEM
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     riddle (2.3.1)
+    rollbar (2.18.2)
+      multi_json
     ruby-hmac (0.4.0)
     ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
@@ -1025,6 +1027,7 @@ DEPENDENCIES
   randumb
   redis
   redis-rails (~> 5.0.1)
+  rollbar
   ruby-hmac
   sass-rails
   spring
