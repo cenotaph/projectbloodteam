@@ -222,8 +222,9 @@ class GenericController < ApplicationController
       @item = @category.classify.constantize.includes([:geolocation_item]).where(id: params[:id]).first
       unless @item.geolocation.blank?
         hits = [@item]
-        hits += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", @item.geolocation.latitude - 0.25, @item.geolocation.latitude + 0.25, @item.geolocation.longitude - 0.2, @item.geolocation.longitude + 0.2]).includes([{:geolocation_items => {:item => [:agent, :userimages, :comments, :references]}}]).map(&:pbt_entries).uniq.flatten
-
+        unless @item.geolocation.latitude.blank? || @item.geolocation.longitude.blank?
+          hits += Geolocation.where(["latitude >= ? and latitude <= ? and longitude >= ? and longitude <= ?", @item.geolocation.latitude - 0.25, @item.geolocation.latitude + 0.25, @item.geolocation.longitude - 0.2, @item.geolocation.longitude + 0.2]).includes([{:geolocation_items => {:item => [:agent, :userimages, :comments, :references]}}]).map(&:pbt_entries).uniq.flatten
+        end
       end
       @json = hits.compact.map(&:geolocation).uniq unless hits.nil?
     else
