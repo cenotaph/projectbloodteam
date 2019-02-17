@@ -188,7 +188,10 @@ module ItemHelpers
       else
         g = Geolocation.where(:address => self.location).first_or_create unless self.location.blank?
       end
-      GeolocationItem.create(geolocation: g, item: self) unless g.nil?
+      # logger.warn 'storing geolocation here'
+      # logger.warn('geolocation is ' + g.inspect)
+      # logger.warn('self is ' + self.inspect)]
+      self.geolocation_item =  GeolocationItem.create(geolocation: g, item: self) unless g.nil?
       # if self.respond_to?('geolocation_id')
       #   self.update_attribute(:geolocation_id, g.id)
       # end

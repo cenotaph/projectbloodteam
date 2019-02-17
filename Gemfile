@@ -1,7 +1,7 @@
 # Edit this Gemfile to bundle your application's dependencies.
 # source 'http://gemcutter.org'
 source 'https://rubygems.org'
-ruby '2.5.1'
+ruby '2.6.1'
 gem 'rails', '5.1.6'
 gem 'mysql2'
 gem 'puma'

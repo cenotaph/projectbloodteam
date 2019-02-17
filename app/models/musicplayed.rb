@@ -15,7 +15,7 @@ class Musicplayed < ActiveRecord::Base
   end
   reverse_geocoded_by :my_latitude, :my_longitude
   self.table_name =  'musicplayed'
-  attr_accessor :currency_id
+  # attr_accessor :currency_id
 
   include ItemHelpers
 
