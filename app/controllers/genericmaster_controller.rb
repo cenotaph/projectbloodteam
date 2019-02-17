@@ -424,7 +424,7 @@ class GenericmasterController < ApplicationController
 
     if params[:agent_id]
       @agent = Agent.find(params[:agent_id])
-      @items = @category.classify.constantize.includes(:userimages).where(:agent => @agent).where(:is_short => true).where(filter_query).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
+      @items = @category.classify.constantize.includes(:userimages).where(:agent => @agent).where(is_short: true).where(filter_query).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
 
 
       if request.xhr?
@@ -571,15 +571,17 @@ class GenericmasterController < ApplicationController
         if @category == 'MasterMovie'
           if (@item.filename_file_name.blank? && !@item.imdbcode.blank?) || params[:master_movie][:resync_image] == "1"
             i = OMDB.id("tt#{sprintf('%07d', @item.imdbcode)}")
-            big_poster = i.poster
-            unless big_poster.blank? || big_poster == 'N/A'
-              @item.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
+            unless i.response == 'False'
+              big_poster = i.poster
+              unless big_poster.blank? || big_poster == 'N/A'
+                @item.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
+              end
+              # if @item.english_title.blank?
+              #   unless i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
+              #     @item.english_title = HTMLEntities.new.decode  i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }[:title]
+              #   end
+              # end
             end
-            # if @item.english_title.blank?
-            #   unless i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
-            #     @item.english_title = HTMLEntities.new.decode  i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }[:title]
-            #   end
-            # end
             @item.save!
           end
         elsif @category == 'MasterBook'
