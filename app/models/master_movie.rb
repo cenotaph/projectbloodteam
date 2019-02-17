@@ -26,6 +26,7 @@ class MasterMovie < ActiveRecord::Base
     if key =~ /^local_/
       key.gsub(/^local_/, '')
     else
+      key.gsub!(/^0*/, '').gsub!(/^tt/, '')
       existing = self.where(:imdbcode => key)
       if existing.empty?
         m = OMDB.id("tt#{sprintf("%07d", key)}")
