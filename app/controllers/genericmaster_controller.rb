@@ -420,7 +420,7 @@ class GenericmasterController < ApplicationController
       filter_query = filter_query.join(" OR ")
 
     end
-    filter_query = 1 if filter_query.blank?
+    filter_query = 'id is not null' if filter_query.blank?
 
     if params[:agent_id]
       @agent = Agent.find(params[:agent_id])
