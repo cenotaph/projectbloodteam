@@ -7,7 +7,12 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :getData
   before_action :getForum
-    
+  
+  rescue_from FilmNotFound do |exception|
+    flash[:error] = exception.message
+    redirect_to '/'
+  end
+  
   def getTheme
     # if params[:agent_id]
     #   if Profile.where(:agent_id => params[:agent_id]).where(:year => getYear).first.nil?

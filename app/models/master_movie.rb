@@ -21,7 +21,6 @@ class MasterMovie < ActiveRecord::Base
     end
   end
 
-
   def self.choose(key, token = nil)
     if key =~ /^local_/
       key.gsub(/^local_/, '')
@@ -30,22 +29,27 @@ class MasterMovie < ActiveRecord::Base
       existing = self.where(:imdbcode => key)
       if existing.empty?
         m = OMDB.id("tt#{sprintf("%07d", key)}")
-        big_poster = m.poster # rescue nil
-        mynew = self.new(:title => HTMLEntities.new.decode(m.title), :imdbcode => key, :director => m.director, :country => m.country.gsub(/, /, ' / '), :year => m.year)
-        unless big_poster.blank? || big_poster == 'N/A'
-          mynew.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
+        if m.response == 'False'
+          raise FilmNotFound.new(message: "error - OMDB entry not found!")
+        else
+          big_poster = m.poster # rescue nil
+          mynew = self.new(:title => HTMLEntities.new.decode(m.title), :imdbcode => key, :director => m.director, :country => m.country.gsub(/, /, ' / '), :year => m.year)
+          unless big_poster.blank? || big_poster == 'N/A'
+            mynew.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
+          end
+
+          # unless m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
+          #   mynew.english_title = HTMLEntities.new.decode  m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }[:title]
+          # end
+          # if m.also_known_as.find{|x| x[:version] == '(original title)' }.nil?
+          #   mynew.title = HTMLEntities.new.decode m.title
+          #   mynew.title.strip!
+          # else
+          #   mynew.title = HTMLEntities.new.decode m.also_known_as.find{|x| x[:version] == '(original title)' }[:title]
+          # end
+          mynew.save!
+          mynew.id
         end
-        # unless m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
-        #   mynew.english_title = HTMLEntities.new.decode  m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }[:title]
-        # end
-        # if m.also_known_as.find{|x| x[:version] == '(original title)' }.nil?
-        #   mynew.title = HTMLEntities.new.decode m.title
-        #   mynew.title.strip!
-        # else
-        #   mynew.title = HTMLEntities.new.decode m.also_known_as.find{|x| x[:version] == '(original title)' }[:title]
-        # end
-        mynew.save!
-        mynew.id
       else
         existing.first.id
       end
