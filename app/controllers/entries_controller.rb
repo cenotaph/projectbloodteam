@@ -5,7 +5,7 @@ class EntriesController < ApplicationController
   
   def destroy
     session[:stored] = URI(request.referer).path
-    expire_fragment(/.*newsfeed_front.*/)
+    # expire_fragment(/.*newsfeed_front.*/)
     @entry = Entry.find(params[:id])
     if @entry.agent == current_agent
       @entry.destroy!
