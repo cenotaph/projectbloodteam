@@ -80,6 +80,7 @@ Pbt4::Application.routes.draw do
         get :query
         get :unreviewed
         get :unreviewedlp
+        get :unreviewedcd
         get :needs_new_review
         get :directid
       end

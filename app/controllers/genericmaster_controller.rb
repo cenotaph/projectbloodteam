@@ -546,6 +546,14 @@ class GenericmasterController < ApplicationController
     render :template => 'shared/new_master'
   end
 
+  def unreviewedcd
+    require 'discogs'
+    offset = rand(@category.classify.constantize.joins(:master_music).where("master_musics.format LIKE '%CD%' OR master_musics.format LIKE '%ompact Disc%'").where("comment = '' OR comment is null").where(:agent_id => current_agent.id).count)
+    @item = @category.classify.constantize.joins(:master_music).where("master_musics.format LIKE '%CD%' OR master_musics.format LIKE '%ompact Disc%'").where("comment = '' OR comment is null").where(:agent_id => current_agent.id).offset(offset).first
+    @item.add_to_newsfeed = true
+    render :template => 'shared/new_master'
+  end
+
   def unreviewedlp
     require 'discogs'
     offset = rand(@category.classify.constantize.joins(:master_music).where("master_musics.format LIKE '%LP%' OR master_musics.format LIKE '%inyl%'").where("comment = '' OR comment is null").where(:agent_id => current_agent.id).count)
