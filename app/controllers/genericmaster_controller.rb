@@ -38,7 +38,6 @@ class GenericmasterController < ApplicationController
      if params[:agent_id]
        @agent = Agent.find(params[:agent_id])
      end
-
    end
 
 

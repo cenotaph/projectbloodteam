@@ -74,7 +74,7 @@ gem "nested_form"
 gem "non-stupid-digest-assets"
 gem "oauth2"
 gem 'omdbapi', github: 'phallstrom/omdbapi', branch: 'api-key'
-gem 'openlibrary', github: 'jayfajardo/openlibrary', branch: :master
+gem 'openlibrary', github: 'cenotaph/openlibrary', branch: :master
 gem 'paperclip', '5.1'#, '~> 5.1'#, :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
 # gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'

@@ -1,21 +1,21 @@
 GIT
+  remote: git://github.com/cenotaph/openlibrary.git
+  revision: e768878a16f0e639811d79e2c3368105b7626fc5
+  branch: master
+  specs:
+    openlibrary (3.0.0)
+      activesupport (~> 5)
+      hashie (~> 2.0.5)
+      json (>= 1.7.7)
+      rest-client (~> 2.0.2)
+
+GIT
   remote: git://github.com/cenotaph/themes_for_rails.git
   revision: 813d84fe8673b375ceb3b4d4b2acbb9c4b74c1df
   branch: master
   specs:
     themes_for_rails (0.5.1)
       rails (>= 4.2.2)
-
-GIT
-  remote: git://github.com/jayfajardo/openlibrary.git
-  revision: 68c7a4dbe42afa1c48495c90f0f2564c2f964533
-  branch: master
-  specs:
-    openlibrary (3.0.0)
-      activesupport (~> 5)
-      hashie (~> 2.0.2)
-      json (>= 1.7.7)
-      rest-client (~> 1.6)
 
 GIT
   remote: git://github.com/justinfrench/formtastic.git
@@ -727,7 +727,7 @@ GEM
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.2)
-    concurrent-ruby (1.0.5)
+    concurrent-ruby (1.1.5)
     crass (1.0.4)
     date_validator (0.9.0)
       activemodel
@@ -747,7 +747,7 @@ GEM
     discogs-wrapper (2.1.2)
       hashie
       oauth (~> 0.4.7)
-    domain_name (0.5.20180417)
+    domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     erubi (1.7.1)
     erubis (2.7.0)
@@ -800,7 +800,7 @@ GEM
       railties (>= 3.2.16)
     jquery-ui-themes (0.0.12)
       httparty
-    json (2.1.0)
+    json (2.2.0)
     jwt (1.5.6)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
@@ -915,10 +915,10 @@ GEM
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
-    rest-client (1.8.0)
+    rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 3.0)
-      netrc (~> 0.7)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     riddle (2.3.1)
     rollbar (2.18.2)
       multi_json
@@ -967,7 +967,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.5)
+    unf_ext (0.0.7.6)
     uniform_notifier (1.11.0)
     warden (1.2.7)
       rack (>= 1.0)
