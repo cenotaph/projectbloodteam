@@ -3,20 +3,21 @@
     %button.menu-icon{type: :button, :'data-toggle' => 'agent_menu'}
     .title-bar-title= 'Agent ' + @agent.surname
   - agent_category = @agent.categories.year(@stats.nil? ? getYear : (@stats['year'].nil? ? getYear : @stats['year'])).first
-  .title-bar#agent_menu
-    .title-bar-left
-      %ul.dropdown.menu
-        %li.title.hide-for-small-only= link_to 'Agent ' + @agent.surname + ": ", @agent
-        %li.status 
-          - if @item
-            = agent_category.send(@item.class.to_s.tableize.gsub(/^master_/, '')).to_s
-            - if @stats
-              = " : "
-              %small
-                = "#{@stats['position']} of "
-                = "#{@stats['yearcount']} in #{@stats['year']} / #{@stats['alltimeposition']} of #{@stats['alltimecount']} all-time"
-          - elsif @category
-            = agent_category.send(@category.tableize.gsub(/^master_/, '')).to_s
+  - unless agent_category.nil?
+    .title-bar#agent_menu
+      .title-bar-left
+        %ul.dropdown.menu
+          %li.title.hide-for-small-only= link_to 'Agent ' + @agent.surname + ": ", @agent
+          %li.status 
+            - if @item
+              = agent_category.send(@item.class.to_s.tableize.gsub(/^master_/, '')).to_s
+              - if @stats
+                = " : "
+                %small
+                  = "#{@stats['position']} of "
+                  = "#{@stats['yearcount']} in #{@stats['year']} / #{@stats['alltimeposition']} of #{@stats['alltimecount']} all-time"
+            - elsif @category
+              = agent_category.send(@category.tableize.gsub(/^master_/, '')).to_s
     - cache [@agent, 'right_dev_menu' ] do
       .title-bar-right
         %ul.horizontal.menu{:'data-drilldown' => ''}
