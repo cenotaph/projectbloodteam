@@ -7,8 +7,10 @@ class AjaxController < ApplicationController
     va = [Event, Movie, Activity, Musicplayed, Tvseries]
     if cat == Event || cat == Movie || cat == Activity || cat == Musicplayed || cat == Tvseries
       items = cat.where('location like "%' + params[:term] + '%" and geolocation_id IS NOT NULL').group(:geolocation_id, :venue_address)
-    elsif cat == Concert
+    elsif cat == Concert      
       items = cat.where('venue like "%' + params[:term] + '%" and geolocation_id IS NOT NULL').group(:geolocation_id, :venue_address)
+    elsif cat == Brewing
+      items = cat.where('location like "%' + params[:term] + '%" and geolocation_id IS NOT NULL')
     else
       items = cat.where('name like "%' + params[:term] + '%" and geolocation_id IS NOT NULL') #.group(:geolocation_id)
     end
