@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180724145030) do
+ActiveRecord::Schema.define(version: 20190930081816) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8" do |t|
     t.integer "agent_id"
@@ -188,10 +188,10 @@ ActiveRecord::Schema.define(version: 20180724145030) do
     t.string "tvseries", default: "TV Series"
   end
 
-  create_table "comments", id: :integer, unsigned: true, force: :cascade, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8" do |t|
+  create_table "comments", id: :integer, unsigned: true, force: :cascade, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
     t.string "item_type", limit: 48
     t.integer "foreign_id", null: false, unsigned: true
-    t.text "content", null: false
+    t.text "content"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "agent_id"
