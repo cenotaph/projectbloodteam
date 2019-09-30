@@ -206,12 +206,17 @@ class GenericmasterController < ApplicationController
 
   def directid
     @item = @category.classify.constantize.new(:agent => current_agent, (@master.gsub(/^Master/, 'master_') + '_id').downcase.to_sym => @master.classify.constantize.choose(params[:directid].gsub(/^tt/, ''), session[:discogs_token].nil? ? (current_agent.discogs_token.blank? ? nil : current_agent.discogs_token) : session[:discogs_token]), :add_to_newsfeed => true)
-    @item.userimages << Userimage.new(:primary => true)
-    if @item.respond_to?('currency_id')
-      @item.currency_id = current_agent.default_currency
+    if @item.master.nil?
+      flash[:error] = "No item found with ID #{params[:directid]}"
+      redirect_to "/agents/#{current_agent.id.to_s}/#{@category.classify.constantize.table_name}"
+    else
+      @item.userimages << Userimage.new(:primary => true)
+      if @item.respond_to?('currency_id')
+        @item.currency_id = current_agent.default_currency
+      end
+      set_meta_tags :title => 'New entry for ' + @item.name
+      render :template => 'shared/new_master'
     end
-    set_meta_tags :title => 'New entry for ' + @item.name
-    render :template => 'shared/new_master'
   end
 
   def edit

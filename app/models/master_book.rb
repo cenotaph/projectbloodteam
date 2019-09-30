@@ -34,18 +34,22 @@ class MasterBook < ActiveRecord::Base
         client = Openlibrary::Client.new
         data = Openlibrary::Data
         book = data.find_by_olid(key)
-        new_master = MasterBook.new(amazoncode: nil, open_library: key, title: book.title,
-          author: book&.authors&.map(&:name)&.join(', ').to_s)
-        # book = Amazon::Ecs.item_search(key, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
+        if book.nil?
+          return nil
+        else
+          new_master = MasterBook.new(amazoncode: nil, open_library: key, title: book.title,
+            author: book&.authors&.map(&:name)&.join(', ').to_s)
+          # book = Amazon::Ecs.item_search(key, search_index: 'Books', IdType: 'ISBN', :response_group => 'Medium').items[0]
 
-        # new_master = MasterBook.new(:amazoncode => key, :title => book.get('ItemAttributes/Title'),
-        # :author => book.get('ItemAttributes/Author'))
-        require 'open-uri'
-        unless book&.cover&.large.nil?
-          new_master.filename = URI.parse(book.cover.large)
-        end
-        if new_master.save
-          new_master.id
+          # new_master = MasterBook.new(:amazoncode => key, :title => book.get('ItemAttributes/Title'),
+          # :author => book.get('ItemAttributes/Author'))
+          require 'open-uri'
+          unless book&.cover&.large.nil?
+            new_master.filename = URI.parse(book.cover.large)
+          end
+          if new_master.save
+            new_master.id
+          end
         end
       else
         existing.first.id
