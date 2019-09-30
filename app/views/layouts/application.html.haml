@@ -36,12 +36,12 @@
         .forum-bar.row
           .small-8.columns
             %table{:border => 0}
-              - cache(:agent => (agent_signed_in? ? current_agent.id : 'null'), :action_suffix => 'forum_frontpage', :page => params[:page]) do
-                %tbody#results
-                  %thead
-                    %th= link_to 'See entire forum', forums_path
-                    %th= link_to fa_icon('plus-square-o'), new_forum_path
-                  = render :partial => 'shared/forum_list', :collection => @forums
+              -# - cache(:agent => (agent_signed_in? ? current_agent.id : 'null'), :action_suffix => 'forum_frontpage', :page => params[:page]) do
+              %tbody#results
+                %thead
+                  %th= link_to 'See entire forum', forums_path
+                  %th= link_to fa_icon('plus-square-o'), new_forum_path
+                = render :partial => 'shared/forum_list', :collection => @forums
         - if controller.controller_name == 'home' && !@json.blank?
           .worldmap-bar.row
             .map_title
