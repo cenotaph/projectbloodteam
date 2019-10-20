@@ -74,7 +74,7 @@
         .row
           .small-8.columns.past_years.small-centered.text-center
             %p
-              - 2014.downto(2002).map(&:to_s).each do |y|
+              - 2018.downto(2002).map(&:to_s).each do |y|
                 = link_to image_tag("/img/logos/#{y}_small.jpg"), "https://#{y}.bloodteam.com"
     - if current_agent
     
