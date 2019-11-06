@@ -728,7 +728,7 @@ GEM
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
-    crass (1.0.4)
+    crass (1.0.5)
     date_validator (0.9.0)
       activemodel
       activesupport
@@ -814,7 +814,7 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
-    loofah (2.2.2)
+    loofah (2.3.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -827,7 +827,7 @@ GEM
     mimemagic (0.3.2)
     mini_magick (4.8.0)
     mini_mime (1.0.0)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.4.0)
     minitest (5.11.3)
     monetize (1.8.0)
       money (~> 6.11.2)
@@ -843,8 +843,8 @@ GEM
     net-ssh (5.0.2)
     netrc (0.11.0)
     nio4r (2.3.1)
-    nokogiri (1.8.4)
-      mini_portile2 (~> 2.3.0)
+    nokogiri (1.10.5)
+      mini_portile2 (~> 2.4.0)
     non-stupid-digest-assets (1.0.9)
       sprockets (>= 2.0)
     oauth (0.4.7)
