@@ -1,8 +1,8 @@
 # Edit this Gemfile to bundle your application's dependencies.
 # source 'http://gemcutter.org'
 source 'https://rubygems.org'
-ruby '2.6.1'
-gem 'rails', '5.1.6'
+ruby '2.6.5'
+gem 'rails', '5.1.7'
 gem 'mysql2'
 gem 'puma'
 
@@ -42,6 +42,7 @@ gem 'capistrano-bundler'
 gem 'capistrano3-puma'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
+gem 'autoprefixer-rails'
 # gem 'dalli', '2.6.4'
 # gem 'dalli-store-extensions', :git =>"git://github.com/defconomicron/dalli-store-extensions.git", :group => :production
 # gem 'dalli-store-extensions', :git => "git://github.com/defconomicron/dalli-store-extensions.git", :group => :production
@@ -84,6 +85,7 @@ gem 'redis'
 gem 'rollbar'
 # gem 'responders', '2.0.2'
 # gem "skylight"
+gem 'sprockets', '3.7.2'
 gem 'themes_for_rails', github: 'cenotaph/themes_for_rails', branch: 'master'
 gem 'thinking-sphinx'#
 
