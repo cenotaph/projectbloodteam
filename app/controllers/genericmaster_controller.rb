@@ -308,17 +308,22 @@ class GenericmasterController < ApplicationController
         render :template => 'index_for_agent'
       end
     else
+
       if @category == 'Book' || @category == 'Videogame'
         if getYear == Time.now.strftime('%Y')
           @items = @category.classify.constantize.includes([:agent,
             {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
               ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").order("date desc").page(params[:page]).per(@per)
+      
         else
           @items = @category.classify.constantize.includes([:agent,
             {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => joins} }
               ]).select("*, greatest(coalesce(started,finished,received), coalesce(finished, received, started), coalesce(received, started, finished)) as date").where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").order('date desc').page(params[:page]).per(@per)
               # where("(received >= '#{getYear}-01-01' AND received <= '#{getYear}-12-31') OR (started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").includes(:userimages).sort{|x,y| y.date <=> x.date}.paginate(:per_page => 20, :page => params[:page])
         end
+      elsif @category == 'Tvseries'
+
+          @items = @category.classify.constantize.includes([:agent, :userimages, :comments, "master_#{@category.downcase}".to_sym]).select("*, greatest(coalesce(started,finished), coalesce(finished, started)) as date").where("(started >= '#{getYear}-01-01' AND started < '#{getYear}-12-31') OR (finished >= '#{getYear}-01-01' AND finished < '#{getYear}-12-31')").order([@sort, @sort_direction].join(' ') + ", finished #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)           
       else
         @items = @category.classify.constantize.includes([:agent,
             {"master_#{@category.downcase}".to_sym => {@category.downcase.tableize.to_sym => [:agent, :userimages]}
