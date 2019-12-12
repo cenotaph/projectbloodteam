@@ -20,7 +20,7 @@
       
       = pluralize( @totals.values.sum , 'search result')
       - if !agent_signed_in?
-        - missing = @items.reject{|x| x.agent.security == 0}.size
+        - missing = @items.delete_if{|x| x.class == String }.reject{|x| x.agent.security == 0}.size
         - if missing > 0
           %em= " (#{pluralize(missing, 'protected entry')} in search results that are only visible to other PBT agents.)"
         - @items.delete_if{|x| x.agent.security != 0}
