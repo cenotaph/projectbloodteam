@@ -3,6 +3,7 @@ class MasterVideogame < ActiveRecord::Base
   has_many :comments, -> { where('item_type = \'MasterVideogame\'')}, :foreign_key => 'foreign_id', :dependent => :delete_all
   has_many :videogames
   has_many :agents, :through => :videogames
+  has_many :references, as: :reference
   has_attached_file :filename, :default_url => '/img/no_image.png', 
 
   :styles => {:thumb => "150x150", :full => "450x450>"},
