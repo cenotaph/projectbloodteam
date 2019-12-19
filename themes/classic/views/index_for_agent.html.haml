@@ -20,17 +20,20 @@
         returned.
   .row
     .small-12.columns
-      - if @category == 'Movie' 
-        - if controller.action_name != 'shorts'
-          - if @agent.profile(getYear).shortfilms
-            - @items = @items.where.not(is_short: true)
-            = link_to 'See short films', shorts_agent_movies_path(:agent_id => @agent.id), class: [:tiny, :secondary, :button]
-        - else
-          = link_to 'See feature-length films', agent_movies_path(:agent_id => @agent.id), class: [:tiny, :secondary, :button]
-      - elsif @category == 'Music'
-        - if agent_signed_in?
-          - if current_agent == @agent
-            = link_to_if current_agent == @agent, 'Suggest unreviewed', unreviewed_agent_musics_path, class: [:tiny, :secondary, :button]
+      - if @agent.profile(getYear).nil?
+        No data for this year
+      - else
+        - if @category == 'Movie' 
+          - if controller.action_name != 'shorts'
+            - if @agent.profile(getYear).shortfilms
+              - @items = @items.where.not(is_short: true)
+              = link_to 'See short films', shorts_agent_movies_path(:agent_id => @agent.id), class: [:tiny, :secondary, :button]
+          - else
+            = link_to 'See feature-length films', agent_movies_path(:agent_id => @agent.id), class: [:tiny, :secondary, :button]
+        - elsif @category == 'Music'
+          - if agent_signed_in?
+            - if current_agent == @agent
+              = link_to_if current_agent == @agent, 'Suggest unreviewed', unreviewed_agent_musics_path, class: [:tiny, :secondary, :button]
 
   .row#view_options{style: (@items.empty? || @filters == true  ? "display: block" : false) }
     = form_for :filter, url: "/agents/#{@agent.slug}/#{@category.tableize}/#{ controller.action_name == 'shorts' ? 'shorts' : ''}", method: :get do |f|
