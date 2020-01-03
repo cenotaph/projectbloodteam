@@ -28,7 +28,7 @@ class MasterMovie < ActiveRecord::Base
       key.gsub!(/^0*/, '').gsub!(/^tt/, '')
       existing = self.where(:imdbcode => key)
       if existing.empty?
-        m = OMDB.id("tt#{sprintf("%07d", key)}")
+        m = OMDB.id("tt#{sprintf("%07d", key.gsub(/\D/, ''))}")
         if m.response == 'False'
           raise FilmNotFound.new(message: "error - OMDB entry not found!")
         else
