@@ -35,7 +35,11 @@ class MasterMovie < ActiveRecord::Base
           big_poster = m.poster # rescue nil
           mynew = self.new(:title => HTMLEntities.new.decode(m.title), :imdbcode => key, :director => m.director, :country => m.country.gsub(/, /, ' / '), :year => m.year)
           unless big_poster.blank? || big_poster == 'N/A'
-            mynew.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
+            begin
+              mynew.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
+            rescue OpenURI::HTTPError
+              nil
+            end
           end
 
           # unless m.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
