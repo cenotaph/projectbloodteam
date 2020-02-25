@@ -18,7 +18,8 @@
               .reveal{:id => "comment_" + agent.id.to_s, :"data-reveal" => ''}
               
                 = raw display_column(agent, col, agent.agent_id)
-              = truncate_html(display_column(agent, col, agent.agent_id), length: 1000)
+              -#= truncate_html(display_column(agent, col, agent.agent_id), length: 1000)
+              = raw(truncate_html(agent.send(col), length: 1000))
               = link_to raw(fa_icon('bullhorn')), '#', "data-open" => "comment_" + agent.id.to_s
             - else
               = raw display_column(agent, col, agent.agent_id)       

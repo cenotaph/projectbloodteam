@@ -37,7 +37,7 @@ module ApplicationHelper
             raw(item.send(column) + "<div class='venue_address'>#{item['venue_address']}</div>")
           end
         else
-          raw(item.send(column)) #[column.to_sym])
+          item.send(column) #[column.to_sym])
         end
       end
     end
