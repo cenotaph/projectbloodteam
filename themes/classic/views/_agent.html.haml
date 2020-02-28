@@ -33,7 +33,7 @@
             - else
               = raw display_column(agent, col, agent.agent_id)
       - else
-        = highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text])
+        = highlight(display_column(agent, col, agent.agent_id).to_s, params[:filter][:filter_text])
         - if col == 'finished' && !display_column(agent, col, agent.agent_id).blank?
           .small
             Time taken:
