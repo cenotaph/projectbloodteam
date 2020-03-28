@@ -10,7 +10,9 @@
         %h2.item_title
           = link_to raw(entry.entry.name), entry.entry
         - if entry.entry.respond_to?('linkto')
-          .link_to= link_to fa_icon('external-link'), entry.entry.linkto, :target => "_blank"
+          - unless entry.entry.linkto.empty?
+            - entry.entry.linkto.each do |link|
+              .link_to= link_to fa_icon('external-link'), link, :target => "_blank"
     .row
       .large-4.small-12.columns.metadata.large-text-right
        

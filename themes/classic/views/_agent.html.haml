@@ -8,8 +8,9 @@
       - if col == 'name' || col == 'title' || col == 'artists' || col == 'station' || col == 'product'
         = link_to highlight(display_column(agent, col, agent.agent_id), params[:filter][:filter_text]), url_for(agent.has_master? ? agent.master : agent)
         - if agent.respond_to?('linkto')
-          - unless agent.linkto.blank?
-            = link_to fa_icon('external-link'), agent.linkto, :target => "_blank" 
+          - unless agent.linkto.empty?
+            - agent.linkto.each do |link|
+              = link_to fa_icon('external-link'), link, :target => "_blank" 
         = raw one_or_slideshow(agent, nil, :thumb)
       - elsif col == 'comment'
         - unless display_column(agent, col, agent.agent_id).blank?

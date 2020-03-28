@@ -46,7 +46,9 @@
                 %h2.item_title.small-text-center.large-text-left.medium-text-left
                   = link_to raw(entry.entry.name), entry.entry
                 - if entry.entry.respond_to?('linkto')
-                  .link_to= link_to fa_icon('external-link'), entry.entry.linkto, :target => "_blank"
+                  - unless entry.entry.linkto.empty?
+                    - entry.entry.linkto.each do |link|
+                      .link_to= link_to fa_icon('external-link'), link, :target => "_blank"
                 - if entry.entry.respond_to?('master')
                   - if entry.entry.master.respond_to?('references')
                     - unless entry.entry.master.references.empty?

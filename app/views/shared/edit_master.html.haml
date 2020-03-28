@@ -94,6 +94,8 @@
             .row
               .large-6.columns= f.input :amazoncode, :as => :string
             .row
+              .large-6.columns= f.input :open_library, :as => :string              
+            .row
               .large-6.columns
                 - if f.object.filename?
                   = image_tag f.object.filename.url(:thumb)

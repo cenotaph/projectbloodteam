@@ -79,7 +79,15 @@ class MasterBook < ActiveRecord::Base
   end
 
   def linkto
-    "http://www.amazon.com/exec/obidos/ASIN/#{self.amazoncode}?tag=#{ENV['AMAZON_ASSOC']}"
+    if amazoncode && open_library
+      ["https://www.amazon.com/exec/obidos/ASIN/#{self.amazoncode}?tag=#{ENV['AMAZON_ASSOC']}", "https://openlibrary.org/books/#{self.open_library}"]
+    elsif amazoncode
+      ["https://www.amazon.com/exec/obidos/ASIN/#{self.amazoncode}?tag=#{ENV['AMAZON_ASSOC']}"]
+    elsif open_library
+      ["https://openlibrary.org/books/#{self.open_library}"]
+    else
+      []
+    end
   end
 
   def items

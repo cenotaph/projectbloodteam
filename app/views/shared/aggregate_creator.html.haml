@@ -19,7 +19,8 @@
         %small
           = link_to fa_icon('eye'), title
           - if title.respond_to?('linkto')
-            = link_to fa_icon('external-link'), title.linkto, :target => "_blank"
+            - title.linkto.each do |link|
+              = link_to fa_icon('external-link'), link, :target => "_blank"
     .row
       .small-8.columns.text-center.small-offset-2
         .row

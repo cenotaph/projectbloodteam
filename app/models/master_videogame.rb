@@ -74,7 +74,7 @@ class MasterVideogame < ActiveRecord::Base
   end
   
   def linkto
-    "http://www.amazon.com/exec/obidos/ASIN/#{self.amazoncode}?tag=problotea-20"
+    amazoncode.blank? ? []  : ["http://www.amazon.com/exec/obidos/ASIN/#{self.amazoncode}?tag=problotea-20"]
   end
   
   def master_id

@@ -32,7 +32,9 @@
                 - unless index == 0 || master == true
                   = link_to raw(chat.name), chat
                   - if chat.respond_to?('linkto')
-                    = link_to image_tag('/img/icons/external-link.png'), chat.linkto, :target => "_blank"
+                    - unless chat.linkto.empty?
+                      - chat.linkto.each do |link|
+                        = link_to image_tag('/img/icons/external-link.png'), link, :target => "_blank"
                 - unless chat.respond_to?('received')
                   .item_date= chat.formatted_date
             - else

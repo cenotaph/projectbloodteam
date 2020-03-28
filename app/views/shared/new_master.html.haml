@@ -14,7 +14,9 @@
                 %em= "(English title: "
                 = "#{@item.english_title})"
           - if @item.respond_to?('linkto')
-            %span.link_to= link_to fa_icon('external-link'), @item.linkto, :target => "_blank"
+            - unless @item.linkto.empty?
+              - @item.linkto.each do |link|
+                %span.link_to= link_to fa_icon('external-link'), link, :target => "_blank"
         .secondary_title= raw @item.master.secondary_title unless @item.master.name.include?(@item.master.secondary_title)
 - if @item.others.size > 0
   .across_strip

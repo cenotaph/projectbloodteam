@@ -106,7 +106,7 @@ class MasterMusic < ActiveRecord::Base
   end
   
   def linkto
-    "http://www.discogs.com/release/#{discogscode.to_s}"
+    discogscode.blank? ? [] :  ["http://www.discogs.com/release/#{discogscode.to_s}"]
   end
   
   def master

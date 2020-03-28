@@ -31,11 +31,12 @@ class MasterTvseries < ActiveRecord::Base
     if key =~ /^local_/
       key.gsub(/^local_/, '')
     else
+      key.gsub!(/^0*/, '').gsub!(/^tt/, '')
       existing = self.where(:imdbcode => key)
 
       if existing.empty?
 
-        m = OMDB.id("tt#{sprintf("%07d", key)}")
+        m = OMDB.id("tt#{sprintf("%07d", key.gsub(/\D/, ''))}")
         big_poster = m.poster # rescue nil
         mynew = self.new(:title => m.title.gsub(/^\"/, '').gsub(/\"$/, '').strip, :year => m.year, :imdbcode => key)
         require 'open-uri'
@@ -126,7 +127,7 @@ class MasterTvseries < ActiveRecord::Base
   end
 
   def linkto
-    "http://www.imdb.com/title/tt#{sprintf('%07d', imdbcode).to_s}/"
+    imdbcode.blank? ? [] : ["http://www.imdb.com/title/tt#{sprintf('%07d', imdbcode).to_s}/"]
   end
 
   def master_id
