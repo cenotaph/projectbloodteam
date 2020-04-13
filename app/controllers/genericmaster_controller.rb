@@ -3,7 +3,7 @@ class GenericmasterController < ApplicationController
   respond_to :html, :xml
   before_action :getView
   before_action :getCategory
-  before_action :authenticate_agent!, :only => [:new, :edit, :edit_master, :update, :create, :destroy, :directid, :authenticate, :callback, :unreviewed]
+  before_action :authenticate_agent!, :only => [:new, :edit, :edit_master, :query, :update, :create, :destroy, :directid, :authenticate, :callback, :unreviewed]
   theme :getTheme
   autocomplete :movie, :location
 
