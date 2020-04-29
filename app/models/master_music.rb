@@ -50,8 +50,8 @@ class MasterMusic < ActiveRecord::Base
       if existing.empty?
         m = Discogs::Wrapper.new('Project Blood Team', token).get_release(key)
         unless m.nil?
-          mynew = self.new(:title => m.title, :discogscode => key, :artist => m.artists.map(&:name).join(' / '),
-                            :year => m.released, :label => m.labels.map(&:name).join(' / '), :format => m.formats.empty? ? '' : m.formats.map(&:name).join(' /'), :masterdiscogs_id => m.master_id)
+          mynew = self.new(:title => m.title, :discogscode => key, :artist => m.artists&.map(&:name)&.join(' / '),
+                            :year => m.released, :label => m.labels&.map(&:name)&.join(' / '), :format => m.formats.empty? ? '' : m.formats&.map(&:name)&.join(' /'), :masterdiscogs_id => m.master_id)
           require 'open-uri'
           require 'cgi'
           
@@ -155,6 +155,7 @@ class MasterMusic < ActiveRecord::Base
     logger.warn('after manually setting, @discogs.access token is ' + @discogs.access_token.inspect)
     @discogs.search(searchterm.gsub(/\s/, '%20'), :type => :release).results.each do |hit|
       next unless hit.uri =~ /\d+$/
+      logger.error hit.inspect
       discogs << {"title" => hit.title, "label" => hit.label, "format" => hit.format, "summary" => hit.summary, "key" => hit.uri.match(/\d+$/)[0] }
     end
     discogs

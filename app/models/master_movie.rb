@@ -143,7 +143,7 @@ class MasterMovie < ActiveRecord::Base
   end
 
   def self.query(searchterm, token = nil)
-    imdbhits = OMDB.search(searchterm)
+    imdbhits = OMDB.search(searchterm) rescue []
     if imdbhits.class == Hash
       if imdbhits.has_key?(:error)
         return imdbhits[:error]

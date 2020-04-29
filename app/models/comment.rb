@@ -56,7 +56,7 @@ class Comment < ActiveRecord::Base
       # find parent and return name
      # self.category
     begin
-      self.child.name
+      self.child&.name
       rescue ActiveRecord::RecordNotFound
         "a deleted item"
       end

@@ -1,6 +1,6 @@
 - cache(:id => item.id.to_s, :action => "show", :category => 'mastermovie', :action_suffix => 'imdbdata') do
   - unless item.imdbcode.blank?
-    - m = OMDB.id("tt#{sprintf("%07d", item.imdbcode)}")
+    - m = OMDB.id("tt#{sprintf("%07d", item.imdbcode)}") rescue 'False'
     - if m.response != 'False'
       .row
         .small-12.columns

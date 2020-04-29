@@ -33,8 +33,11 @@
 
 
 
-  - unless @choices.blank?
-
+  - if @choices.blank?
+    .row
+      .small-12.columns
+        %p Sorry, no search results were returned. Please try again.
+  - else
     .row
       .small-12.columns
         %a{:name => "choices"}
@@ -66,8 +69,8 @@
               = link_to select_genericmaster_path(:agent_id => current_agent.id, :id => choice['key'], :category => @category), class: [:choice, :column] do
 
                 .choice_poster
-                  - if choice['image']
-                    = image_tag(choice['image'])
+                  - if choice[:image]
+                    = image_tag(choice[:image])
                   - else
                     = image_tag 'system/no_image.png'
                 .choice_title

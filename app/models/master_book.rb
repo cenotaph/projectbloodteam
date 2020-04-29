@@ -129,22 +129,26 @@ class MasterBook < ActiveRecord::Base
   def self.query(searchterm, token = nil)
     client = Openlibrary::Client.new
     data = Openlibrary::Data
-    hits = client.search({q: searchterm, mode: 'everything'}, 250)
+    hits = client.search({q: searchterm, mode: 'everything'}, 250) rescue []
     # hits = Amazon::Ecs.item_search(searchterm, {:response_group => 'Medium'}).items
     results = []
     hits.each do |hit|
       next if hit.edition_key.nil?
-      this_isbn = data.find_by_olid(hit.edition_key.first)
-
-      results << { "title" => this_isbn.title  + '<div class="secondary_title">' + this_isbn&.authors&.map{|x| x['name']}&.join(', ').to_s + "</div>",
-        "key" => this_isbn.identifiers.openlibrary,
-        "image": this_isbn&.cover&.medium }
-
+      begin
+        this_isbn = data.find_by_olid(hit.edition_key.first)
+        
+        results << { "title" => this_isbn.title  + '<div class="secondary_title">' + this_isbn&.authors&.map{|x| x['name']}&.join(', ').to_s + "</div>",
+          "key" => this_isbn.identifiers.openlibrary,
+          "image": this_isbn&.cover&.medium }
+          logger.error this_isbn&.cover&.medium
       # results << {"title" => hit.get('ItemAttributes/Title').to_s + '<div class="secondary_title">' + hit.get('ItemAttributes/Author').to_s + '</div>',
       #             "key" => hit.get('ASIN'),
       #             'image' => hit.get('SmallImage').nil? ? nil : hit.get('SmallImage').gsub(/\<\/url\>.*/i, '').sub(/\<url\>/i, '')
       #           }
       # end
+      rescue RestClient::ServiceUnavailable
+        results << {"title" => 'The Open Library service is currently unavailable.', key: 0, image: nil }
+      end
     end
     results
   end

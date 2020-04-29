@@ -352,7 +352,7 @@ class GenericmasterController < ApplicationController
         end
       end
       begin
-        if @master == "MasterMusic"\
+        if @master == "MasterMusic"
           # OK so this fucker won't work as a model method right now.... grrr......
           if session[:discogs_token]
             @discogs = Discogs::Wrapper.new("PBT development", session[:discogs_token])
@@ -364,7 +364,7 @@ class GenericmasterController < ApplicationController
           @choices = []
           search.results.each do |hit|
             next unless hit.uri =~ /\d+$/
-            @choices << {"title" => hit.title, "label" => hit.label, "format" => hit.format, "summary" => hit.summary, "key" => hit.uri.match(/\d+$/)[0] }
+            @choices << {"title" => hit.title, "label" => hit.label, "format" => hit.format, "summary" => hit.summary, "key" => hit.uri.match(/\d+$/)[0], image: hit&.thumb }
           end
 
 
@@ -599,7 +599,7 @@ class GenericmasterController < ApplicationController
             unless i.response == 'False'
               big_poster = i.poster
               unless big_poster.blank? || big_poster == 'N/A'
-                @item.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
+                @item.filename = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg')) rescue nil
               end
               # if @item.english_title.blank?
               #   unless i.also_known_as.find{|x| x[:version] == 'World-wide (English title)' }.nil?
