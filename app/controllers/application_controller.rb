@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
   
   def getForum
-    @forums = Comment.includes([:agent, :item]).paginate_with_items(params[:page], 6)
+    @forums = Comment.joins([:agent, :item]).paginate_with_items(params[:page], 6)
   end
   
   def getYear
