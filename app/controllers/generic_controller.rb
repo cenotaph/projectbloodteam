@@ -170,7 +170,7 @@ class GenericController < ApplicationController
 
     if params[:agent_id]
       @agent = Agent.find(params[:agent_id])
-      @items = @category.classify.constantize.joins(joins).where(:agent_id => @agent.id).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").where(filter_query).order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
+      @items = @category.classify.constantize.includes(joins).where(:agent_id => @agent.id).where("date <= '#{@end_date}' AND date >= '#{@start_date}'").where(filter_query).order([@sort, @sort_direction].join(' ') + ", date #{@sort_direction}, id #{@sort_direction}").page(params[:page]).per(@per)
       @stats = {      
            "alltimecount" => @category.constantize.where(agent: @agent).count, 
            "year" => @start_date.match(/^\d\d\d\d/)[0] == @end_date.match(/^\d\d\d\d/)[0] ? @end_date.match(/^\d\d\d\d/)[0] : nil
@@ -191,7 +191,7 @@ class GenericController < ApplicationController
           joins
           ]).order('date DESC').page(params[:page]).per(40)
       else
-        @items = @category.classify.constantize.where("date <= '#{getYear}-12-31'").joins(joins).where("agents.public_password is null ").order(date: :desc).page(params[:page]).per(40)
+        @items = @category.classify.constantize.where("date <= '#{getYear}-12-31'").includes(joins).where("agents.public_password is null ").order(date: :desc).page(params[:page]).per(40)
         flash[:notice] = 'You are not seeing all entries because you are not logged in.'
       end
       if request.xhr?
