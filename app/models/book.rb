@@ -84,8 +84,8 @@ class Book < ActiveRecord::Base
       'metadata' => { 'received on' => self.received, 'started on' => self.started, 'finished on' => self.finished, 'time taken' =>
          (self.finished.blank? ? nil : 
                                         (self.started.blank? ? "" : 
-                                                                    ((self.finished - self.started).to_i + 1).to_s + ' day' + (
-                                                                    ( (self.finished - self.started).to_i > 0 ) ? 's' : '') )),
+                                                                    ((self.finished - self.started).to_i ).to_s + ' day' + (
+                                                                    ( (self.finished - self.started).to_i > 1 ) ? 's' : '') )),
          'difficulty' => self.difficulty, 'pagecount' => self.pagecount,
         'rating' => self.rating, 'source' => self.source,  'cost' => [(self.currency_id.nil? ?  self.agent.default_currency : self.currency_id), self.cost],
         'first reading?' => self.first
