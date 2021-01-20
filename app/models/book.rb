@@ -85,7 +85,7 @@ class Book < ActiveRecord::Base
          (self.finished.blank? ? nil : 
                                         (self.started.blank? ? "" : 
                                                                     ((self.finished - self.started).to_i ).to_s + ' day' + (
-                                                                    ( (self.finished - self.started).to_i > 1 ) ? 's' : '') )),
+                                                                    ( (self.finished - self.started).to_i != 1 ) ? 's' : '') )),
          'difficulty' => self.difficulty, 'pagecount' => self.pagecount,
         'rating' => self.rating, 'source' => self.source,  'cost' => [(self.currency_id.nil? ?  self.agent.default_currency : self.currency_id), self.cost],
         'first reading?' => self.first
