@@ -1,10 +1,10 @@
 # Edit this Gemfile to bundle your application's dependencies.
 # source 'http://gemcutter.org'
 source 'https://rubygems.org'
-ruby '2.6.5'
+ruby '2.7.2'
 gem 'rails', '5.1.7'
 gem 'mysql2'
-gem 'puma'
+gem 'puma' #, '~> 5.0'
 
 gem 'sass-rails'#, '5.0.4'
 gem 'uglifier'#, '>= 1.3.0'
@@ -41,7 +41,7 @@ gem 'capistrano-rvm'
 gem 'capistrano-bundler'
 gem 'capistrano3-puma'
 
-gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
+gem 'activerecord-session_store' #, github: 'rails/activerecord-session_store'
 
 # gem 'dalli', '2.6.4'
 # gem 'dalli-store-extensions', :git =>"git://github.com/defconomicron/dalli-store-extensions.git", :group => :production
@@ -54,13 +54,13 @@ gem 'devise-encryptable'
 gem 'discogs-wrapper'
 gem 'figaro'
 gem 'font-awesome-rails'
-gem 'formtastic', :git => 'git://github.com/justinfrench/formtastic.git'
+gem 'formtastic' #, :git => 'git://github.com/justinfrench/formtastic.git'
 gem 'foundation-rails', '6.3.0.0' #, '5.5.3.2'
 gem 'friendly_id', branch: :master, github: 'norman/friendly_id'
 gem 'geocoder'
 # gem 'gmaps4rails'
-gem 'haml'
-gem 'haml-rails'
+gem 'haml', '5.1.2'
+gem 'haml-rails', '2.0.1'
 gem 'hpricot'
 gem 'htmlentities'
 # gem 'imdb', path: "../imdb"#, github: 'cenotaph/imdb'
@@ -76,7 +76,7 @@ gem "non-stupid-digest-assets"
 gem "oauth2"
 gem 'omdbapi', github: 'phallstrom/omdbapi', branch: 'api-key'
 gem 'openlibrary', github: 'cenotaph/openlibrary', branch: :master
-gem 'paperclip', '5.1'#, '~> 5.1'#, :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
+gem 'paperclip', '5.1.0'#, '~> 5.1'#, :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
 # gem 'rails_12factor', group: [:staging, :production]
 gem 'rails4-autocomplete'
 gem 'randumb'
