@@ -11,7 +11,8 @@ install_plugin Capistrano::Puma
 require 'thinking_sphinx/capistrano'
 require "capistrano/scm/git"
 install_plugin Capistrano::SCM::Git
-
+install_plugin Capistrano::Puma::Nginx
+install_plugin Capistrano::Puma::Systemd
 # Includes tasks from other gems included in your Gemfile
 #
 # For documentation on these, see for example:

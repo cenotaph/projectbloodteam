@@ -19,7 +19,7 @@ Paperclip.interpolates :category do |attachment, style|
   attachment.instance.category
 end
 
-
+Paperclip::UriAdapter.register
 
 Paperclip.interpolates :mystyle  do |attachment, style|
   if style.to_s == "original"
