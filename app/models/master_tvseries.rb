@@ -44,6 +44,7 @@ class MasterTvseries < ActiveRecord::Base
 
           unless big_poster.blank? || big_poster == 'N/A'
             mynew.image = URI.parse(big_poster.gsub(/X300\.jpg/, '.jpg'))
+            mynew.save!
           end
             # imdbcode = sprintf("%07d",  key.to_i)
             # mynew.image_file_name = imdbcode  + '.jpg'

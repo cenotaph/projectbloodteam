@@ -33,7 +33,7 @@ class MasterMusic < ActiveRecord::Base
       m = Discogs::Wrapper.new('Project Blood Team', token).get_release(discogscode)
       unless m.images.blank?
         logger.warn('grabbing ' + m.images.first.uri)
-        self.filename = m.images.first.uri
+        self.filename = URI.parse(m.images.first.uri)
         save!
   
       end
@@ -58,8 +58,9 @@ class MasterMusic < ActiveRecord::Base
           if mynew.save
             
             unless m.images.blank?
-              mynew.filename = m.images.first.uri
+              mynew.filename = URI.parse(m.images.first.uri)
               mynew.save!
+
             end
           end
           mynew.id
